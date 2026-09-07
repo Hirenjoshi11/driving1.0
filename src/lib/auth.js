@@ -100,3 +100,17 @@ export async function getSessionUser(request = null) {
   if (!token) return null;
   return await verifySessionToken(token);
 }
+
+export async function requireAuth(request, allowedRoles = []) {
+  const user = await getSessionUser(request);
+  if (!user) {
+    return { error: 'Unauthorized: Authentication required', status: 401 };
+  }
+  if (allowedRoles && allowedRoles.length > 0) {
+    const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+    if (!roles.includes(user.role)) {
+      return { error: 'Forbidden: Insufficient privileges', status: 403 };
+    }
+  }
+  return { user };
+}
