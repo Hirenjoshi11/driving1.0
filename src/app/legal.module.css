@@ -1,0 +1,304 @@
+/* ============================================================
+   LEGAL, TERMS, REFUNDS & CONTACT PAGES STYLING
+   Consistent with the FormSeva-inspired Driving License Form design system
+   ============================================================ */
+
+.legalPage {
+  padding: var(--space-8) 0 var(--space-16);
+  min-height: 80vh;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.breadcrumb a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.header {
+  margin-bottom: var(--space-8);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.metaNotice {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+/* Disclaimer Callout Box */
+.disclaimerBox {
+  background: #FFFBEB;
+  border: 1.5px solid var(--color-warning);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-8);
+  font-size: var(--font-size-sm);
+  color: #92610e;
+  line-height: 1.6;
+}
+
+.disclaimerTitle {
+  font-weight: 700;
+  color: #92610e;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Section styling */
+.contentFlow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.section {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-xs);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-8);
+  }
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionBody {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  line-height: 1.7;
+}
+
+.sectionBody p {
+  margin-bottom: var(--space-3);
+}
+
+.sectionBody p:last-child {
+  margin-bottom: 0;
+}
+
+.list {
+  padding-left: var(--space-6);
+  margin-top: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.list li {
+  line-height: 1.6;
+}
+
+/* Cards Grid (e.g. Channels or Fee Comparison) */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 640px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .cardsGrid3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background: var(--color-white);
+  border: 1.5px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-card);
+}
+
+.card:hover {
+  border-color: rgba(21, 148, 71, 0.35);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.cardIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-4);
+}
+
+.cardTitle {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-2);
+}
+
+.cardDesc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  margin-bottom: var(--space-4);
+}
+
+.cardAction {
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cardAction:hover {
+  text-decoration: underline;
+}
+
+/* Banner Card CTA */
+.actionCard {
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, #FFFFFF 100%);
+  border: 1.5px solid rgba(21, 148, 71, 0.25);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  text-align: center;
+  margin-top: var(--space-8);
+}
+
+.actionCardTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+}
+
+.actionCardDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  max-width: 520px;
+  margin: 0 auto var(--space-5);
+  line-height: 1.6;
+}
+
+.cardNote {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.cardGridTight {
+  margin-top: var(--space-4);
+  margin-bottom: 0;
+}
+
+.cardAccent {
+  border-color: var(--color-primary);
+}
+
+.cardTitleAccent {
+  color: var(--color-primary-dark);
+}
+
+.inlineLink {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sectionSpaced {
+  margin-bottom: var(--space-8);
+}
+
+.emailLink {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.emailLink:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

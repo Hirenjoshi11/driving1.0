@@ -1,0 +1,298 @@
+/* ============================================================
+   APPLY — SERVICE SELECTION
+   Mode: Operate. The visitor is choosing what to apply for, so
+   the description and the fee both have to be readable — this
+   is the page where the transparent-fee claim is first proved.
+   ============================================================ */
+
+.servicePage {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  padding: var(--space-8) 0 var(--space-16);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  /* secondary, not muted: muted (#8896a6) is ~3:1 on white and
+     fails AA for body-sized text. */
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+}
+
+.breadcrumb a {
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
+.breadcrumb a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--space-10);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  text-wrap: balance;
+  margin-bottom: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+.subtitle {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   SERVICE CARDS
+   ============================================================ */
+.serviceGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .serviceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.serviceCard {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  background: var(--color-white);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 250ms var(--ease-out-expo),
+    border-color 250ms var(--ease-out-expo),
+    box-shadow 250ms var(--ease-out-expo);
+  animation: riseIn 450ms var(--ease-out-expo) backwards;
+  animation-delay: calc(60ms + var(--card-index, 0) * 60ms);
+}
+
+.serviceCard:hover {
+  border-color: rgba(21, 148, 71, 0.4);
+  box-shadow: 0 14px 30px -8px rgba(21, 148, 71, 0.14), 0 4px 14px rgba(0, 0, 0, 0.04);
+  transform: translateY(-3px);
+}
+
+.serviceCard:active {
+  transform: translateY(-1px) scale(0.995);
+  transition-duration: 120ms;
+}
+
+.serviceCard:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-color: var(--color-primary);
+}
+
+.serviceTop {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.serviceIcon {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-light);
+  border: 1px solid rgba(21, 148, 71, 0.12);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+  transition:
+    transform 250ms var(--ease-out-expo),
+    background-color 250ms var(--ease-out-expo);
+}
+
+.serviceCard:hover .serviceIcon {
+  transform: translateY(-2px);
+  background: var(--color-primary-lighter);
+}
+
+.serviceInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.serviceName {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  line-height: 1.3;
+  text-wrap: balance;
+  margin-bottom: var(--space-2);
+  /* Leaves room for the driving-test tag pinned top-right. */
+  padding-right: var(--space-4);
+  transition: color 200ms ease;
+}
+
+.serviceCard:hover .serviceName {
+  color: var(--color-primary-dark);
+}
+
+/* No line clamp: this is the page where the visitor decides which
+   service they need, so truncating the description works against
+   the one job the page has — and Hindi and Gujarati run longer. */
+.serviceDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.serviceBottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-light);
+  margin-top: auto;
+}
+
+.serviceMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.serviceTime {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* The fee is the product's trust claim: it gets a label so the
+   number is never ambiguous, and the amount reads as the figure. */
+.serviceFee {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.serviceFeeLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.serviceFeeAmount {
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.serviceArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  transition:
+    transform 240ms var(--ease-out-expo),
+    color 240ms var(--ease-out-expo);
+}
+
+.serviceCard:hover .serviceArrow {
+  color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.serviceTag {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 2px var(--space-2);
+  background: var(--color-info-light);
+  color: var(--color-info);
+  border-radius: var(--radius-full);
+}
+
+@media (max-width: 640px) {
+  .servicePage {
+    padding: var(--space-6) 0 var(--space-12);
+  }
+
+  .header {
+    margin-bottom: var(--space-6);
+  }
+
+  .serviceCard {
+    padding: var(--space-4);
+  }
+
+  .serviceTop {
+    gap: var(--space-3);
+  }
+
+  .serviceIcon {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ============================================================
+   MOTION
+   ============================================================ */
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serviceCard {
+    animation: none !important;
+  }
+
+  .serviceCard,
+  .serviceIcon,
+  .serviceArrow {
+    transition: none !important;
+  }
+}

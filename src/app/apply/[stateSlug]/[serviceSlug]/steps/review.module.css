@@ -1,0 +1,229 @@
+/* ============================================================
+   REVIEW STEP — CONSENT & DECLARATION
+   The last surface before money changes hands. Consent controls
+   are legally significant, so their state (checked, in error)
+   must be unmistakable, and the minor-protection block has to
+   read as distinct from ordinary consent.
+   ============================================================ */
+
+.consentPanel {
+  margin-top: var(--space-6);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-xs);
+  outline: none;
+}
+
+.consentPanelError {
+  border: 1.5px solid var(--color-error);
+}
+
+.consentHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.consentTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.consentTitleIcon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.dpdpBadge {
+  font-size: var(--font-size-xs);
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   CONSENT BLOCKS
+   ============================================================ */
+.consentBlock {
+  padding: var(--space-3);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-3);
+  outline: none;
+}
+
+.consentBlockPlain {
+  background: var(--color-white);
+  border-color: var(--color-border);
+  margin-bottom: 0;
+}
+
+.consentBlockError {
+  background: var(--color-error-light);
+  border-color: var(--color-error);
+}
+
+.consentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+  color: var(--color-text-dark);
+}
+
+.consentCheckbox {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.consentLinks {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.consentLink {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.consentLink:hover {
+  color: var(--color-primary-dark);
+}
+
+.whyButton {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-info);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.whyButton:hover {
+  color: var(--color-text-dark);
+}
+
+.whyPanel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-info-light);
+  border: 1px solid rgba(49, 130, 206, 0.3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.whyPanelIcon {
+  color: var(--color-info);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.consentError {
+  margin-top: var(--space-2);
+}
+
+/* ============================================================
+   MINOR PROTECTION (DPDP s.9)
+   Deliberately warning-toned: this is a different legal basis
+   from ordinary consent and should not read as one more tickbox.
+   ============================================================ */
+.guardianBlock {
+  margin-top: var(--space-3);
+  background: var(--color-warning-light);
+  border: 1px solid var(--color-warning);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  outline: none;
+}
+
+.guardianBlockError {
+  background: var(--color-error-light);
+  border-color: var(--color-error);
+}
+
+.guardianNotice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: #92610e;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+
+.guardianLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-dark);
+}
+
+.guardianCheckbox {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-warning);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   REVIEW SECTION HEADERS
+   ============================================================ */
+.sectionTitleIcon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.reviewSectionTitleRow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.fullRow {
+  grid-column: 1 / -1;
+}
+
+.feeLoading {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}

@@ -1,0 +1,361 @@
+/* ==========================================================================
+   GLOBAL FORM VALIDATION & ERROR UX STYLES
+   ========================================================================== */
+
+/* Field Error Highlighting */
+.fieldErrorBorder {
+  border-color: var(--color-error) !important;
+  background-color: var(--color-error-light) !important;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.12) !important;
+}
+
+.fieldErrorText {
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  line-height: 1.4;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fieldErrorIcon {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+/* Form Error Summary Card (For Multiple Errors) */
+.summaryCard {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(229, 62, 62, 0.45);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(229, 62, 62, 0.06);
+  outline: none;
+  animation: slideDown 0.25s ease-out;
+}
+
+.summaryHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.summaryIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-error-light);
+  color: var(--color-error);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.summaryTitle {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--color-error);
+  margin: 0;
+}
+
+.summaryDesc {
+  font-size: 0.86rem;
+  color: #8f2222;
+  line-height: 1.5;
+  margin: 0 0 0.85rem 0;
+}
+
+.summaryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.summaryItem {
+  font-size: 0.85rem;
+}
+
+.summaryLink {
+  color: var(--color-error);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.summaryLink:hover {
+  background: var(--color-error-light);
+  color: #8f2222;
+  text-decoration: underline;
+}
+
+/* Floating Validation Toast (Desktop top-right, Mobile top) */
+.toastWrap {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1000;
+  max-width: 400px;
+  width: calc(100% - 48px);
+  animation: toastEntry 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toastCard {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(229, 62, 62, 0.45);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.15rem;
+  box-shadow: 0 10px 30px -4px rgba(24, 35, 45, 0.15);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.toastCard[data-severity="info"] {
+  border-color: rgba(49, 130, 206, 0.45);
+}
+
+.toastCard[data-severity="info"] .summaryIcon {
+  background: #EFF6FF;
+  color: var(--color-info);
+}
+
+.toastCard[data-severity="success"] {
+  border-color: rgba(21, 148, 71, 0.45);
+}
+
+.toastCard[data-severity="success"] .summaryIcon {
+  background: #EAF6EE;
+  color: #159447;
+}
+
+.toastContent {
+  flex: 1;
+}
+
+.toastTitle {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: #18232D;
+  margin: 0 0 0.25rem 0;
+}
+
+.toastMessage {
+  font-size: var(--font-size-sm);
+  color: #5B6470;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.toastCloseBtn {
+  background: none;
+  border: none;
+  color: #8893A0;
+  cursor: pointer;
+  padding: 0.2rem;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease;
+}
+
+.toastCloseBtn:hover {
+  color: #18232D;
+}
+
+/* Modals (Session Expired, Unsaved Changes) */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(24, 35, 45, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalCard {
+  background: #FFFFFF;
+  border-radius: 20px;
+  max-width: 480px;
+  width: 100%;
+  padding: 2rem;
+  box-shadow: 0 20px 40px -10px rgba(24, 35, 45, 0.2);
+  animation: modalScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modalIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: #EAF6EE;
+  color: #159447;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  margin-bottom: 1.25rem;
+}
+
+.modalIconWarning {
+  background: #FEF3C7;
+  color: var(--color-warning);
+}
+
+.modalTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  color: #18232D;
+  margin: 0 0 0.5rem 0;
+}
+
+.modalDesc {
+  font-size: var(--font-size-sm);
+  color: #5B6470;
+  line-height: 1.55;
+  margin: 0 0 1.75rem 0;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .toastWrap {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+  }
+  .modalCard {
+    padding: 1.5rem 1.15rem;
+    border-radius: 16px;
+  }
+  .modalActions {
+    flex-direction: column-reverse;
+  }
+  .modalActions button,
+  .modalActions a {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Auto-save Draft Status Badge */
+.autoSaveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+}
+
+.autoSaveSaving {
+  background: #FEF3C7;
+  color: #92610e;
+}
+
+.autoSaveSaved {
+  background: #EAF6EE;
+  color: #159447;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toastEntry {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScale {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .toastWrap {
+    top: 10px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+  }
+
+  .modalCard {
+    padding: 1.5rem;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+  }
+
+  .modalActions button {
+    width: 100%;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .summaryCard,
+  .toastWrap,
+  .modalOverlay,
+  .modalCard {
+    animation: none !important;
+    transition: none !important;
+  }
+}

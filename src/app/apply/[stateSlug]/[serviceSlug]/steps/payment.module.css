@@ -1,0 +1,411 @@
+/* ============================================================
+   PAYMENT STEP
+   The fee breakdown is the product's central trust claim, so
+   every statutory charge is named on its own line and the total
+   is the largest figure on the page. Nothing here invents a
+   number: when fees fail to load, the step says so.
+   ============================================================ */
+
+.checkoutGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.panel {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-xs);
+}
+
+.panelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.panelTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.panelTitleIcon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.panelHeadMeta {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================
+   APPLICATION METADATA
+   ============================================================ */
+.metaGrid {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-3);
+}
+
+.metaLabel {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.metaValue {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-dark);
+  font-weight: 600;
+}
+
+/* ============================================================
+   ITEMIZED FEES
+   ============================================================ */
+.feeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.feeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  color: var(--color-text);
+}
+
+.feeAmount {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.feeRowDiscount {
+  color: var(--color-primary-dark);
+}
+
+.feeTotalRow {
+  border-top: 2px dashed var(--color-border);
+  padding-top: var(--space-4);
+  margin-top: var(--space-2);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.feeTotalLabel {
+  font-size: var(--font-size-base);
+  font-weight: 800;
+  color: var(--color-text-dark);
+}
+
+.feeTotalAmount {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.feeUnavailable {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-warning-light);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  color: #92610e;
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+}
+
+/* ============================================================
+   PAYMENT METHODS
+   ============================================================ */
+.methodFieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 var(--space-6);
+}
+
+.methodLegend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.methodList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.method {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-white);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.method:hover {
+  border-color: rgba(21, 148, 71, 0.4);
+}
+
+.methodSelected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-50);
+}
+
+/* The radio takes focus, so the card it sits in has to show it. */
+.method:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.methodRadio {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.methodIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  flex-shrink: 0;
+}
+
+.methodText {
+  flex: 1;
+  min-width: 0;
+}
+
+.methodName {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.methodDesc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================
+   TRUST NOTE
+   ============================================================ */
+.trustNote {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.trustNoteIcon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.trustNoteTitle {
+  display: block;
+  color: var(--color-text-dark);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+/* ============================================================
+   TERMINAL STATES — success / reconciling / failed
+   ============================================================ */
+.stateCard {
+  border-radius: var(--radius-xl);
+  padding: var(--space-10) var(--space-6);
+  text-align: center;
+}
+
+.stateCardSuccess {
+  background: var(--color-white);
+  border: 2px solid rgba(21, 148, 71, 0.45);
+  box-shadow: 0 4px 20px rgba(21, 148, 71, 0.1);
+}
+
+.stateCardPending {
+  background: var(--color-info-light);
+  border: 2px solid rgba(49, 130, 206, 0.35);
+}
+
+.stateCardFailed {
+  background: var(--color-error-light);
+  border: 2px solid rgba(229, 62, 62, 0.45);
+}
+
+.stateIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-5);
+}
+
+.stateIconSuccess {
+  background: var(--color-success-light);
+  color: var(--color-primary);
+}
+
+.stateIconPending {
+  background: var(--color-white);
+  color: var(--color-info);
+}
+
+.stateIconFailed {
+  background: var(--color-white);
+  color: var(--color-error);
+}
+
+.stateTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  margin: 0 0 var(--space-2);
+  text-wrap: balance;
+}
+
+.stateTitleSuccess {
+  color: var(--color-primary-dark);
+}
+
+.stateTitlePending {
+  color: var(--color-info);
+}
+
+.stateTitleFailed {
+  color: var(--color-error);
+}
+
+.stateDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  text-wrap: pretty;
+  max-width: 52ch;
+  margin: 0 auto var(--space-6);
+}
+
+.stateActions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* Receipt shown after a successful payment. */
+.receipt {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  max-width: 440px;
+  margin: 0 auto var(--space-6);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.receiptRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+.receiptLabel {
+  color: var(--color-text-secondary);
+}
+
+.receiptRef {
+  color: var(--color-text-dark);
+  font-family: var(--font-family-mono);
+  font-weight: 600;
+  word-break: break-all;
+  text-align: right;
+}
+
+.receiptAmount {
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-base);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.receiptBadge {
+  background: var(--color-success-light);
+  color: var(--color-primary-dark);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: var(--font-size-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .method {
+    transition: none !important;
+  }
+}

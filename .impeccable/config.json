@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          "src/app/globals.css"
+        ],
+        "createdAt": "2026-09-07T07:23:53.536Z",
+        "reason": "The --font-family stack is a Devanagari/Gujarati script fallback chain (Noto Sans Gujarati, Shruti, Noto Sans Devanagari, Mangal), not a set of stylistic font choices. Collapsing it breaks Hindi and Gujarati rendering. Documented in DESIGN.md > Typography."
+      }
+    ]
+  }
+}

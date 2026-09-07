@@ -1,0 +1,355 @@
+.dashboardPage {
+  padding: var(--space-8) 0 var(--space-16);
+  min-height: 80vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-8);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+}
+
+.desc {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+/* Stats Row */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 640px) {
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.statCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.statIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+}
+
+.statMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  line-height: 1.2;
+}
+
+.statLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* Filter Tabs */
+.filterBar {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+}
+
+.filterBtn {
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.filterBtn:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.filterBtnActive,
+.filterBtnActive:visited {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white) !important;
+  font-weight: 600;
+}
+
+.filterBtnActive:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  color: var(--color-white) !important;
+}
+
+.filterBtnActive:active {
+  background: var(--color-primary-darker);
+  border-color: var(--color-primary-darker);
+  color: var(--color-white) !important;
+  transform: translateY(1px);
+}
+
+.filterBtnActive * {
+  color: inherit;
+}
+
+/* Applications List */
+.applicationsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.appCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  transition: all var(--transition-fast);
+}
+
+@media (max-width: 640px) {
+  .dashboardPage {
+    padding: var(--space-6) 0 var(--space-12);
+  }
+  .appCard {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .appMain {
+    width: 100%;
+    gap: 12px;
+  }
+  .appActions {
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px solid var(--color-border-light);
+    padding-top: 10px;
+  }
+}
+
+.appCard:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(21, 148, 71, 0.3);
+}
+
+.appMain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.serviceIcon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  flex-shrink: 0;
+}
+
+.appInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.appNumber {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.serviceName {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.appMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.appActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-12) var(--space-6);
+  max-width: 480px;
+  margin: var(--space-8) auto;
+}
+
+.emptyIcon {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-4);
+}
+
+.emptyTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-2);
+}
+
+.emptyDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   STATUS + STAT COLOUR
+   Colour is carried by a class rather than an inline hex pair,
+   so the palette stays in the design system and the label
+   always comes from the status.* translations.
+   ============================================================ */
+.headerActions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.statusPill {
+  padding: 5px var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusNeutral {
+  color: var(--color-text-secondary);
+  background: var(--color-bg-alt);
+}
+
+.statusInfo {
+  color: var(--color-info);
+  background: var(--color-info-light);
+}
+
+.statusSuccess {
+  color: var(--color-primary-dark);
+  background: var(--color-success-light);
+}
+
+.statusWarning {
+  color: #92610e;
+  background: var(--color-warning-light);
+}
+
+.statusError {
+  color: var(--color-error);
+  background: var(--color-error-light);
+}
+
+/* Assigned and government-processing are distinct stages, not
+   severities — they read as deeper blues rather than borrowing
+   the success or warning hues. */
+.statusAssigned {
+  color: var(--color-info);
+  background: var(--color-info-light);
+}
+
+.statusProcessing {
+  color: var(--color-primary-darker);
+  background: var(--color-primary-light);
+}
+
+.statIconInfo {
+  background: var(--color-info-light);
+  color: var(--color-info);
+}
+
+.statIconWarning {
+  background: var(--color-warning-light);
+  color: #92610e;
+}
+
+.statIconSuccess {
+  background: var(--color-success-light);
+  color: var(--color-primary-dark);
+}
+
+.metaPin {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* A correction request is the one destructive-feeling action here. */
+.correctionBtn {
+  background: var(--color-error);
+  border: 1px solid var(--color-error);
+  color: var(--color-white);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.correctionBtn:hover {
+  background: #c53030;
+  border-color: #c53030;
+  color: var(--color-white);
+}

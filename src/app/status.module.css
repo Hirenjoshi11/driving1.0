@@ -1,0 +1,82 @@
+/* ============================================================
+   STATUS PAGES — error boundary and 404
+   Two surfaces a citizen only ever reaches when something has
+   gone wrong, so they lead with the recovery, not the apology.
+   ============================================================ */
+
+.statusCard {
+  max-width: 600px;
+  margin: var(--space-12) auto;
+  padding: var(--space-8);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.statusIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
+}
+
+.statusIconError {
+  background: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.statusIconNotFound {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.statusTitle {
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-dark);
+  line-height: 1.25;
+  text-wrap: balance;
+  margin-bottom: var(--space-2);
+}
+
+.statusDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  text-wrap: pretty;
+  max-width: 52ch;
+  margin: 0 auto var(--space-6);
+}
+
+/* The raw error string is diagnostic text, not prose — monospace
+   so it can be read back or pasted into a support request. */
+.errorDetail {
+  padding: var(--space-3);
+  background: var(--color-error-light);
+  border: 1px solid rgba(229, 62, 62, 0.45);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-mono);
+  margin-bottom: var(--space-6);
+  text-align: left;
+  overflow-x: auto;
+}
+
+.statusActions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.statusActions .btn,
+.statusActions a {
+  min-height: var(--tap-min, 44px);
+  display: inline-flex;
+  align-items: center;
+}

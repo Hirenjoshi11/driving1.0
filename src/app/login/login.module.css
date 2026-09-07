@@ -1,0 +1,221 @@
+.loginPage {
+  padding: var(--space-12) 0 var(--space-16);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.loginCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-8);
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .loginPage {
+    padding: var(--space-6) 0 var(--space-10);
+  }
+  .loginCard {
+    padding: 24px 16px;
+    border-radius: var(--radius-lg);
+  }
+  .demoBtns {
+    flex-direction: column;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.icon {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-1);
+}
+
+.desc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.roleTabs {
+  display: flex;
+  background: var(--color-bg);
+  padding: 4px;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+}
+
+.roleTab {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.roleTabActive {
+  background: var(--color-white);
+  color: var(--color-primary-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: var(--font-size-sm);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(21, 148, 71, 0.12);
+}
+
+.quickDemo {
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--space-4);
+  margin-top: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.demoLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.demoBtns {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.demoBtn {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px dashed var(--color-border);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.demoBtn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.errorMsg {
+  padding: 8px 12px;
+  background: var(--color-error-light);
+  border: 1px solid rgba(229, 62, 62, 0.45);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+.infoMsg {
+  padding: 8px 12px;
+  background: #ECFDF5;
+  border: 1px solid rgba(21, 148, 71, 0.35);
+  border-radius: var(--radius-md);
+  color: var(--color-primary-darker);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+
+/* ============================================================
+   FORM LAYOUT
+   ============================================================ */
+.inputRow {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.submitBtn {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.resendBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-primary-dark);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.resendBtn:hover {
+  color: var(--color-primary-darker);
+}
+
+/* Error and info messages line their icon up with the first
+   line of text rather than centring it against a wrapped block. */
+.errorMsg,
+.infoMsg {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}

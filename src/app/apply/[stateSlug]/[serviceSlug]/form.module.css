@@ -1,0 +1,605 @@
+/* ============================================================
+   APPLICATION WIZARD — SHELL
+   Route: /apply/[stateSlug]/[serviceSlug]
+   Mode: Operate. The citizen is doing paperwork they are unsure
+   about, so state (which step, saved or not, what is wrong) has
+   to be legible at a glance, and nothing may move under them.
+   ============================================================ */
+
+.pageWrapper {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+  min-height: calc(100vh - var(--header-height, 68px));
+  padding: var(--space-4) 0 var(--space-16);
+  background-color: var(--color-bg);
+  overflow-x: clip;
+}
+
+@media (min-width: 768px) {
+  .pageWrapper {
+    padding: var(--space-6) 0 var(--space-20);
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+/* ============================================================
+   1. BREADCRUMBS
+   ============================================================ */
+.breadcrumbBar {
+  margin-bottom: var(--space-4);
+  width: 100%;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.breadcrumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.breadcrumbLink {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+}
+
+.breadcrumbLink:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.breadcrumbSep {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.breadcrumbCurrent {
+  color: var(--color-text-dark);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+/* ============================================================
+   2. FORM HEADER
+   ============================================================ */
+.formLayout {
+  width: 100%;
+}
+
+.formHeader {
+  margin-bottom: var(--space-5);
+  width: 100%;
+}
+
+.formHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.formHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.autoSaveSpinner {
+  width: 10px;
+  height: 10px;
+  border-width: 2px;
+}
+
+.serviceTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  text-wrap: balance;
+  margin-bottom: var(--space-1);
+}
+
+@media (min-width: 640px) {
+  .serviceTitle {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .serviceTitle {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+.serviceDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  text-wrap: pretty;
+  max-width: 60ch;
+}
+
+/* ============================================================
+   3. MOBILE PROGRESS (< 768px)
+   ============================================================ */
+.mobileProgressWrap {
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .mobileProgressWrap {
+    display: none;
+  }
+}
+
+.mobileStepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+.mobileStepIndex {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.mobileStepCurrentTitle {
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  text-align: right;
+}
+
+.mobileProgressBarTrack {
+  width: 100%;
+  height: 5px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+/* scaleX rather than width: animating width relayouts the row on
+   every frame; a transform is composited. */
+.mobileProgressBarFill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: transform 300ms var(--ease-out-expo);
+}
+
+/* ============================================================
+   4. STEPPER
+   ============================================================ */
+.stepperWrapper {
+  width: 100%;
+  margin-bottom: var(--space-6);
+}
+
+/* Every step item is a real button: completed steps are
+   navigable, upcoming ones are disabled rather than a div that
+   the keyboard cannot reach. */
+.stepItem {
+  font-family: inherit;
+  background: transparent;
+  border: none;
+  cursor: default;
+}
+
+.stepItem:not(:disabled) {
+  cursor: pointer;
+}
+
+.stepItem:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+}
+
+/* Mobile: horizontal snap-scroll pills */
+@media (max-width: 767px) {
+  .stepperWrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-5);
+  }
+
+  .stepperWrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stepper {
+    display: flex;
+    gap: var(--space-2);
+    width: max-content;
+    padding: 2px 2px 4px;
+  }
+
+  .stepItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+  }
+
+  .stepActive {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+  }
+
+  .stepCompleted {
+    border-color: rgba(21, 148, 71, 0.3);
+    background: var(--color-white);
+  }
+
+  .stepCircle {
+    width: 22px;
+    height: 22px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+
+  .stepActive .stepCircle,
+  .stepCompleted .stepCircle {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .stepLabel {
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  .stepActive .stepLabel {
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  .stepCompleted .stepLabel {
+    color: var(--color-text-dark);
+  }
+}
+
+/* Desktop: connected track */
+@media (min-width: 768px) {
+  .stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    width: 100%;
+    margin: var(--space-2) 0 var(--space-6);
+    padding: 0 var(--space-2);
+  }
+
+  .stepper::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: var(--color-border);
+    z-index: 1;
+  }
+
+  .stepItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    padding: 0;
+  }
+
+  .stepCircle {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full);
+    background: var(--color-white);
+    border: 2px solid var(--color-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+    transition: all var(--transition-fast);
+    margin-bottom: var(--space-2);
+  }
+
+  .stepActive .stepCircle {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: 0 0 0 4px rgba(21, 148, 71, 0.18);
+  }
+
+  .stepCompleted .stepCircle {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .stepItem:not(:disabled):hover .stepCircle {
+    border-color: var(--color-primary-dark);
+  }
+
+  .stepLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    max-width: 92px;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .stepActive .stepLabel {
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  .stepCompleted .stepLabel {
+    color: var(--color-text-dark);
+    font-weight: 600;
+  }
+}
+
+/* ============================================================
+   5. DRAFT RESUME BANNER
+   ============================================================ */
+.draftBanner {
+  background: var(--color-primary-light);
+  border: 1px solid rgba(21, 148, 71, 0.25);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.draftBannerMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-darker);
+}
+
+.draftBannerActions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   6. ERROR ALERT
+   ============================================================ */
+.submitErrorAlert {
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-error-light);
+  border: 1.5px solid var(--color-error);
+  border-radius: var(--radius-lg);
+  color: var(--color-error);
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.submitErrorBody {
+  margin-top: var(--space-1);
+  color: var(--color-text);
+}
+
+/* ============================================================
+   7. FORM CARD
+   ============================================================ */
+.formCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5) var(--space-4);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .formCard {
+    padding: var(--space-8) var(--space-6);
+  }
+}
+
+@media (min-width: 768px) {
+  .formCard {
+    padding: var(--space-10);
+    border-radius: var(--radius-2xl);
+  }
+}
+
+/* ============================================================
+   8. BOTTOM NAVIGATION
+   ============================================================ */
+.formNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-light);
+  width: 100%;
+}
+
+.formNavSecondary {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.payCta {
+  min-width: 220px;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(21, 148, 71, 0.3);
+}
+
+@media (max-width: 480px) {
+  .formNav {
+    flex-direction: column-reverse;
+    gap: var(--space-3);
+  }
+
+  .formNav button,
+  .formNav a {
+    width: 100%;
+    min-width: 100%;
+    min-height: 48px;
+    justify-content: center;
+  }
+
+  .formNavSecondary {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+/* ============================================================
+   9. DEMO DATA CONTROLS
+   Deliberately styled apart from the product's own language —
+   dashed borders and the warning hue — so a testing affordance
+   never reads as part of the citizen's actual task.
+   ============================================================ */
+.demoDataBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-warning-light);
+  border: 1.5px dashed var(--color-warning);
+  border-radius: var(--radius-full);
+  color: #92610e;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.demoDataBtn:hover {
+  background: #fbeec4;
+  transform: translateY(-1px);
+}
+
+.demoDataBtn:active {
+  transform: translateY(0);
+}
+
+.demoDataBtnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-warning-light);
+  border: 1.5px dashed var(--color-warning);
+  border-radius: var(--radius-md);
+  color: #92610e;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.demoDataBtnSecondary:hover {
+  background: #fbeec4;
+}
+
+.demoToast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--color-success-light);
+  border: 1.5px solid rgba(21, 148, 71, 0.35);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-primary-darker);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileProgressBarFill,
+  .stepCircle,
+  .demoDataBtn,
+  .demoDataBtnSecondary {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,206 @@
+/* ============================================================
+   APPLY — STATE SELECTION
+   Mode: Operate. The visitor is picking a jurisdiction, so the
+   mark that identifies each state is its RTO code, not a
+   decorative glyph.
+   ============================================================ */
+
+.applyPage {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  padding: var(--space-10) 0 var(--space-16);
+}
+
+.header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--space-10);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  text-wrap: balance;
+  margin-bottom: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+.subtitle {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   STATE CARDS
+   ============================================================ */
+.stateGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .stateGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.stateCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-8) var(--space-6);
+  background: var(--color-white);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 250ms var(--ease-out-expo),
+    border-color 250ms var(--ease-out-expo),
+    box-shadow 250ms var(--ease-out-expo);
+  animation: riseIn 500ms var(--ease-out-expo) backwards;
+  animation-delay: calc(80ms + var(--card-index, 0) * 80ms);
+}
+
+.stateCard:hover {
+  border-color: rgba(21, 148, 71, 0.4);
+  box-shadow: 0 16px 36px -6px rgba(21, 148, 71, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px);
+}
+
+.stateCard:active {
+  transform: translateY(-1px) scale(0.995);
+  transition-duration: 120ms;
+}
+
+.stateCard:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-color: var(--color-primary);
+}
+
+/* The RTO code, set like the plate it appears on. */
+.stateCodeMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-5);
+  background: var(--color-primary-light);
+  border: 1.5px solid rgba(21, 148, 71, 0.18);
+  border-radius: var(--radius-md);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  transition:
+    transform 250ms var(--ease-out-expo),
+    background-color 250ms var(--ease-out-expo),
+    box-shadow 250ms var(--ease-out-expo);
+}
+
+.stateCard:hover .stateCodeMark {
+  transform: translateY(-2px);
+  background: var(--color-primary-lighter);
+  box-shadow: 0 4px 12px rgba(21, 148, 71, 0.15);
+}
+
+.stateName {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  line-height: 1.3;
+  text-wrap: balance;
+  margin-bottom: var(--space-2);
+  transition: color 200ms ease;
+}
+
+.stateCard:hover .stateName {
+  color: var(--color-primary-dark);
+}
+
+.stateDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  text-wrap: pretty;
+  margin-bottom: var(--space-5);
+}
+
+/* Always visible: on a touch screen at tablet width there is no
+   hover, so an opacity-0 affordance is simply an invisible one. */
+.stateArrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.stateArrowIcon {
+  transition: transform 240ms var(--ease-out-expo);
+}
+
+.stateCard:hover .stateArrowIcon {
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  .applyPage {
+    padding: var(--space-6) 0 var(--space-12);
+  }
+
+  .header {
+    margin-bottom: var(--space-6);
+  }
+
+  .stateCard {
+    padding: var(--space-6) var(--space-4);
+  }
+}
+
+/* ============================================================
+   MOTION
+   ============================================================ */
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stateCard {
+    animation: none !important;
+  }
+
+  .stateCard,
+  .stateCodeMark,
+  .stateArrowIcon {
+    transition: none !important;
+  }
+}

@@ -391,6 +391,7 @@ CREATE TABLE IF NOT EXISTS applications (
     last_name TEXT,
     father_name TEXT,
     mother_name TEXT,
+    relation_type TEXT,
     guardian_name TEXT,
     date_of_birth TEXT,
     gender TEXT,
@@ -448,6 +449,8 @@ CREATE TABLE IF NOT EXISTS applications (
     -- Minor
     is_minor INTEGER NOT NULL DEFAULT 0,
     guardian_relation TEXT,
+    guardian_mobile TEXT,
+    guardian_aadhaar TEXT,
     guardian_declaration INTEGER NOT NULL DEFAULT 0,
 
     -- Fees (snapshot at time of application)
@@ -491,6 +494,8 @@ CREATE TABLE IF NOT EXISTS applications (
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now')),
     submitted_at TEXT,
+    assigned_at TEXT,
+    sla_due_at TEXT,
 
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (state_id) REFERENCES states(id),
@@ -565,3 +570,25 @@ CREATE TABLE IF NOT EXISTS operator_assignments (
 );
 
 CREATE INDEX IF NOT EXISTS idx_op_assign ON operator_assignments(operator_id, state_id);
+
+-- ============================================================
+-- 21. AUDIT LOG (General staff mutations and access tracking)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS audit_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    actor_id INTEGER,
+    actor_role TEXT,
+    action TEXT NOT NULL,
+    entity_type TEXT NOT NULL,
+    entity_id TEXT,
+    summary TEXT,
+    metadata TEXT,
+    ip TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (actor_id) REFERENCES users(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit_log(actor_id);
+CREATE INDEX IF NOT EXISTS idx_audit_entity ON audit_log(entity_type, entity_id);
+CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_log(created_at);
+

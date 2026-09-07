@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-06T16:54:56Z",
+  "title": "Design System: Driving License Form",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Counter Green",
+        "canonical": "#159447",
+        "tonalRamp": ["#0a3319", "#0d7a38", "#0a6330", "#159447", "#3aab68", "#7ecda0", "#d4eede", "#f0faf4"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#18232d",
+        "tonalRamp": ["#0c1216", "#18232d", "#2d3748", "#5b6470", "#8896a6", "#a0aec0", "#cbd5e0", "#edf2f7"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#f7faf8",
+        "tonalRamp": ["#8896a6", "#a0aec0", "#cbd5e0", "#e2e8f0", "#edf2f7", "#f0f4f1", "#f7faf8", "#ffffff"]
+      },
+      "warning": {
+        "role": "state",
+        "displayName": "Counter Warning",
+        "canonical": "#e6a817",
+        "tonalRamp": ["#5c4008", "#92610e", "#c48812", "#e6a817", "#eebd4a", "#f5d97e", "#fbeec4", "#fef9e7"]
+      },
+      "error": {
+        "role": "state",
+        "displayName": "Filing Error",
+        "canonical": "#e53e3e",
+        "tonalRamp": ["#5c1414", "#8f2222", "#c22e2e", "#e53e3e", "#ea6363", "#f19a9a", "#f8c6c6", "#fed7d7"]
+      }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "Section titles and marketing-page H1s." },
+      "title": { "displayName": "Title", "purpose": "Card titles, step titles, sub-headings." },
+      "body": { "displayName": "Body", "purpose": "Running copy; 1.65 line-height under lang=hi/gu." },
+      "label": { "displayName": "Label", "purpose": "Form labels, nav items, button text." }
+    },
+    "shadows": [
+      { "name": "ambient-card", "value": "0 2px 12px rgba(0,0,0,0.06)", "purpose": "Resting shadow for cards and panels." },
+      { "name": "card-hover", "value": "0 8px 25px rgba(0,0,0,0.1)", "purpose": "Interactive card hover lift, paired with translateY(-2px)." },
+      { "name": "button-primary", "value": "0 2px 4px rgba(21,148,71,0.3)", "purpose": "Brand-tinted resting shadow for primary buttons." },
+      { "name": "button-primary-hover", "value": "0 4px 8px rgba(21,148,71,0.35)", "purpose": "Primary button hover, paired with translateY(-1px)." }
+    ],
+    "motion": [
+      { "name": "transition-fast", "value": "150ms ease", "purpose": "Color, border, and icon-state transitions." },
+      { "name": "transition-base", "value": "250ms ease", "purpose": "Card hover/press, shadow and transform transitions." },
+      { "name": "transition-slow", "value": "350ms ease", "purpose": "Larger layout or reveal transitions." },
+      { "name": "fadeInUp", "value": "0.4-0.5s ease-out, translateY(10-20px) to 0", "purpose": "Entrance animation for sections and staggered lists; disabled under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main call-to-action across the site (Start Application, Submit, Continue).",
+      "html": "<button class=\"ds-btn-primary\">Start Your Application</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 8px; font-weight: 500; font-size: 0.875rem; background: #159447; color: #ffffff; box-shadow: 0 2px 4px rgba(21,148,71,0.3); border: none; cursor: pointer; transition: all 150ms ease; min-height: 44px; } .ds-btn-primary:hover { background: #0d7a38; box-shadow: 0 4px 8px rgba(21,148,71,0.35); transform: translateY(-1px); } .ds-btn-primary:active { background: #0a6330; box-shadow: 0 1px 3px rgba(21,148,71,0.4); transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 2px solid #0a6330; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary actions alongside a primary CTA (Track Application, See How It Works).",
+      "html": "<button class=\"ds-btn-secondary\">Track Application</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 8px; font-weight: 500; font-size: 0.875rem; background: #ffffff; color: #159447; border: 1.5px solid #159447; cursor: pointer; transition: all 150ms ease; min-height: 44px; } .ds-btn-secondary:hover { background: #eaf6ee; border-color: #0d7a38; } .ds-btn-secondary:active { background: #d8f3e5; transform: translateY(1px); } .ds-btn-secondary:focus-visible { outline: 2px solid #159447; outline-offset: 2px; }"
+    },
+    {
+      "name": "Interactive Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Service/state selection cards, step summary cards — the primary content container.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Learner's Licence</h3><p class=\"ds-card-body\">Apply for your first learner's permit with guided steps.</p></div>",
+      "css": ".ds-card { background: #ffffff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #edf2f7; padding: 24px; overflow: hidden; cursor: pointer; transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease; } .ds-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); border-color: rgba(21,148,71,0.4); } .ds-card:active { transform: translateY(0); } .ds-card-title { font-size: 1.125rem; font-weight: 600; color: #18232d; margin-bottom: 8px; } .ds-card-body { font-size: 1rem; color: #5b6470; line-height: 1.6; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "form-input",
+      "description": "Standard text field used throughout the application wizard.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-label\">Full Name <span class=\"ds-required\">*</span></label><input class=\"ds-input\" type=\"text\" placeholder=\"As per ID proof\" /></div>",
+      "css": ".ds-field { margin-bottom: 20px; } .ds-label { display: block; font-size: 0.875rem; font-weight: 500; color: #2d3748; margin-bottom: 8px; } .ds-required { color: #e53e3e; margin-left: 4px; } .ds-input { width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 1rem; color: #18232d; background: #ffffff; outline: none; transition: border-color 150ms ease, box-shadow 150ms ease; min-height: 44px; } .ds-input:focus { border-color: #159447; box-shadow: 0 0 0 3px rgba(21,148,71,0.1); } .ds-input::placeholder { color: #8896a6; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Application status indicators (Submitted, Under Review, Completed).",
+      "html": "<span class=\"ds-badge ds-badge-success\">Completed</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; } .ds-badge-success { background: #eaf6ee; color: #159447; } .ds-badge-warning { background: #fef9e7; color: #92610e; } .ds-badge-error { background: #fed7d7; color: #e53e3e; } .ds-badge-info { background: #ebf8ff; color: #3182ce; }"
+    },
+    {
+      "name": "Disclaimer Bar",
+      "kind": "custom",
+      "refersTo": "disclaimer-bar",
+      "description": "Signature trust component: the non-government notice shown above the header on every page.",
+      "html": "<div class=\"ds-disclaimer\">ⓘ This is not an official Government portal. We assist you with the driving licence application process.</div>",
+      "css": ".ds-disclaimer { background: #fef9e7; color: #92610e; font-size: 0.75rem; text-align: center; padding: 8px 16px; border-bottom: 1px solid #f0e6c0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Trusted Counter",
+    "overview": "The system reads like the calm, competent window at a well-run government office — official-adjacent confidence without cold bureaucracy. A citizen arrives unsure of a confusing process; the interface's job is to feel like a person behind glass who knows exactly what to do next, hands over one thing at a time, and never hides a fee or a form field. The palette carries this directly: an official green paired with a warm, paper-toned off-white — trustworthy rather than clinical, civic rather than corporate.\n\nDensity stays moderate: generous section padding on marketing-mode surfaces, tighter form rhythm where the citizen is doing task work. Every interactive surface has a small, tactile lift — a card or button visibly responds to touch, the way a good physical counter clerk visibly acknowledges you.",
+    "keyCharacteristics": [
+      "Official-but-warm green + paper-white, never stark white or corporate blue",
+      "Cards and buttons lift on hover/press — tactile, responsive, alive",
+      "Generous whitespace in Persuade sections, tighter rhythm in Operate/form sections",
+      "Rounded-but-restrained geometry (6–20px), never sharp, never pill-everything",
+      "Devanagari/Gujarati-aware type rhythm (looser line-height, more vertical breathing room on non-Latin scripts)"
+    ],
+    "rules": [
+      { "name": "The Trust-Never-Recolors Rule", "body": "The disclaimer bar and its warning color are never restyled toward brand green or hidden behind a lower-contrast treatment — the 'not a government portal' notice must always read as a warning, not a footnote.", "section": "colors" },
+      { "name": "The Script-Height Rule", "body": "Devanagari and Gujarati headings get looser line-height (1.45 vs 1.3) and small top/bottom padding to prevent matra and conjunct clipping.", "section": "typography" },
+      { "name": "The Press-Response Rule", "body": "Every clickable card or button visibly responds on press (translateY(1px) and a deeper shadow) as well as on hover — touch users get the same tactile confirmation as mouse users.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use Counter Green for exactly one primary action per view.",
+      "Do give every interactive card and button a hover lift and a press response, on both mouse and touch.",
+      "Do widen line-height and add vertical padding on headings when rendering Hindi or Gujarati.",
+      "Do keep the disclaimer bar and fee-transparency language in warning/neutral tones, never recolored into the brand palette.",
+      "Do use the paper/white contrast to separate content surfaces from the page, rather than introducing a second neutral gray."
+    ],
+    "donts": [
+      "Don't introduce a second accent color competing with Counter Green for primary-action attention.",
+      "Don't flatten cards and buttons to a shadowless, borderless style — the tactile lift is a confirmed system trait.",
+      "Don't let a translated string change a component's box model — headings and buttons must absorb longer Hindi/Gujarati strings without breaking their grid.",
+      "Don't use pill radius on primary buttons or content cards — pill shape is reserved for badges, toggles, and a few signature chrome elements."
+    ]
+  }
+}

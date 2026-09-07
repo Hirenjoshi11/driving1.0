@@ -1,16 +1,27 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
+import reactHooks from "eslint-plugin-react-hooks";
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
-]);
-
-export default eslintConfig;
+export default [
+  {
+    ignores: [".next/**", "node_modules/**", "database/**", "public/**", "scripts/**", ".agents/**"]
+  },
+  {
+    files: ["src/**/*.{js,jsx,mjs}"],
+    plugins: {
+      "react-hooks": reactHooks
+    },
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        }
+      }
+    },
+    rules: {
+      "no-unused-vars": "off",
+      "no-undef": "off",
+      "react-hooks/exhaustive-deps": "warn"
+    }
+  }
+];

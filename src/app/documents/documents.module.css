@@ -1,0 +1,297 @@
+.documentsPage {
+  padding: var(--space-8) 0 var(--space-16);
+  min-height: 80vh;
+}
+
+.hero {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto var(--space-8);
+}
+
+.heroTitle {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-3);
+}
+
+.heroDesc {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* State & Service Selectors */
+.controlsCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  max-width: 800px;
+  margin: 0 auto var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.controlLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.stateTabs {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.stateTab {
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-bg);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--color-text-secondary);
+}
+
+.stateTab:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.stateTabActive,
+.stateTabActive:visited {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white) !important;
+}
+
+.stateTabActive:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  color: var(--color-white) !important;
+}
+
+.stateTabActive:active {
+  background: var(--color-primary-darker);
+  border-color: var(--color-primary-darker);
+  color: var(--color-white) !important;
+  transform: translateY(1px);
+}
+
+.stateTabActive * {
+  color: inherit;
+}
+
+.serviceTab {
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-text-dark);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all var(--transition-fast);
+}
+
+.serviceTab:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.serviceTabActive,
+.serviceTabActive:visited {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white) !important;
+  font-weight: 600;
+}
+
+.serviceTabActive:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  color: var(--color-white) !important;
+}
+
+.serviceTabActive:active {
+  background: var(--color-primary-darker);
+  border-color: var(--color-primary-darker);
+  color: var(--color-white) !important;
+  transform: translateY(1px);
+}
+
+.serviceTabActive * {
+  color: inherit;
+}
+
+.serviceSelect {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  font-size: var(--font-size-sm);
+  background: var(--color-white);
+  color: var(--color-text-dark);
+}
+
+/* Document Cards List */
+.docsContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.docCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  transition: all var(--transition-fast);
+}
+
+.docCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.docCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.docTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badgeMandatory {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-error);
+  background: var(--color-error-light);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.badgeConditional {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-warning);
+  background: #FEF3C7;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.docDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
+}
+
+.docMetaGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  background: var(--color-bg);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-xs);
+}
+
+@media (min-width: 640px) {
+  .docMetaGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metaLabel {
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.metaValue {
+  color: var(--color-text-dark);
+  font-weight: 500;
+}
+
+.ctaCard {
+  background: var(--color-primary-light);
+  border: 1px solid rgba(21, 148, 71, 0.2);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  text-align: center;
+  margin-top: var(--space-6);
+}
+
+.ctaTitle {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+}
+
+.ctaDesc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.stateTab {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.metaItemFull {
+  grid-column: 1 / -1;
+}
+
+/* A conditional requirement is a caution, not an error — it warns
+   that the document may be needed, it does not report a failure. */
+.metaValueCondition {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: #92610e;
+}
+
+.emptyMessage {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--space-8);
+}
