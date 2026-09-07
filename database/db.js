@@ -2,7 +2,9 @@ const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = path.join(process.cwd(), 'database', 'driving_license.db');
+const DB_PATH = process.env.VERCEL 
+  ? path.join('/tmp', 'driving_license.db')
+  : path.join(process.cwd(), 'database', 'driving_license.db');
 
 let db;
 
