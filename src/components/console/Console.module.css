@@ -49,16 +49,17 @@
 .sidebar {
   width: 260px;
   flex-shrink: 0;
-  background-color: #0f172a;
-  color: #f1f5f9;
+  background-color: #ffffff;
+  color: var(--color-text-dark);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #1e293b;
+  border-right: 1px solid var(--color-border-light, #e2e8f0);
   position: sticky;
   top: 0;
   height: 100vh;
   z-index: 50;
   transition: width 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .brand {
@@ -66,7 +67,7 @@
   align-items: center;
   gap: 12px;
   padding: 20px 20px 16px 20px;
-  border-bottom: 1px solid #1e293b;
+  border-bottom: 1px solid var(--color-border-light, #e2e8f0);
 }
 
 .brandLogo {
@@ -78,8 +79,8 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-xs);
+  border: 1px solid var(--color-border, #e2e8f0);
   flex-shrink: 0;
 }
 
@@ -95,17 +96,17 @@
 }
 
 .brandTitle {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-text-dark, #18232D);
 }
 
 .brandRole {
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-weight: 700;
   padding: 2px 6px;
   border-radius: 4px;
   margin-top: 4px;
@@ -114,15 +115,15 @@
 }
 
 .roleAdmin {
-  background: rgba(147, 51, 234, 0.2);
-  color: #c084fc;
-  border: 1px solid rgba(147, 51, 234, 0.4);
+  background: rgba(147, 51, 234, 0.1);
+  color: #7e22ce;
+  border: 1px solid rgba(147, 51, 234, 0.2);
 }
 
 .roleOperator {
-  background: rgba(37, 99, 235, 0.2);
-  color: #93c5fd;
-  border: 1px solid rgba(37, 99, 235, 0.4);
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+  border: 1px solid rgba(37, 99, 235, 0.2);
 }
 
 /* Nav Menu */
@@ -139,8 +140,8 @@
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #64748b;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted, #8896a6);
   padding: 8px 12px 4px 12px;
 }
 
@@ -149,18 +150,18 @@
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  border-radius: 6px;
-  color: #94a3b8;
+  border-radius: 8px;
+  color: var(--color-text-secondary, #5B6470);
   text-decoration: none;
   font-size: 13px;
-  font-weight: 500;
-  transition: all 0.15s ease;
+  font-weight: 600;
+  transition: all 0.2s ease;
   outline: none;
 }
 
 .navLink:hover {
-  background: #1e293b;
-  color: #f8fafc;
+  background: var(--color-bg-alt, #f0f4f1);
+  color: var(--color-text-dark, #18232D);
 }
 
 .navLink:focus-visible {
@@ -169,9 +170,9 @@
 }
 
 .navLinkActive {
-  background: #1e293b;
-  color: #ffffff;
-  font-weight: 600;
+  background: var(--color-primary-50, #f0faf4);
+  color: var(--color-primary-dark, #0d7a38);
+  font-weight: 700;
   border-left: 3px solid var(--color-primary, #159447);
 }
 
@@ -187,18 +188,18 @@
 .navBadge {
   margin-left: auto;
   font-size: 11px;
-  padding: 2px 7px;
-  border-radius: 10px;
-  background: #334155;
-  color: #f1f5f9;
-  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--color-primary-light, #EAF6EE);
+  color: var(--color-primary, #159447);
+  font-weight: 700;
 }
 
 /* Sidebar Footer / User Profile */
 .sidebarFooter {
   padding: 16px;
-  border-top: 1px solid #1e293b;
-  background: #090e1a;
+  border-top: 1px solid var(--color-border-light, #e2e8f0);
+  background: var(--color-bg, #f8fafc);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -211,17 +212,17 @@
 }
 
 .userAvatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #1e293b;
-  color: #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--color-primary-light, #EAF6EE);
+  color: var(--color-primary-dark, #0d7a38);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 12px;
-  border: 1px solid #334155;
+  border: 1px solid var(--color-primary-lighter, #d4eede);
 }
 
 .userInfo {
@@ -232,8 +233,8 @@
 
 .userName {
   font-size: 13px;
-  font-weight: 600;
-  color: #f8fafc;
+  font-weight: 700;
+  color: var(--color-text-dark, #18232D);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -241,7 +242,8 @@
 
 .userRoleText {
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--color-text-muted, #8896a6);
+  font-weight: 500;
 }
 
 /* Main Area */
