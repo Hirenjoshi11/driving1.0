@@ -61,6 +61,29 @@ export default function Footer() {
             {t('footer.disclaimerNotice') || 'Important Disclaimer: Driving License Form is an independent private application assistance service and is not an official government website or affiliated with the Ministry of Road Transport and Highways (MoRTH), Parivahan Sewa, or any state RTO authority unless expressly stated otherwise.'}
           </p>
         </div>
+
+        {/* Mobile Minimized Footer (Ultra-Compact App Style) */}
+        <div className={styles.mobileFooter}>
+          <Link href="/" className={styles.mobileBrandLink} aria-label="Driving License Form Home">
+            <img
+              src="/logo-website.png"
+              alt={t('common.appName') || 'Driving License Form'}
+              className={styles.mobileBrandLogo}
+            />
+          </Link>
+          <div className={styles.mobileLegalLinks}>
+            <Link href="/privacy">{t('footer.privacyPolicy') || 'Privacy'}</Link>
+            <span className={styles.mobileDot}>•</span>
+            <Link href="/terms">{t('footer.termsConditions') || 'Terms'}</Link>
+            <span className={styles.mobileDot}>•</span>
+            <Link href="/refunds">{t('footer.feePolicy') || 'Refunds'}</Link>
+            <span className={styles.mobileDot}>•</span>
+            <Link href="/contact">{t('footer.contactUs') || 'Contact'}</Link>
+          </div>
+          <p className={styles.mobileCopyright}>
+            © {new Date().getFullYear()} {t('common.appName') || 'Driving License Form'}
+          </p>
+        </div>
       </div>
     </footer>
   );

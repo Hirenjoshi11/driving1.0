@@ -4,13 +4,8 @@ import { useApp } from '@/contexts/AppContext';
 import LanguagePills from '@/components/LanguagePills';
 import HomeStateSection from '@/components/HomeStateSection';
 import {
-  IconSteps,
-  IconDocument,
-  IconTag,
-  IconGlobe,
   IconBook,
   IconLicence,
-  IconCheck,
   IconArrowRight,
 } from '@/components/icons/Icons';
 import styles from '@/app/page.module.css';
@@ -18,35 +13,6 @@ import styles from '@/app/page.module.css';
 export default function HomeContent({ services = [], states = [] }) {
   const { state: appState, t, localize } = useApp();
   const activeStateSlug = appState?.selectedState?.slug || 'gujarat';
-
-  const heroChecks = [
-    { key: 'home.checkGuided', fallback: 'Guided application' },
-    { key: 'home.checkDocs', fallback: 'Document assistance' },
-    { key: 'home.checkTracking', fallback: 'Application tracking' },
-  ];
-
-  const trustItems = [
-    {
-      Icon: IconSteps,
-      title: t('home.trustSimple') || 'Simple Process',
-      desc: t('home.trustSimpleDesc') || 'Guided step-by-step application flow',
-    },
-    {
-      Icon: IconDocument,
-      title: t('home.trustDocs') || 'Clear Documents',
-      desc: t('home.trustDocsDesc') || 'Know what to prepare before you start',
-    },
-    {
-      Icon: IconTag,
-      title: t('home.trustFees') || 'Transparent Charges',
-      desc: t('home.trustFeesDesc') || 'Govt fee + service fee shown separately',
-    },
-    {
-      Icon: IconGlobe,
-      title: t('home.trustSupport') || 'Multilingual Support',
-      desc: t('home.trustSupportDesc') || 'Full assistance in English, हिन्दी, and ગુજરાતી',
-    },
-  ];
 
   const timelineSteps = [
     { num: '01', title: t('home.step1'), desc: t('home.step1Desc') },
@@ -82,42 +48,12 @@ export default function HomeContent({ services = [], states = [] }) {
                 <IconArrowRight size={18} className={styles.primaryCtaArrow} />
               </a>
             </div>
-
-            <ul className={styles.heroChecks}>
-              {heroChecks.map((item) => (
-                <li key={item.key} className={styles.heroCheckItem}>
-                  <IconCheck size={16} className={styles.checkIcon} />
-                  <span>{t(item.key) || item.fallback}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>
 
       {/* ============================================================
-          2. TRUST STRIP
-          ============================================================ */}
-      <section className={styles.trustStrip}>
-        <div className="container">
-          <ul className={styles.trustGrid}>
-            {trustItems.map(({ Icon, title, desc }) => (
-              <li key={title} className={styles.trustItem}>
-                <span className={styles.trustIconBox}>
-                  <Icon size={20} />
-                </span>
-                <div>
-                  <div className={styles.trustItemTitle}>{title}</div>
-                  <div className={styles.trustItemDesc}>{desc}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ============================================================
-          3. SERVICES
+          2. SERVICES
           ============================================================ */}
       <section id="services" className={styles.servicesSection}>
         <div className="container">

@@ -136,3 +136,81 @@
   max-width: 680px;
   line-height: 1.6;
 }
+
+/* ============================================================
+   MOBILE MINIMIZED FOOTER (Native App Style)
+   Totally minimizes footer on mobile viewports: hides bulky columns,
+   divider, and long disclaimer. Leaves a sleek, compact bar.
+   ============================================================ */
+.mobileFooter {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .inner {
+    padding: var(--space-4) var(--space-4) var(--space-5);
+  }
+
+  .grid,
+  .divider,
+  .bottom {
+    display: none !important;
+  }
+
+  .mobileFooter {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .mobileBrandLink {
+    display: inline-block;
+    transition: opacity var(--transition-fast);
+  }
+
+  .mobileBrandLink:hover {
+    opacity: 0.9;
+  }
+
+  .mobileBrandLogo {
+    height: 30px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .mobileLegalLinks {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+
+  .mobileLegalLinks a {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+  }
+
+  .mobileLegalLinks a:hover {
+    color: var(--color-primary);
+  }
+
+  .mobileDot {
+    color: var(--color-border);
+    font-size: 8px;
+    line-height: 1;
+  }
+
+  .mobileCopyright {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+}
