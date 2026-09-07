@@ -181,18 +181,23 @@ export default function Header() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.headerInner}>
-        {/* Brand Logo & Citizen Portal Subtitle */}
+        {/* Brand Logo & Citizen Portal */}
         <Link href="/" className={styles.logo} aria-label="Driving License Form Home">
-          <div className={styles.logoIcon}>
-            <svg width="30" height="30" viewBox="0 0 28 28" fill="none">
-              <rect width="28" height="28" rx="8" fill="#159447"/>
-              <circle cx="14" cy="14" r="5.5" stroke="white" strokeWidth="1.6"/>
-              <path d="M14 10.5v3.5l2.2 2.2" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <div className={styles.logoTextGroup}>
-            <span className={styles.logoTitle}>{t('common.appName') || 'Driving License Form'}</span>
-            <span className={styles.logoSubtitle}>{t('common.portalBadge') || 'Citizen Services'}</span>
+          <img
+            src="/logo-website.png"
+            alt={t('common.appName') || 'Driving License Form'}
+            className={styles.desktopLogo}
+          />
+          <div className={styles.mobileLogoGroup}>
+            <img
+              src="/logo-app.png"
+              alt=""
+              className={styles.mobileLogo}
+            />
+            <div className={styles.logoTextGroup}>
+              <span className={styles.logoTitle}>{t('common.appName') || 'Driving License Form'}</span>
+              <span className={styles.logoSubtitle}>{t('common.portalBadge') || 'Citizen Services'}</span>
+            </div>
           </div>
         </Link>
 
@@ -321,6 +326,14 @@ export default function Header() {
           <div className={styles.overlay} onClick={() => setMenuOpen(false)} />
           <nav id="mobile-nav-drawer" ref={mobileNavRef} className={styles.mobileNav} aria-label={t('nav.menu') || 'Mobile Navigation'}>
             <div className={styles.mobileNavLinks}>
+              {/* Brand Header in Drawer */}
+              <div className={styles.mobileDrawerBrand}>
+                <img
+                  src="/logo-website.png"
+                  alt={t('common.appName') || 'Driving License Form'}
+                  className={styles.drawerLogo}
+                />
+              </div>
               {/* Language picker in mobile drawer */}
               <div style={{ display: 'flex', gap: '8px', padding: 'var(--space-3) var(--space-4)', borderBottom: '1px solid var(--color-border-light)' }}>
                 {languages.map(lang => (

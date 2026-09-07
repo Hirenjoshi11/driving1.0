@@ -81,9 +81,6 @@ export default function HomeContent({ services = [], states = [] }) {
                 <span>{t('home.startCta') || 'Start Your Application'}</span>
                 <IconArrowRight size={18} className={styles.primaryCtaArrow} />
               </a>
-              <a href="#how-it-works" className={styles.secondaryCta}>
-                {t('home.howItWorksCta') || 'See How It Works'}
-              </a>
             </div>
 
             <ul className={styles.heroChecks}>

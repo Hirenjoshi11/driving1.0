@@ -3,7 +3,7 @@ import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useApp } from '@/contexts/AppContext';
-import { IconLicence, IconAlert, IconInfo, IconUser, IconShield } from '@/components/icons/Icons';
+import { IconAlert, IconInfo, IconUser, IconShield } from '@/components/icons/Icons';
 import styles from './login.module.css';
 
 function LoginForm() {
@@ -167,7 +167,11 @@ function LoginForm() {
   return (
     <div className={styles.loginCard}>
       <div className={styles.header}>
-        <div className={styles.icon}><IconLicence size={26} /></div>
+        <img
+          src="/logo-website.png"
+          alt={t('common.appName') || 'Driving License Form'}
+          className={styles.loginLogo}
+        />
         <h1 className={styles.title}>{t('auth.login')}</h1>
         <p className={styles.desc}>
           {t('auth.loginDesc')}

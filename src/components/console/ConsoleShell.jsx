@@ -71,7 +71,7 @@ export default function ConsoleShell({ children, role: forcedRole = null }) {
         {/* Brand Banner */}
         <div className={styles.brand}>
           <div className={styles.brandLogo} aria-hidden="true">
-            DLF
+            <img src="/logo-app.png" alt="Driving License Form" className={styles.brandLogoImg} />
           </div>
           <div className={styles.brandText}>
             <span className={styles.brandTitle}>

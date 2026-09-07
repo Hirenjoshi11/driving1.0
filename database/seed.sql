@@ -191,30 +191,30 @@ INSERT INTO driving_test_centres (rto_id, district_id, state_id, name, name_hi, 
 -- ============================================================
 -- LICENCE SERVICES
 -- ============================================================
-INSERT INTO licence_services (name, name_hi, name_gu, slug, description, description_hi, description_gu, icon, estimated_days, requires_existing_licence, requires_learner_licence, requires_medical, requires_driving_test, allows_minor, sort_order) VALUES
-('Learner Licence', 'लर्नर लाइसेंस', 'લર્નર લાઇસન્સ', 'learner-licence', 'Apply for a new Learner Licence to start learning to drive.', 'ड्राइविंग सीखने के लिए नए लर्नर लाइसेंस हेतु आवेदन करें।', 'ડ્રાઇવિંગ શીખવા માટે નવા લર્નર લાઇસન્સ માટે અરજી કરો.', 'book-open', 7, 0, 0, 0, 0, 1, 1),
-('New Driving Licence', 'नया ड्राइविंग लाइसेंस', 'નવું ડ્રાઇવિંગ લાઇસન્સ', 'new-driving-licence', 'Apply for a permanent Driving Licence after completing your learner period.', 'लर्नर अवधि पूरी होने के बाद स्थायी ड्राइविंग लाइसेंस के लिए आवेदन करें।', 'લર્નર સમયગાળો પૂરો થયા પછી કાયમી ડ્રાઇવિંગ લાઇસન્સ માટે અરજી કરો.', 'id-card', 30, 0, 1, 0, 1, 0, 2),
-('Renewal of Driving Licence', 'ड्राइविंग लाइसेंस का नवीनीकरण', 'ડ્રાઇવિંગ લાઇસન્સનું નવીનીકરણ', 'renewal', 'Renew your expired or expiring Driving Licence.', 'अपने समाप्त या समाप्त होने वाले ड्राइविंग लाइसेंस का नवीनीकरण करें।', 'તમારા સમાપ્ત થયેલ કે થઈ રહેલ ડ્રાઇવિંગ લાઇસન્સનું નવીનીકરણ કરો.', 'refresh-cw', 15, 1, 0, 0, 0, 0, 3),
-('Duplicate Driving Licence', 'डुप्लीकेट ड्राइविंग लाइसेंस', 'ડુપ્લિકેટ ડ્રાઇવિંગ લાઇસન્સ', 'duplicate', 'Get a duplicate licence if your original is lost, damaged or stolen.', 'यदि आपका मूल लाइसेंस खो गया, क्षतिग्रस्त या चोरी हो गया है तो डुप्लीकेट लाइसेंस प्राप्त करें।', 'જો તમારું મૂળ લાઇસન્સ ખોવાયું, ક્ષતિગ્રસ્ત અથવા ચોરાયું હોય તો ડુપ્લિકેટ લાઇસન્સ મેળવો.', 'copy', 15, 1, 0, 0, 0, 0, 4),
-('Addition of Vehicle Class', 'वाहन वर्ग का जोड़', 'વાહન વર્ગનો ઉમેરો', 'add-vehicle-class', 'Add a new vehicle class to your existing Driving Licence.', 'अपने मौजूदा ड्राइविंग लाइसेंस में नया वाहन वर्ग जोड़ें।', 'તમારા હાલના ડ્રાઇવિંગ લાઇસન્સમાં નવો વાહન વર્ગ ઉમેરો.', 'plus-circle', 21, 1, 0, 0, 1, 0, 5),
-('Change of Address', 'पते का परिवर्तन', 'સરનામાનો ફેરફાર', 'change-address', 'Update the address on your existing Driving Licence.', 'अपने मौजूदा ड्राइविंग लाइसेंस पर पता अपडेट करें।', 'તમારા હાલના ડ્રાઇવિંગ લાઇસન્સ પરનું સરનામું અપડેટ કરો.', 'map-pin', 15, 1, 0, 0, 0, 0, 6),
-('Change of Name', 'नाम का परिवर्तन', 'નામનો ફેરફાર', 'change-name', 'Update the name on your existing Driving Licence.', 'अपने मौजूदा ड्राइविंग लाइसेंस पर नाम अपडेट करें।', 'તમારા હાલના ડ્રાઇવિંગ લાઇસન્સ પરનું નામ અપડેટ કરો.', 'edit', 15, 1, 0, 0, 0, 0, 7),
-('International Driving Permit', 'अंतर्राष्ट्रीय ड्राइविंग परमिट', 'આંતરરાષ્ટ્રીય ડ્રાઇવિંગ પરમિટ', 'international-permit', 'Apply for an International Driving Permit for driving abroad.', 'विदेश में ड्राइविंग के लिए अंतर्राष्ट्रीय ड्राइविंग परमिट के लिए आवेदन करें।', 'વિદેશમાં ડ્રાઇવિંગ માટે આંતરરાષ્ટ્રીય ડ્રાઇવિંગ પરમિટ માટે અરજી કરો.', 'globe', 21, 1, 0, 0, 0, 0, 8);
+INSERT INTO licence_services (name, name_hi, name_gu, slug, description, description_hi, description_gu, icon, estimated_days, requires_existing_licence, requires_learner_licence, requires_medical, requires_driving_test, allows_minor, sort_order, is_active) VALUES
+('Learner Licence', 'लर्नर लाइसेंस', 'લર્નર લાઇસન્સ', 'learner-licence', 'Apply for a new Learner Licence to start learning to drive.', 'ड्राइविंग सीखने के लिए नए लर्नर लाइसेंस हेतु आवेदन करें।', 'ડ્રાઇવિંગ શીખવા માટે નવા લર્નર લાઇસન્સ માટે અરજી કરો.', 'book-open', 7, 0, 0, 0, 0, 1, 1, 1),
+('New Driving Licence', 'नया ड्राइविंग लाइसेंस', 'નવું ડ્રાઇવિંગ લાઇસન્સ', 'new-driving-licence', 'Apply for a permanent Driving Licence after completing your learner period.', 'लर्नर अवधि पूरी होने के बाद स्थायी ड्राइविंग लाइसेंस के लिए आवेदन करें।', 'લર્નર સમયગાળો પૂરો થયા પછી કાયમી ડ્રાઇવિંગ લાઇસન્સ માટે અરજી કરો.', 'id-card', 30, 0, 1, 0, 1, 0, 2, 1),
+('Renewal of Driving Licence', 'ड्राइविंग लाइसेंस का नवीनीकरण', 'ડ્રાઇવિંગ લાઇસન્સનું નવીનીકરણ', 'renewal', 'Renew your expired or expiring Driving Licence.', 'अपने समाप्त या समाप्त होने वाले ड्राइविंग लाइसेंस का नवीनीकरण करें।', 'તમારા સમાપ્ત થયેલ કે થઈ રહેલ ડ્રાઇવિંગ લાઇસન્સનું નવીનીકરણ કરો.', 'refresh-cw', 15, 1, 0, 0, 0, 0, 3, 0),
+('Duplicate Driving Licence', 'डुप्लीकेट ड्राइविंग लाइसेंस', 'ડુપ્લિકેટ ડ્રાઇવિંગ લાઇસન્સ', 'duplicate', 'Get a duplicate licence if your original is lost, damaged or stolen.', 'यदि आपका मूल लाइसेंस खो गया, क्षतिग्रस्त या चोरी हो गया है तो डुप्लीकेट लाइसेंस प्राप्त करें।', 'જો તમારું મૂળ લાઇસન્સ ખોવાયું, ક્ષતિગ્રસ્ત અથવા ચોરાયું હોય તો ડુપ્લિકેટ લાઇસન્સ મેળવો.', 'copy', 15, 1, 0, 0, 0, 0, 4, 0),
+('Addition of Vehicle Class', 'वाहन वर्ग का जोड़', 'વાહન વર્ગનો ઉમેરો', 'add-vehicle-class', 'Add a new vehicle class to your existing Driving Licence.', 'अपने मौजूदा ड्राइविंग लाइसेंस में नया वाहन वर्ग जोड़ें।', 'તમારા હાલના ડ્રાઇવિંગ લાઇસન્સમાં નવો વાહન વર્ગ ઉમેરો.', 'plus-circle', 21, 1, 0, 0, 1, 0, 5, 0),
+('Change of Address', 'पते का परिवर्तन', 'સરનામાનો ફેરફાર', 'change-address', 'Update the address on your existing Driving Licence.', 'अपने मौजूदा ड्राइविंग लाइसेंस पर पता अपडेट करें।', 'તમારા હાલના ડ્રાઇવિંગ લાઇસન્સ પરનું સરનામું અપડેટ કરો.', 'map-pin', 15, 1, 0, 0, 0, 0, 6, 0),
+('Change of Name', 'नाम का परिवर्तन', 'નામનો ફેરફાર', 'change-name', 'Update the name on your existing Driving Licence.', 'अपने मौजूदा ड्राइविंग लाइसेंस पर नाम अपडेट करें।', 'તમારા હાલના ડ્રાઇવિંગ લાઇસન્સ પરનું નામ અપડેટ કરો.', 'edit', 15, 1, 0, 0, 0, 0, 7, 0),
+('International Driving Permit', 'अंतर्राष्ट्रीय ड्राइविंग परमिट', 'આંતરરાષ્ટ્રીય ડ્રાઇવિંગ પરમિટ', 'international-permit', 'Apply for an International Driving Permit for driving abroad.', 'विदेश में ड्राइविंग के लिए अंतर्राष्ट्रीय ड्राइविंग परमिट के लिए आवेदन करें।', 'વિદેશમાં ડ્રાઇવિંગ માટે આંતરરાષ્ટ્રીય ડ્રાઇવિંગ પરમિટ માટે અરજી કરો.', 'globe', 21, 1, 0, 0, 0, 0, 8, 0);
 
 -- ============================================================
 -- STATE-SERVICE MAPPING
 -- ============================================================
 -- Gujarat: All services
-INSERT INTO state_services (state_id, service_id) VALUES
-(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8);
+INSERT INTO state_services (state_id, service_id, is_active) VALUES
+(1, 1, 1), (1, 2, 1), (1, 3, 0), (1, 4, 0), (1, 5, 0), (1, 6, 0), (1, 7, 0), (1, 8, 0);
 
 -- Rajasthan: All except International Permit initially
-INSERT INTO state_services (state_id, service_id) VALUES
-(2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7);
+INSERT INTO state_services (state_id, service_id, is_active) VALUES
+(2, 1, 1), (2, 2, 1), (2, 3, 0), (2, 4, 0), (2, 5, 0), (2, 6, 0), (2, 7, 0);
 
 -- Uttar Pradesh: All services
-INSERT INTO state_services (state_id, service_id) VALUES
-(3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8);
+INSERT INTO state_services (state_id, service_id, is_active) VALUES
+(3, 1, 1), (3, 2, 1), (3, 3, 0), (3, 4, 0), (3, 5, 0), (3, 6, 0), (3, 7, 0), (3, 8, 0);
 
 -- ============================================================
 -- SERVICE STEPS

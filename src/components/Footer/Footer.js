@@ -12,27 +12,22 @@ export default function Footer() {
         <div className={styles.grid}>
           {/* Column 1: Brand */}
           <div className={styles.brand}>
-            <div className={styles.brandName}>
-              <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-                <rect width="28" height="28" rx="8" fill="#159447"/>
-                <circle cx="14" cy="14" r="5" stroke="white" strokeWidth="1.5"/>
-                <path d="M14 11v3l2 2" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-              <span>{t('common.appName') || 'Driving License Form'}</span>
-            </div>
+            <Link href="/" className={styles.brandLink} aria-label="Driving License Form Home">
+              <img
+                src="/logo-website.png"
+                alt={t('common.appName') || 'Driving License Form'}
+                className={styles.brandLogo}
+              />
+            </Link>
             <p className={styles.brandTagline}>
               {t('common.tagline') || 'Your Driving Licence Application, Made Simple.'}
-            </p>
-            <p className={styles.brandDesc}>
-              {t('common.supportLine') || 'A citizen-friendly platform designed to guide you through preparation, documentation, and tracking for driving licence applications across Gujarat, Rajasthan, and Uttar Pradesh.'}
             </p>
           </div>
 
           {/* Column 2: Services */}
           <div className={styles.linkGroup}>
             <h4 className={styles.linkTitle}>{t('footer.services') || 'Licence Services'}</h4>
-            <Link href="/apply">{t('services.learnerLicence') || 'Learner Licence'}</Link>
-            <Link href="/apply">{t('services.newDrivingLicence') || 'New Driving Licence'}</Link>
+            <Link href="/apply">{t('footer.allServices') || 'Licence Services (Select State)'}</Link>
           </div>
 
           {/* Column 3: Resources */}
@@ -48,11 +43,9 @@ export default function Footer() {
           {/* Column 4: Company & Legal */}
           <div className={styles.linkGroup}>
             <h4 className={styles.linkTitle}>{t('footer.platform') || 'Platform & Policies'}</h4>
-            <Link href="/help">{t('footer.aboutService') || 'About Our Service'}</Link>
             <Link href="/contact">{t('footer.contactUs') || 'Contact Support'}</Link>
             <Link href="/privacy">{t('footer.privacyPolicy') || 'Privacy Policy & Notice'}</Link>
-            <Link href="/account/privacy">{t('privacy.centerTitle') || 'Citizen Privacy Center'}</Link>
-            <Link href="/account/privacy/grievances">{t('privacy.navGrievances') || 'DPDP Grievance Redressal'}</Link>
+            <Link href="/account/privacy">{t('privacy.centerTitle') || 'Citizen Privacy & Grievances'}</Link>
             <Link href="/terms">{t('footer.termsConditions') || 'Terms & Conditions'}</Link>
             <Link href="/refunds">{t('footer.feePolicy') || 'Transparent Fee Policy'}</Link>
           </div>

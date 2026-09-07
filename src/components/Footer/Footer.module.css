@@ -46,14 +46,23 @@
   max-width: 360px;
 }
 
-.brandName {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-size: var(--font-size-base);
-  font-weight: 700;
-  color: var(--color-text-dark);
+.brandLink {
+  display: inline-block;
+  text-decoration: none;
   margin-bottom: var(--space-2);
+  transition: opacity var(--transition-fast);
+}
+
+.brandLink:hover {
+  opacity: 0.9;
+}
+
+.brandLogo {
+  height: 42px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  display: block;
 }
 
 .brandTagline {
@@ -93,7 +102,6 @@
 
 .linkGroup a:hover {
   color: var(--color-primary);
-  transform: translateX(2px);
 }
 
 .divider {
