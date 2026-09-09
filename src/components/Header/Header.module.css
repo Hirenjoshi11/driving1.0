@@ -487,45 +487,7 @@
 }
 
 /* ============================================================
-   ACTIVE STATE CONTEXT BAR
-   ============================================================ */
-.stateBar {
-  background: linear-gradient(90deg, #159447 0%, #0d7a38 100%);
-  color: var(--color-white);
-  font-size: var(--font-size-xs);
-  padding: 6px 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 100vw;
-  box-sizing: border-box;
-}
 
-.stateBarInner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-6);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  box-sizing: border-box;
-}
-
-.changeState {
-  background: rgba(255, 255, 255, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 2px 10px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.changeState:hover {
-  background: rgba(255, 255, 255, 0.35);
-}
 
 /* ============================================================
    RESPONSIVE TUNING FOR ALL SCREEN SIZES

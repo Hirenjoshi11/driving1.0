@@ -712,6 +712,20 @@ export default function FormPage() {
             >
               {t('common.apply')}
             </button>
+            {stateSlug && (
+              <>
+                <IconChevronRight size={13} className={styles.breadcrumbSep} />
+                <button
+                  type="button"
+                  onClick={() => handleInterceptedNavigation(`/apply/${stateSlug}`)}
+                  className={styles.breadcrumbLink}
+                >
+                  {localize && appState?.selectedState
+                    ? localize(appState.selectedState, 'name')
+                    : appState?.selectedState?.name || (stateSlug.charAt(0).toUpperCase() + stateSlug.slice(1))}
+                </button>
+              </>
+            )}
             <IconChevronRight size={13} className={styles.breadcrumbSep} />
             <span className={styles.breadcrumbCurrent} aria-current="page">
               {localize ? localize(service, 'name') : service?.name}

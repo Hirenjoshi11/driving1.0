@@ -87,6 +87,58 @@ function getDb() {
       CREATE INDEX IF NOT EXISTS idx_payment_orders_app ON payment_orders(application_id);
       CREATE INDEX IF NOT EXISTS idx_payment_orders_status ON payment_orders(status);
     `);
+
+    // In-app notifications (citizen-facing). Store a translation KEY + params,
+    // never a baked English sentence, so the citizen reads it in their language.
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS notifications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        application_id INTEGER,
+        type TEXT NOT NULL,
+        title_key TEXT NOT NULL,
+        body_key TEXT NOT NULL,
+        params TEXT,
+        read_at TEXT,
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (application_id) REFERENCES applications(id)
+      );
+      CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id, read_at);
+      CREATE INDEX IF NOT EXISTS idx_notifications_app ON notifications(application_id);
+    `);
+
+    // OTP relay requests. E2E by design: the plaintext OTP NEVER lands here.
+    // The citizen's app encrypts the code to operator_public_key before it
+    // leaves the device; only ciphertext is stored, and it is purged on use or
+    // expiry. There is deliberately no plaintext column.
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS otp_relay_requests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        application_id INTEGER NOT NULL,
+        citizen_user_id INTEGER NOT NULL,
+        requested_by INTEGER NOT NULL,
+        operator_public_key TEXT NOT NULL,
+        ciphertext TEXT,
+        status TEXT NOT NULL DEFAULT 'pending',
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        expires_at TEXT NOT NULL,
+        fulfilled_at TEXT,
+        cleared_at TEXT,
+        FOREIGN KEY (application_id) REFERENCES applications(id),
+        FOREIGN KEY (citizen_user_id) REFERENCES users(id),
+        FOREIGN KEY (requested_by) REFERENCES users(id)
+      );
+      CREATE INDEX IF NOT EXISTS idx_otp_relay_app ON otp_relay_requests(application_id, status);
+    `);
+
+    // Timestamp for "an operator has started filling this form", surfaced to
+    // the citizen. Added via ALTER because applications predates it; guarded so
+    // it runs once.
+    const appCols = db.prepare("PRAGMA table_info(applications)").all();
+    if (!appCols.some((c) => c.name === 'fill_started_at')) {
+      db.exec("ALTER TABLE applications ADD COLUMN fill_started_at TEXT");
+    }
   }
   return db;
 }

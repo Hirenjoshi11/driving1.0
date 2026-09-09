@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { AppProvider } from '@/contexts/AppContext';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import OtpRelayWatcher from '@/components/OtpRelayWatcher/OtpRelayWatcher';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -58,6 +59,7 @@ export default async function RootLayout({ children }) {
             {children}
           </main>
           <Footer />
+          <OtpRelayWatcher />
         </AppProvider>
       </body>
     </html>

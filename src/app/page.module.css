@@ -18,15 +18,15 @@
    ============================================================ */
 .hero {
   position: relative;
-  padding: calc(var(--space-12) + 20px) 0 var(--space-12);
+  padding: calc(var(--space-12) + 1.25rem) 0 var(--space-12);
   background:
-    radial-gradient(circle at 80% 30%, rgba(21, 148, 71, 0.08) 0%, rgba(247, 250, 248, 0) 65%),
-    radial-gradient(circle at 15% 70%, rgba(234, 246, 238, 0.6) 0%, rgba(247, 250, 248, 0) 50%);
+    radial-gradient(circle at 80% 30%, rgba(var(--color-primary-rgb), 0.08) 0%, rgba(247, 250, 248, 0) 65%),
+    radial-gradient(circle at 15% 70%, rgba(var(--color-primary-rgb), 0.06) 0%, rgba(247, 250, 248, 0) 50%);
 }
 
 @media (min-width: 1024px) {
   .hero {
-    padding: calc(var(--space-16) + 10px) 0 var(--space-16);
+    padding: calc(var(--space-16) + 0.625rem) 0 var(--space-16);
   }
 }
 
@@ -58,7 +58,7 @@
   font-size: var(--font-size-base);
   color: var(--color-text-secondary);
   line-height: 1.65;
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
   max-width: 62ch;
   text-wrap: pretty;
 }
@@ -67,6 +67,40 @@
   .heroSubtitle {
     font-size: var(--font-size-lg);
   }
+}
+
+.heroChecks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-dark);
+  align-items: flex-start;
+  text-align: left;
+}
+
+@media (min-width: 640px) {
+  .heroChecks {
+    flex-direction: row;
+    gap: var(--space-6);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: var(--font-size-base);
+  }
+}
+
+.heroChecks li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.checkIcon {
+  color: var(--color-primary);
+  flex-shrink: 0;
 }
 
 .heroActions {
@@ -81,11 +115,11 @@
 /* Sits on top of .btn .btn-primary .btn-lg — only the hero-scale
    prominence and the arrow motion live here. */
 .primaryCta {
-  box-shadow: 0 4px 14px rgba(21, 148, 71, 0.25);
+  box-shadow: var(--shadow-primary);
 }
 
 .primaryCta:hover {
-  box-shadow: 0 6px 20px rgba(21, 148, 71, 0.35);
+  box-shadow: var(--shadow-primary-hover);
   transform: translateY(-2px);
 }
 
@@ -95,6 +129,38 @@
 
 .primaryCta:hover .primaryCtaArrow {
   transform: translateX(4px);
+}
+
+/* ============================================================
+   1.5. TRUST STRIP
+   ============================================================ */
+.trustStrip {
+  background-color: var(--color-warning-light);
+  border-top: 1px solid rgba(230, 168, 23, 0.2);
+  border-bottom: 1px solid rgba(230, 168, 23, 0.2);
+  padding: var(--space-3) 0;
+}
+
+.trustContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  color: #92610e; /* Warning text tone per DESIGN.md */
+}
+
+@media (max-width: 640px) {
+  .trustContent {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-2);
+  }
+}
+
+.trustIcon {
+  flex-shrink: 0;
+  color: var(--color-warning);
 }
 
 /* ============================================================
@@ -184,18 +250,18 @@
   content: '';
   position: absolute;
   inset: 0 0 auto auto;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle at 100% 0%, rgba(21, 148, 71, 0.06) 0%, rgba(21, 148, 71, 0) 70%);
+  width: 12.5rem;
+  height: 12.5rem;
+  background: radial-gradient(circle at 100% 0%, rgba(var(--color-primary-rgb), 0.06) 0%, rgba(var(--color-primary-rgb), 0) 70%);
   opacity: 0;
-  transition: opacity 250ms var(--ease-out-expo);
+  transition: opacity var(--transition-base) var(--ease-out-expo);
   pointer-events: none;
 }
 
 .serviceCard:hover {
   transform: translateY(-6px);
-  border-color: rgba(21, 148, 71, 0.38);
-  box-shadow: 0 16px 36px -6px rgba(21, 148, 71, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04);
+  border-color: rgba(var(--color-primary-rgb), 0.38);
+  box-shadow: 0 16px 36px -6px rgba(var(--color-primary-rgb), 0.12), 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 .serviceCard:hover::before {
@@ -225,25 +291,25 @@
 }
 
 .serviceCardIcon {
-  width: 52px;
-  height: 52px;
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: var(--radius-lg);
   background: var(--color-primary-light);
-  border: 1px solid rgba(21, 148, 71, 0.12);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.12);
   color: var(--color-primary-dark);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transition:
-    transform 250ms var(--ease-out-expo),
-    background-color 250ms var(--ease-out-expo),
-    box-shadow 250ms var(--ease-out-expo);
+    transform var(--transition-base) var(--ease-out-expo),
+    background-color var(--transition-base) var(--ease-out-expo),
+    box-shadow var(--transition-base) var(--ease-out-expo);
 }
 
 .serviceCard:hover .serviceCardIcon {
   transform: translateY(-3px) scale(1.04);
   background-color: var(--color-primary-lighter);
-  box-shadow: 0 4px 12px rgba(21, 148, 71, 0.15);
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.15);
 }
 
 .serviceCardCornerArrow {
@@ -275,12 +341,12 @@
   font-weight: 700;
   color: var(--color-primary-dark);
   background: var(--color-primary-light);
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
   margin-bottom: var(--space-3);
   transition:
-    transform 200ms var(--ease-out-expo),
-    background-color 200ms var(--ease-out-expo);
+    transform var(--transition-base) var(--ease-out-expo),
+    background-color var(--transition-base) var(--ease-out-expo);
 }
 
 .serviceCard:hover .serviceCardBadge {
@@ -330,22 +396,22 @@
   font-size: var(--font-size-sm);
   font-weight: 700;
   border-radius: var(--radius-lg);
-  box-shadow: 0 2px 6px rgba(21, 148, 71, 0.2);
+  box-shadow: 0 2px 6px rgba(var(--color-primary-rgb), 0.2);
   transition:
-    background-color 200ms ease,
-    box-shadow 200ms ease,
-    transform 200ms ease;
+    background-color var(--transition-base) ease,
+    box-shadow var(--transition-base) ease,
+    transform var(--transition-base) ease;
   user-select: none;
 }
 
 .serviceCard:hover .serviceCardButton {
   background: var(--color-primary-dark);
-  box-shadow: 0 4px 14px rgba(21, 148, 71, 0.32);
+  box-shadow: 0 4px 14px rgba(var(--color-primary-rgb), 0.32);
 }
 
 .serviceCard:active .serviceCardButton {
   background: var(--color-primary-darker);
-  box-shadow: 0 2px 6px rgba(21, 148, 71, 0.3);
+  box-shadow: 0 2px 6px rgba(var(--color-primary-rgb), 0.3);
   transform: translateY(1px);
 }
 
@@ -417,8 +483,8 @@
 
 .horizontalStateCard:hover {
   transform: translateY(-3px);
-  border-color: rgba(21, 148, 71, 0.4);
-  box-shadow: 0 10px 22px -6px rgba(21, 148, 71, 0.14);
+  border-color: rgba(var(--color-primary-rgb), 0.4);
+  box-shadow: 0 10px 22px -6px rgba(var(--color-primary-rgb), 0.14);
 }
 
 .horizontalStateCard:active {
@@ -454,7 +520,7 @@
 .howSection {
   padding: var(--space-16) 0;
   background:
-    radial-gradient(circle at 50% 0%, rgba(21, 148, 71, 0.05) 0%, rgba(247, 250, 248, 0) 65%),
+    radial-gradient(circle at 50% 0%, rgba(var(--color-primary-rgb), 0.05) 0%, rgba(247, 250, 248, 0) 65%),
     var(--color-bg);
   border-bottom: 1px solid var(--color-border-light);
   position: relative;
@@ -515,9 +581,9 @@
     right: calc(100% / 12);
     height: 2px;
     background: linear-gradient(90deg,
-      rgba(21, 148, 71, 0.2) 0%,
-      rgba(21, 148, 71, 0.45) 50%,
-      rgba(21, 148, 71, 0.2) 100%);
+      rgba(var(--color-primary-rgb), 0.2) 0%,
+      rgba(var(--color-primary-rgb), 0.45) 50%,
+      rgba(var(--color-primary-rgb), 0.2) 100%);
     border-radius: var(--radius-full);
     z-index: 1;
   }
@@ -564,7 +630,7 @@
     bottom: 24px;
     left: 25px;
     width: 2px;
-    background: linear-gradient(180deg, rgba(21, 148, 71, 0.35) 0%, rgba(21, 148, 71, 0.12) 100%);
+    background: linear-gradient(180deg, rgba(var(--color-primary-rgb), 0.35) 0%, rgba(var(--color-primary-rgb), 0.12) 100%);
     border-radius: var(--radius-full);
     z-index: 1;
   }
@@ -606,8 +672,8 @@
 
   .timelineStep:hover {
     transform: translateY(-3px);
-    border-color: rgba(21, 148, 71, 0.4);
-    box-shadow: 0 8px 18px -4px rgba(21, 148, 71, 0.12);
+    border-color: rgba(var(--color-primary-rgb), 0.4);
+    box-shadow: 0 8px 18px -4px rgba(var(--color-primary-rgb), 0.12);
   }
 }
 
@@ -643,7 +709,7 @@
   height: 42px;
   border-radius: var(--radius-full);
   background: var(--color-white);
-  border: 1.5px solid rgba(21, 148, 71, 0.28);
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.28);
   color: var(--color-primary);
   display: flex;
   align-items: center;
@@ -667,7 +733,7 @@
   border-color: var(--color-primary);
   background: var(--color-primary-light);
   color: var(--color-primary-dark);
-  box-shadow: 0 6px 16px -2px rgba(21, 148, 71, 0.22);
+  box-shadow: 0 6px 16px -2px rgba(var(--color-primary-rgb), 0.22);
 }
 
 .stepContent {

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/contexts/AppContext';
 import { languages } from '@/lib/i18n';
 import { IconLock, IconShield, IconUser } from '@/components/icons/Icons';
+import NotificationBell from '@/components/NotificationBell/NotificationBell';
 import styles from './Header.module.css';
 
 export default function Header() {
@@ -264,6 +265,9 @@ export default function Header() {
             )}
           </div>
 
+          {/* In-app notifications (citizens) */}
+          <NotificationBell />
+
           {/* Unified Login / Logout Button with Round Logo Icon */}
           {state.isAuthenticated ? (
             <button
@@ -423,24 +427,7 @@ export default function Header() {
         </>
       )}
 
-      {/* Active State Context Bar if in /apply */}
-      {state.selectedState && pathname.startsWith('/apply/') && (
-        <div className={styles.stateBar}>
-          <div className={styles.stateBarInner}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>Applying in <strong>{localize(state.selectedState, 'name')}</strong></span>
-            <button
-              className={styles.changeState}
-              onClick={() => {
-                dispatch({ type: 'SET_STATE', payload: null });
-                dispatch({ type: 'SET_SERVICE', payload: null });
-              }}
-            >
-              {t('common.edit') || 'Change'}
-            </button>
-          </div>
-        </div>
-      )}
+
     </header>
   );
 }
