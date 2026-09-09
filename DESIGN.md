@@ -3,6 +3,7 @@ name: Driving License Form
 description: Guided, transparent driving-licence application assistance for Gujarat, Rajasthan, and Uttar Pradesh
 colors:
   primary: "#159447"
+  primary-rgb: "21, 148, 71"
   primary-dark: "#0d7a38"
   primary-darker: "#0a6330"
   primary-light: "#eaf6ee"
@@ -130,8 +131,8 @@ stay desaturated enough to read as institutional rather than alarming.
 
 ### Primary
 - **Counter Green** (`#159447`): the brand color and every primary action —
-  primary buttons, active nav states, links, focus rings, the accent dot
-  before section eyebrows. Used with restraint outside of CTAs and status;
+  primary buttons, active nav states,  links, focus rings, the accent dot before section eyebrows. Also exported as
+  RGB (`21, 148, 71`) for wash and shadow compositing. Used with restraint outside of CTAs and status;
   it marks "this is the way forward."
 - **Counter Green — Pressed** (`#0d7a38` / `#0a6330`): hover and active states
   for anything using Counter Green as a fill.
@@ -217,7 +218,7 @@ inert document.
 ### Shadow Vocabulary
 - **Ambient card** (`box-shadow: 0 2px 12px rgba(0,0,0,0.06)`): resting state for cards and panels.
 - **Card hover** (`box-shadow: 0 8px 25px rgba(0,0,0,0.1)`, `translateY(-2px)`): interactive cards lift on hover — the system's signature tactile response.
-- **Button primary** (`box-shadow: 0 2px 4px rgba(21,148,71,0.3)`, deepening on hover): primary CTAs carry a tinted, brand-colored shadow rather than a neutral one.
+- **Button primary** (`box-shadow: 0 4px 14px rgba(21,148,71,0.25)`, deepening to `0 6px 20px rgba(21,148,71,0.35)` on hover): primary CTAs carry a tinted, brand-colored shadow rather than a neutral one.
 - **Elevated/xl** (`--shadow-lg` / `--shadow-xl`): reserved for modals, dropdowns, and the skip-to-content link — true overlay content only.
 
 ### Named Rules

@@ -42,6 +42,7 @@ export default function HomeContent({ services = [], states = [] }) {
               {t('home.heroSubtitle') || 'Prepare your driving licence application with guided steps, document assistance, and a completely transparent process.'}
             </p>
 
+
             <div className={styles.heroActions}>
               <a href="#services" className={`btn btn-primary btn-lg ${styles.primaryCta}`}>
                 <span>{t('home.startCta') || 'Start Your Application'}</span>
@@ -51,6 +52,7 @@ export default function HomeContent({ services = [], states = [] }) {
           </div>
         </div>
       </section>
+
 
       {/* ============================================================
           2. SERVICES
