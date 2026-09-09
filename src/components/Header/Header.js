@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/contexts/AppContext';
 import { languages } from '@/lib/i18n';
 import { IconLock, IconShield, IconUser } from '@/components/icons/Icons';
+import NotificationBell from '@/components/NotificationBell/NotificationBell';
 import styles from './Header.module.css';
 
 export default function Header() {
@@ -263,6 +264,9 @@ export default function Header() {
               </div>
             )}
           </div>
+
+          {/* In-app notifications (citizens) */}
+          <NotificationBell />
 
           {/* Unified Login / Logout Button with Round Logo Icon */}
           {state.isAuthenticated ? (

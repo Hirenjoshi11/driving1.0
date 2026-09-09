@@ -907,5 +907,59 @@
     "hoursDays": "Monday through Saturday",
     "hoursClosed": "Closed on National & Gazetted Holidays",
     "trackDesc": "Check the real-time preparation and submission status using your application number."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "You have no notifications yet.",
+    "markAllRead": "Mark all as read",
+    "viewAll": "View all",
+    "fillStarted": {
+      "title": "Your application is being prepared",
+      "body": "Our operator has started preparing application {appNo} for submission."
+    },
+    "correction": {
+      "title": "Action needed on your application",
+      "body": "Application {appNo} needs a correction: {reason} You can update it at no extra charge."
+    },
+    "otpRequested": {
+      "title": "Enter the OTP sent to your phone",
+      "body": "The RTO sent a one-time password to your phone for application {appNo}. Please enter it now so we can complete your submission."
+    },
+    "submitted": {
+      "title": "Application submitted",
+      "body": "Application {appNo} has been submitted to the RTO portal."
+    },
+    "completed": {
+      "title": "Application completed",
+      "body": "Application {appNo} is complete. Government reference: {govtNo}."
+    }
+  },
+  "otp": {
+    "promptTitle": "Enter the OTP sent to your phone",
+    "promptDesc": "Our operator is submitting your application on the government portal. The RTO has just sent a one-time password by SMS to your registered mobile. Enter it below.",
+    "encryptedNote": "Encrypted on your device and shared only with the operator assisting you, for this submission. We never store your OTP.",
+    "label": "One-time password (OTP)",
+    "submit": "Share OTP securely",
+    "sharing": "Encrypting and sharing…",
+    "shared": "Thank you. Your OTP has been shared securely.",
+    "expired": "This request has expired. Ask the operator to send a new request if you still need to submit.",
+    "consentTitle": "Allow OTP sharing for this submission",
+    "consentBody": "To submit your application, our operator will ask for the one-time password the RTO sends to your phone. You enter it here; it is encrypted on your device and used only to complete this submission.",
+    "consentAgree": "I agree to share the OTP for this submission",
+    "consentDecline": "No, I'll do it myself"
+  },
+  "otpRelay": {
+    "title": "OTP relay",
+    "desc": "Ask the citizen for the OTP the RTO sends to their phone. It arrives here encrypted and is never stored.",
+    "request": "Request OTP from citizen",
+    "waiting": "Waiting for the citizen to enter the OTP…",
+    "countdown": "Asked the citizen — {seconds}s",
+    "received": "OTP received",
+    "copy": "Copy",
+    "copied": "Copied",
+    "clear": "Clear (used)",
+    "expired": "Request expired",
+    "resend": "Send a new request",
+    "decryptError": "Could not decrypt the code. Ask the citizen to resend."
   }
 }

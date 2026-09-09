@@ -5,6 +5,7 @@ import { isApplicationInScope } from '@/lib/scope';
 import { canTransition } from '@/lib/applicationStatus';
 import { logAudit } from '@/lib/audit';
 const { getDb } = require('@/lib/db');
+const { createNotification } = require('@/lib/notifications');
 
 const TransitionSchema = z.object({
   to: z.string().min(1),
@@ -40,12 +41,14 @@ export async function POST(request, { params }) {
 
     // Fetch current state
     const app = db.prepare(`
-      SELECT 
+      SELECT
         a.id,
         a.application_number,
         a.status,
         a.payment_status,
         a.assigned_operator_id,
+        a.user_id,
+        a.fill_started_at,
         a.service_id,
         a.state_id
       FROM applications a
@@ -103,6 +106,11 @@ export async function POST(request, { params }) {
         updateParams.push(context.government_application_number);
       }
 
+      // Stamp when an operator first starts filling (surfaced to the citizen).
+      if (targetStatus === 'under_review' && !app.fill_started_at) {
+        updateSql += ', fill_started_at = datetime(\'now\')';
+      }
+
       updateSql += ' WHERE id = ?';
       updateParams.push(app.id);
 
@@ -139,6 +147,43 @@ export async function POST(request, { params }) {
           reason: historyReason
         }
       });
+
+      // Tell the citizen, in their own language, what just happened to their
+      // application. Fired inside the transaction so a notification never
+      // outlives a rolled-back status change.
+      const notifyMap = {
+        under_review: {
+          type: 'fill_started',
+          titleKey: 'notifications.fillStarted.title',
+          bodyKey: 'notifications.fillStarted.body',
+          params: { appNo: app.application_number },
+        },
+        correction_required: {
+          type: 'correction_required',
+          titleKey: 'notifications.correction.title',
+          bodyKey: 'notifications.correction.body',
+          params: { appNo: app.application_number, reason: context.correction_reason || '' },
+        },
+        government_processing: {
+          type: 'submitted_to_govt',
+          titleKey: 'notifications.submitted.title',
+          bodyKey: 'notifications.submitted.body',
+          params: { appNo: app.application_number },
+        },
+        completed: {
+          type: 'completed',
+          titleKey: 'notifications.completed.title',
+          bodyKey: 'notifications.completed.body',
+          params: {
+            appNo: app.application_number,
+            govtNo: context.government_application_number || '',
+          },
+        },
+      };
+      const notif = notifyMap[targetStatus];
+      if (notif && app.user_id) {
+        createNotification(db, { userId: app.user_id, applicationId: app.id, ...notif });
+      }
     });
 
     executeTransition();

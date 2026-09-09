@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/contexts/AppContext';
 import { StatusPill } from '@/components/console';
+import OperatorOtpPanel from '@/components/console/OperatorOtpPanel';
 import styles from '@/app/admin/AdminConsole.module.css';
 
 export default function OperatorCaseDetailPage({ params }) {
@@ -356,6 +357,11 @@ export default function OperatorCaseDetailPage({ params }) {
               )}
             </div>
           </div>
+
+          {/* OTP relay — available while the operator is actively filling/submitting */}
+          {(app.status === 'under_review' || app.status === 'resubmitted') && (
+            <OperatorOtpPanel applicationId={applicationId} />
+          )}
 
           {/* Timeline */}
           <div className={styles.panelCard}>
