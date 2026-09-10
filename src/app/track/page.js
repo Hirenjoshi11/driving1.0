@@ -268,7 +268,13 @@ function TrackDashboard() {
                   style={{ letterSpacing: '0.02em', fontWeight: '600' }}
                   aria-label={t('auth.trackByEmailOrApp') || 'Application Number or Email'}
                 />
-                <button type="submit" className="btn btn-primary" style={{ flexShrink: 0 }} disabled={emailSigningIn}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  style={{ flexShrink: 0 }}
+                  disabled={emailSigningIn}
+                  aria-label={emailSigningIn ? (t('common.loading') || 'Loading...') : (t('track.trackBtn') || 'Track Application')}
+                >
                   {emailSigningIn ? t('common.loading') : (t('track.trackBtn') || 'Track')}
                   <IconArrowRight size={16} />
                 </button>
@@ -287,10 +293,10 @@ function TrackDashboard() {
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                   </svg>
-                  {t('auth.continueWithGoogle') || 'Continue with Google'}
+                  <span>{t('auth.continueWithGoogle') || 'Sign In with Google'}</span>
                 </Link>
                 <Link href="/login?redirect=/track" className="btn btn-secondary">
-                  {t('track.signInBtn') || 'Sign In to My Account'}
+                  {t('track.signInToViewAll') || 'Sign In to View All'}
                 </Link>
               </div>
             </div>
@@ -322,6 +328,7 @@ function TrackDashboard() {
                 setSelectedApp(null);
                 router.push('/track', { scroll: false });
               }}
+              aria-label={t('track.backToApps') || 'Back to My Applications'}
             >
               {t('track.backToApps') || '← Back to My Applications'}
             </button>
@@ -331,9 +338,10 @@ function TrackDashboard() {
                 type="button"
                 className={styles.printReceiptBtn}
                 onClick={() => window.print()}
+                aria-label={t('track.printReceipt') || 'Print Official Receipt'}
               >
                 <IconPrinter size={15} />
-                {t('track.printReceipt')}
+                {t('track.printReceipt') || 'Print Receipt'}
               </button>
             </div>
           </div>
@@ -661,6 +669,7 @@ function TrackDashboard() {
               type="button"
               role="tab"
               aria-selected={filter === 'all'}
+              aria-label={`${t('track.filterAll') || 'All'} (${summary.total})`}
               className={`${styles.filterTab} ${filter === 'all' ? styles.filterTabActive : ''}`}
               onClick={() => { setFilter('all'); setPage(1); }}
             >
@@ -672,6 +681,7 @@ function TrackDashboard() {
               type="button"
               role="tab"
               aria-selected={filter === 'in_progress'}
+              aria-label={`${t('track.filterInProgress') || 'In Progress'} (${summary.inProgress})`}
               className={`${styles.filterTab} ${filter === 'in_progress' ? styles.filterTabActive : ''}`}
               onClick={() => { setFilter('in_progress'); setPage(1); }}
             >
@@ -683,6 +693,7 @@ function TrackDashboard() {
               type="button"
               role="tab"
               aria-selected={filter === 'action_required'}
+              aria-label={`${t('track.filterActionRequired') || 'Action Required'} (${summary.actionRequired})`}
               className={`${styles.filterTab} ${filter === 'action_required' ? styles.filterTabActive : ''}`}
               onClick={() => { setFilter('action_required'); setPage(1); }}
             >
@@ -694,6 +705,7 @@ function TrackDashboard() {
               type="button"
               role="tab"
               aria-selected={filter === 'completed'}
+              aria-label={`${t('track.filterCompleted') || 'Completed'} (${summary.completed})`}
               className={`${styles.filterTab} ${filter === 'completed' ? styles.filterTabActive : ''}`}
               onClick={() => { setFilter('completed'); setPage(1); }}
             >
@@ -962,6 +974,7 @@ function TrackDashboard() {
                 className="btn btn-secondary btn-sm"
                 disabled={pagination.page <= 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
+                aria-label={t('track.prev') || 'Previous page'}
               >
                 ← {t('track.prev') || 'Previous'}
               </button>
@@ -970,6 +983,7 @@ function TrackDashboard() {
                 className="btn btn-secondary btn-sm"
                 disabled={pagination.page >= pagination.totalPages}
                 onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
+                aria-label={t('track.next') || 'Next page'}
               >
                 {t('track.next') || 'Next'} →
               </button>

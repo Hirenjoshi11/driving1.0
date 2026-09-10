@@ -230,9 +230,12 @@ function LoginForm() {
       </div>
 
       {/* Role Tabs */}
-      <div className={styles.roleTabs}>
+      <div className={styles.roleTabs} role="tablist" aria-label="Login account type">
         <button
           type="button"
+          role="tab"
+          aria-selected={role === 'citizen'}
+          aria-label={t('auth.citizenTab') || 'Citizen Login'}
           className={`${styles.roleTab} ${role === 'citizen' ? styles.roleTabActive : ''}`}
           onClick={() => {
             setRole('citizen');
@@ -244,6 +247,9 @@ function LoginForm() {
         </button>
         <button
           type="button"
+          role="tab"
+          aria-selected={role === 'admin'}
+          aria-label={t('auth.operatorTab') || 'RTO Officer / Admin Login'}
           className={`${styles.roleTab} ${role === 'admin' ? styles.roleTabActive : ''}`}
           onClick={() => {
             setRole('admin');
@@ -267,7 +273,7 @@ function LoginForm() {
             className={styles.googleBtn}
             onClick={handleGoogleSignIn}
             disabled={loading}
-            aria-label="Continue with Google"
+            aria-label={t('auth.continueWithGoogle') || 'Continue with Google'}
           >
             <GoogleIcon />
             <span>{t('auth.continueWithGoogle') || 'Continue with Google'}</span>
@@ -290,6 +296,7 @@ function LoginForm() {
                 autoComplete="email"
                 autoFocus
                 required
+                aria-label={t('auth.usernameEmail') || 'Email Address'}
               />
             </div>
 
@@ -297,8 +304,9 @@ function LoginForm() {
               type="submit"
               className={`btn btn-primary btn-lg ${styles.submitBtn}`}
               disabled={loading}
+              aria-label={loading ? (t('common.loading') || 'Logging in...') : (t('auth.signInDirectly') || 'Sign In with Email')}
             >
-              {loading ? t('common.loading') : 'Log In'}
+              {loading ? (t('common.loading') || 'Logging in...') : (t('auth.signInDirectly') || 'Sign In with Email')}
             </button>
           </form>
         </div>
@@ -306,20 +314,21 @@ function LoginForm() {
         /* Operator / Admin Form (Bcrypt Password) */
         <form className={styles.form} onSubmit={handleOperatorLogin}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>{t('auth.usernameEmail')}</label>
+            <label className={styles.label}>{t('auth.usernameEmail') || 'Username / Email'}</label>
             <input
               type="text"
               className={styles.input}
-              placeholder={t('auth.emailPlaceholder')}
+              placeholder={t('auth.emailPlaceholder') || 'name@example.com'}
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               disabled={loading}
               required
+              aria-label={t('auth.usernameEmail') || 'Username / Email'}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>{t('auth.password')}</label>
+            <label className={styles.label}>{t('auth.password') || 'Password'}</label>
             <input
               type="password"
               className={styles.input}
@@ -328,6 +337,7 @@ function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
               required
+              aria-label={t('auth.password') || 'Password'}
             />
           </div>
 
@@ -335,8 +345,9 @@ function LoginForm() {
             type="submit"
             className={`btn btn-primary btn-lg ${styles.submitBtn}`}
             disabled={loading}
+            aria-label={loading ? (t('common.loading') || 'Authenticating...') : (t('auth.signInOfficer') || 'Sign In as Officer')}
           >
-            {loading ? t('common.loading') : t('auth.signInOfficer')}
+            {loading ? (t('common.loading') || 'Authenticating...') : (t('auth.signInOfficer') || 'Sign In as Officer')}
           </button>
         </form>
       )}

@@ -228,7 +228,7 @@ export default function Header() {
               id="lang-select-button"
               className={styles.langBtn}
               onClick={() => setLangOpen(!langOpen)}
-              aria-label="Change language"
+              aria-label={t('nav.changeLanguage') || 'Change language'}
               aria-haspopup="listbox"
               aria-expanded={langOpen}
               aria-controls="lang-select-listbox"
@@ -254,6 +254,7 @@ export default function Header() {
                     type="button"
                     role="option"
                     aria-selected={state.language === lang.code}
+                    aria-label={`${lang.name} (${lang.nativeName})`}
                     className={`${styles.langOption} ${state.language === lang.code ? styles.langActive : ''}`}
                     onClick={() => handleLanguageChange(lang.code)}
                     onKeyDown={(e) => handleLangKeyDown(e, index)}
@@ -280,7 +281,7 @@ export default function Header() {
               className={`${styles.authBtn} ${styles.authBtnLogout}`}
               id="header-auth-btn"
               title={`${t('nav.logout') || 'Logout'} (${state.user?.name || 'User'})`}
-              aria-label={t('nav.logout') || 'Logout'}
+              aria-label={`${t('nav.logout') || 'Logout'} (${state.user?.name || 'User'})`}
             >
               <span className={`${styles.authRoundIcon} ${styles.authRoundIconLoggedIn}`}>
                 {state.user?.avatar ? (
@@ -301,7 +302,7 @@ export default function Header() {
               className={styles.authBtn}
               id="header-auth-btn"
               title={t('nav.login') || 'Login'}
-              aria-label={t('nav.login') || 'Login'}
+              aria-label={t('nav.login') || 'Login to citizen account'}
             >
               <span className={styles.authRoundIcon}>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -320,6 +321,7 @@ export default function Header() {
             href="/apply"
             className={`btn btn-primary btn-sm ${styles.headerPrimaryCta}`}
             id="header-start-app-cta"
+            aria-label={t('nav.startApplication') || 'Start Application'}
           >
             <span>{t('nav.startApplication') || 'Start Application'}</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -333,7 +335,7 @@ export default function Header() {
             ref={menuBtnRef}
             className={styles.menuToggle}
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle navigation menu"
+            aria-label={t('nav.toggleMenu') || 'Toggle navigation menu'}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav-drawer"
           >

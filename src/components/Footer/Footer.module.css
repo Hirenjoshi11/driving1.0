@@ -5,34 +5,24 @@
   border-top: 1px solid var(--color-border-light);
 }
 
+.desktopFooter {
+  display: block;
+}
+
+.mobileFooter {
+  display: none;
+}
+
 .inner {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: var(--space-16) var(--space-6) var(--space-10);
 }
 
-@media (max-width: 640px) {
-  .inner {
-    padding: var(--space-8) var(--space-4) var(--space-6);
-  }
-}
-
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-10);
-}
-
-@media (max-width: 640px) {
-  .grid {
-    gap: var(--space-6);
-  }
-}
-
-@media (min-width: 640px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (min-width: 1024px) {
@@ -137,10 +127,25 @@
   line-height: 1.6;
 }
 
-/* Hide footer entirely on mobile viewports; keep only on desktop */
+/* On mobile viewports (<= 768px), show just ONE clean line of copyright */
 @media (max-width: 768px) {
-  .footer {
+  .desktopFooter {
     display: none !important;
   }
-}
 
+  .mobileFooter {
+    display: block !important;
+    padding: var(--space-4) var(--space-3);
+    text-align: center;
+    background: #FFFFFF;
+  }
+
+  .mobileCopyright {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+    text-align: center;
+    white-space: normal;
+  }
+}

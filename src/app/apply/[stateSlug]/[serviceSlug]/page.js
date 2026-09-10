@@ -742,6 +742,7 @@ export default function FormPage() {
                     type="button"
                     onClick={resumeDraft}
                     className="btn btn-primary btn-sm"
+                    aria-label={t('apply.draftResume') || 'Resume Saved Draft'}
                   >
                     {t('apply.draftResume') || 'Resume Draft'}
                   </button>
@@ -749,6 +750,7 @@ export default function FormPage() {
                     type="button"
                     onClick={discardDraft}
                     className="btn btn-secondary btn-sm"
+                    aria-label={t('apply.draftDiscard') || 'Discard Draft'}
                   >
                     {t('apply.draftDiscard') || 'Discard'}
                   </button>
@@ -762,6 +764,7 @@ export default function FormPage() {
                 id="btn-start-application-intro"
                 onClick={() => setHasStartedForm(true)}
                 className="btn btn-primary btn-lg"
+                aria-label={t('home.startCta') || 'Start Application'}
               >
                 <span>{t('home.startCta') || 'Start Application'}</span>
                 <IconArrowRight size={18} />
@@ -771,6 +774,7 @@ export default function FormPage() {
                 href={`/documents?state=${stateSlug !== 'start' ? stateSlug : 'gujarat'}&service=${serviceSlug}`}
                 className="btn btn-secondary btn-lg"
                 target="_blank"
+                aria-label={t('apply.viewRequiredDocs') || 'View Required Documents Checklist'}
               >
                 <span>{t('apply.viewRequiredDocs') || 'View Required Documents'}</span>
               </Link>
@@ -971,9 +975,10 @@ export default function FormPage() {
                         className="btn btn-ghost"
                         onClick={handleBack}
                         disabled={currentStepIndex === 0 || submitting}
+                        aria-label={t('common.back') || 'Go back to previous step'}
                       >
                         <IconArrowLeft size={16} />
-                        {t('common.back')}
+                        {t('common.back') || 'Back'}
                       </button>
 
                       <button
@@ -981,10 +986,11 @@ export default function FormPage() {
                         id="btn-fill-demo-data-nav"
                         className={styles.demoDataBtnSecondary}
                         onClick={handleFillDemoData}
-                        title={t('common.fillDemoData')}
+                        title={t('common.fillDemoData') || 'Fill demo data'}
+                        aria-label={t('common.fillDemoData') || 'Fill demo data'}
                       >
                         <IconBolt size={14} />
-                        <span>{t('common.fillDemoData')}</span>
+                        <span>{t('common.fillDemoData') || 'Fill Demo Data'}</span>
                       </button>
                     </div>
 
@@ -995,6 +1001,13 @@ export default function FormPage() {
                         className={`btn btn-primary btn-lg ${styles.payCta}`}
                         onClick={handlePaymentAndSubmit}
                         disabled={submitting || paymentStatus === 'processing' || paymentStatus === 'reconciling'}
+                        aria-label={
+                          submitting || paymentStatus === 'processing'
+                            ? (t('payment.processing') || 'Processing Payment')
+                            : paymentStatus === 'reconciling'
+                            ? (t('payment.reconciling') || 'Verifying Payment')
+                            : (t('payment.proceedToPay', { amount: totalAmount }) || `Pay ₹${totalAmount}`)
+                        }
                       >
                         {submitting || paymentStatus === 'processing'
                           ? t('payment.processing')
@@ -1008,6 +1021,7 @@ export default function FormPage() {
                         className="btn btn-primary btn-lg"
                         onClick={handleNext}
                         disabled={submitting}
+                        aria-label={t('common.saveAndContinueBtn') || 'Save and continue to next step'}
                       >
                         <span>{t('common.saveAndContinueBtn') || 'Save & Continue'}</span>
                         <IconArrowRight size={16} />

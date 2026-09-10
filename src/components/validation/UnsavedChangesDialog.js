@@ -29,13 +29,15 @@ export default function UnsavedChangesDialog({
             type="button"
             onClick={onLeave}
             className="btn btn-ghost"
+            aria-label={t('validation.leaveWithoutSavingBtn') || 'Leave Without Saving'}
           >
-            {t('validation.leaveWithoutSavingBtn')}
+            {t('validation.leaveWithoutSavingBtn') || 'Leave Without Saving'}
           </button>
           <button
             type="button"
             onClick={onStay}
             className="btn btn-secondary"
+            aria-label={t('validation.stayOnPageBtn') || 'Stay on Page'}
           >
             {t('validation.stayOnPageBtn') || 'Stay on Page'}
           </button>
@@ -44,6 +46,7 @@ export default function UnsavedChangesDialog({
               type="button"
               onClick={onSaveAndContinue}
               className="btn btn-primary"
+              aria-label={t('validation.saveAndContinueBtn') || 'Save & Continue'}
             >
               {t('validation.saveAndContinueBtn') || 'Save & Continue'}
             </button>

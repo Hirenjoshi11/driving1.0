@@ -27,6 +27,7 @@ export default function LanguagePills() {
             className={`${styles.langPill} ${isActive ? styles.langPillActive : ''}`}
             onClick={() => handleLanguageChange(lang.code)}
             aria-pressed={isActive}
+            aria-label={`Switch language to ${lang.name} (${lang.nativeName})`}
           >
             {isActive && <IconCheck size={16} />}
             {lang.nativeName} ({lang.name})
