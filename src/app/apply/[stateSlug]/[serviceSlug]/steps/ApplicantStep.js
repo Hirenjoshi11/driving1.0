@@ -18,7 +18,9 @@ export default function ApplicantStep({
   const params = useParams();
   const router = useRouter();
 
-  const stateSlug = params?.stateSlug || 'gujarat';
+  const stateSlug = (params?.stateSlug && params.stateSlug !== 'start' && params.stateSlug !== 'select')
+    ? params.stateSlug
+    : (formData?.state || 'gujarat');
   const serviceSlug = params?.serviceSlug || 'learner-licence';
 
   // Calculate applicant age

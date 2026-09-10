@@ -16,6 +16,10 @@ export default async function ServiceSelectionPage({ params }) {
   const { stateSlug } = await params;
   const db = getDb();
 
+  if (stateSlug === 'start' || stateSlug === 'select') {
+    redirect('/apply');
+  }
+
   const state = await db.prepare('SELECT * FROM states WHERE slug = ?').get(stateSlug);
   if (!state) {
     const serviceCheck = await db.prepare('SELECT slug FROM licence_services WHERE slug = ?').get(stateSlug);

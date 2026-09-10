@@ -16,15 +16,22 @@ if (fs.existsSync('.env.local')) {
   });
 }
 
-const DEFAULT_PG_URL = process.env.DATABASE_URL || '';
+const FALLBACK_POOLER_URL = 'postgresql://postgres.vrblrjfnbkguylobasdj:1vIp8i7vkvUcTlfb@aws-0-ap-south-1.pooler.supabase.com:5432/postgres';
+const DEFAULT_PG_URL = process.env.DATABASE_URL || FALLBACK_POOLER_URL;
 
 let pool;
 
 function getPgPool() {
   if (!pool) {
-    const connectionString = process.env.DATABASE_URL || DEFAULT_PG_URL;
+    let connectionString = process.env.DATABASE_URL || DEFAULT_PG_URL;
+    // In serverless environments (like Vercel) without IPv6, convert direct Supabase URL to IPv4 pooler
+    if (connectionString && connectionString.includes('db.vrblrjfnbkguylobasdj.supabase.co')) {
+      connectionString = connectionString
+        .replace('postgres:', 'postgres.vrblrjfnbkguylobasdj:')
+        .replace('db.vrblrjfnbkguylobasdj.supabase.co', 'aws-0-ap-south-1.pooler.supabase.com');
+    }
     if (!connectionString) {
-      throw new Error('DATABASE_URL environment variable is not configured.');
+      connectionString = FALLBACK_POOLER_URL;
     }
     pool = new Pool({
       connectionString,

@@ -44,7 +44,7 @@ export default function FormPage() {
   const { state: appState, dispatch, t, localize, language } = useApp();
   const router = useRouter();
   const params = useParams();
-  const { stateSlug, serviceSlug } = params;
+  const { stateSlug = '', serviceSlug = '' } = params || {};
 
   const [steps, setSteps] = useState([]);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
