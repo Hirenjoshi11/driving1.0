@@ -10,7 +10,7 @@
 import { getDb } from '@/lib/db';
 import { logAudit } from '@/lib/audit';
 
-export function createSecurityIncident({
+export async function createSecurityIncident({
   title,
   description,
   severity = 'medium',
@@ -24,7 +24,7 @@ export function createSecurityIncident({
   // Statutory 72-hour timeline from detection
   const dueAt = new Date(Date.now() + 72 * 60 * 60 * 1000).toISOString();
 
-  const stmt = db.prepare(`
+  const stmt = await db.prepare(`
     INSERT INTO security_incidents (
       incident_number, title, description, severity, status,
       detected_at, affected_data_categories, affected_user_count,
@@ -32,7 +32,7 @@ export function createSecurityIncident({
     ) VALUES (?, ?, ?, ?, 'detected', datetime('now'), ?, ?, ?, ?, datetime('now'), datetime('now'))
   `);
 
-  const res = stmt.run(
+  const res = await stmt.run(
     incidentNumber,
     title,
     description,
@@ -43,7 +43,7 @@ export function createSecurityIncident({
     createdBy
   );
 
-  logAudit(db, {
+  await logAudit(db, {
     actorId: createdBy,
     actorRole: 'admin',
     action: 'SECURITY_INCIDENT_CREATED',
@@ -56,9 +56,9 @@ export function createSecurityIncident({
   return { incidentId: res.lastInsertRowid, incidentNumber, boardNotificationDueAt: dueAt };
 }
 
-export function updateIncidentStatus(incidentId, newStatus, actorId, notes = '') {
+export async function updateIncidentStatus(incidentId, newStatus, actorId, notes = '') {
   const db = getDb();
-  const current = db.prepare('SELECT * FROM security_incidents WHERE id = ?').get(incidentId);
+  const current = await db.prepare('SELECT * FROM security_incidents WHERE id = ?').get(incidentId);
   if (!current) throw new Error('Incident not found');
 
   let updateFields = 'status = ?, updated_at = datetime(\'now\')';
@@ -77,9 +77,9 @@ export function updateIncidentStatus(incidentId, newStatus, actorId, notes = '')
 
   params.push(incidentId);
 
-  db.prepare(`UPDATE security_incidents SET ${updateFields} WHERE id = ?`).run(...params);
+  await db.prepare(`UPDATE security_incidents SET ${updateFields} WHERE id = ?`).run(...params);
 
-  logAudit(db, {
+  await logAudit(db, {
     actorId,
     actorRole: 'admin',
     action: 'SECURITY_INCIDENT_STATUS_CHANGE',

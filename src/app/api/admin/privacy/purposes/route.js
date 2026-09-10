@@ -12,7 +12,7 @@ export async function GET(request) {
     }
 
     const db = getDb();
-    const purposes = db.prepare(`
+    const purposes = await db.prepare(`
       SELECT p.*,
              (SELECT COUNT(*) FROM consents WHERE purpose_id = p.id AND consent_status = 'granted') as active_consents_count
       FROM processing_purposes p
@@ -47,7 +47,7 @@ export async function PUT(request) {
     }
 
     const db = getDb();
-    db.prepare(`
+    await db.prepare(`
       UPDATE processing_purposes
       SET legal_basis = COALESCE(?, legal_basis),
           is_mandatory = COALESCE(?, is_mandatory),
@@ -56,7 +56,7 @@ export async function PUT(request) {
       WHERE id = ?
     `).run(legalBasis, isMandatory, isActive, id);
 
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: 'admin',
       action: 'PROCESSING_PURPOSE_UPDATED',

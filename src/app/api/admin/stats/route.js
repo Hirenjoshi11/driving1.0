@@ -19,7 +19,7 @@ export async function GET(request) {
       : '';
 
     // 1. Volume by Status
-    const statusCounts = db.prepare(`
+    const statusCounts = await db.prepare(`
       SELECT status, COUNT(*) as count 
       FROM applications 
       WHERE 1=1 ${dateFilter}
@@ -27,7 +27,7 @@ export async function GET(request) {
     `).all();
 
     // 2. Volume by State
-    const stateCounts = db.prepare(`
+    const stateCounts = await db.prepare(`
       SELECT s.id, s.name, s.code, COUNT(a.id) as count
       FROM states s
       LEFT JOIN applications a ON a.state_id = s.id ${dateFilter ? dateFilter.replace('created_at', 'a.created_at') : ''}
@@ -36,7 +36,7 @@ export async function GET(request) {
     `).all();
 
     // 3. Volume by Service
-    const serviceCounts = db.prepare(`
+    const serviceCounts = await db.prepare(`
       SELECT ls.id, ls.name, ls.slug as code, COUNT(a.id) as count
       FROM licence_services ls
       LEFT JOIN applications a ON a.service_id = ls.id ${dateFilter ? dateFilter.replace('created_at', 'a.created_at') : ''}
@@ -45,16 +45,16 @@ export async function GET(request) {
     `).all();
 
     // 4. Overdue SLA count
-    const overdueCount = db.prepare(`
+    const overdueCount = (await db.prepare(`
       SELECT COUNT(*) as count
       FROM applications
       WHERE sla_due_at IS NOT NULL 
         AND sla_due_at < datetime('now') 
         AND status NOT IN ('completed', 'draft')
-    `).get()?.count || 0;
+    `).get())?.count || 0;
 
     // 5. Payment Reconciliation
-    const paymentStats = db.prepare(`
+    const paymentStats = await db.prepare(`
       SELECT 
         payment_status,
         COUNT(*) as count,
@@ -64,7 +64,7 @@ export async function GET(request) {
     `).all();
 
     // 6. Operator Workload
-    const operatorWorkloads = db.prepare(`
+    const operatorWorkloads = await db.prepare(`
       SELECT 
         u.id,
         u.name,
@@ -89,7 +89,7 @@ export async function GET(request) {
     }));
 
     // 7. Recent Audit Activity
-    const recentAudit = db.prepare(`
+    const recentAudit = await db.prepare(`
       SELECT al.id, al.action, al.entity_type, al.entity_id, al.summary, al.created_at, u.name as actor_name
       FROM audit_log al
       LEFT JOIN users u ON al.actor_id = u.id
@@ -98,9 +98,9 @@ export async function GET(request) {
     `).all();
 
     // 8. Total Summary KPI
-    const totalApps = db.prepare(`SELECT COUNT(*) as total FROM applications WHERE 1=1 ${dateFilter}`).get()?.total || 0;
-    const completedApps = db.prepare(`SELECT COUNT(*) as count FROM applications WHERE status = 'completed' ${dateFilter}`).get()?.count || 0;
-    const pendingReviewApps = db.prepare(`SELECT COUNT(*) as count FROM applications WHERE status IN ('submitted', 'resubmitted', 'under_review')`).get()?.count || 0;
+    const totalApps = (await db.prepare(`SELECT COUNT(*) as total FROM applications WHERE 1=1 ${dateFilter}`).get())?.total || 0;
+    const completedApps = (await db.prepare(`SELECT COUNT(*) as count FROM applications WHERE status = 'completed' ${dateFilter}`).get())?.count || 0;
+    const pendingReviewApps = (await db.prepare(`SELECT COUNT(*) as count FROM applications WHERE status IN ('submitted', 'resubmitted', 'under_review')`).get())?.count || 0;
 
     return NextResponse.json({
       summary: {

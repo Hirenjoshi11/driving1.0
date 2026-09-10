@@ -60,7 +60,7 @@ export async function GET(request, { params }) {
     const { id } = await params;
     const db = getDb();
 
-    const application = db.prepare('SELECT id, user_id FROM applications WHERE id = ?').get(id);
+    const application = await db.prepare('SELECT id, user_id FROM applications WHERE id = ?').get(id);
     if (!application) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 });
     }
@@ -99,7 +99,7 @@ export async function POST(request, { params }) {
     const { id } = await params;
     const db = getDb();
 
-    const application = db.prepare('SELECT id, user_id FROM applications WHERE id = ?').get(id);
+    const application = await db.prepare('SELECT id, user_id FROM applications WHERE id = ?').get(id);
     if (!application) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 });
     }

@@ -11,8 +11,8 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
     const db = getDb();
-    const notifications = listForUser(db, session.userId, { limit: 30 });
-    const unread = unreadCount(db, session.userId);
+    const notifications = await listForUser(db, session.userId, { limit: 30 });
+    const unread = await unreadCount(db, session.userId);
     return NextResponse.json({ notifications, unread });
   } catch (error) {
     console.error('Failed to load notifications:', error);

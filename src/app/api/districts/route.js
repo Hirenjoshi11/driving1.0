@@ -11,7 +11,7 @@ export async function GET(request) {
       return NextResponse.json({ error: 'stateId is required' }, { status: 400 });
     }
 
-    const districts = db.prepare(
+    const districts = await db.prepare(
       'SELECT * FROM districts WHERE state_id = ? AND is_active = 1 ORDER BY sort_order, name'
     ).all(stateId);
 

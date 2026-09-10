@@ -90,7 +90,7 @@ export function maskMobile(phone) {
  *   ip?: string|null
  * }} entry
  */
-export function logAudit(db, {
+export async function logAudit(db, {
   actorId = null,
   actorRole = null,
   action,
@@ -106,7 +106,7 @@ export function logAudit(db, {
 
   const sanitizedMeta = metadata ? JSON.stringify(sanitizeAuditMetadata(metadata)) : null;
 
-  const stmt = db.prepare(`
+  const stmt = await db.prepare(`
     INSERT INTO audit_log (
       actor_id,
       actor_role,
@@ -120,7 +120,7 @@ export function logAudit(db, {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
   `);
 
-  stmt.run(
+  await stmt.run(
     actorId ? Number(actorId) : null,
     actorRole ? String(actorRole) : null,
     String(action),
@@ -135,7 +135,7 @@ export function logAudit(db, {
 /**
  * Logs document access events into document_access_logs and audit_log.
  */
-export function logDocumentAccess(db, {
+export async function logDocumentAccess(db, {
   documentId,
   applicationId,
   actorId,
@@ -145,13 +145,13 @@ export function logDocumentAccess(db, {
   userAgent = null,
 }) {
   try {
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO document_access_logs (
         document_id, application_id, actor_id, actor_role, action, ip_address, user_agent, created_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))
     `).run(documentId, applicationId, actorId, actorRole, action, ip, userAgent);
 
-    logAudit(db, {
+    await logAudit(db, {
       actorId,
       actorRole,
       action: `DOCUMENT_${action.toUpperCase()}`,
@@ -168,7 +168,7 @@ export function logDocumentAccess(db, {
 /**
  * Logs security events (auth failures, permission denials, suspicious rate limit triggers).
  */
-export function logSecurityEvent(db, {
+export async function logSecurityEvent(db, {
   actorId = null,
   action,
   summary,
@@ -176,7 +176,7 @@ export function logSecurityEvent(db, {
   ip = null,
 }) {
   try {
-    logAudit(db, {
+    await logAudit(db, {
       actorId,
       actorRole: 'system',
       action: `SECURITY_${action.toUpperCase()}`,

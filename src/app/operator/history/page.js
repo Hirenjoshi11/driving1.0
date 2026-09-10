@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useApp } from '@/contexts/AppContext';
-import styles from '@/app/admin/AdminConsole.module.css';
+import styles from '@/app/operator/OperatorConsole.module.css';
 
 export default function OperatorHistoryPage() {
   const { t } = useApp();

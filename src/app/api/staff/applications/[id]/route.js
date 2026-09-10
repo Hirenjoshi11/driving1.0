@@ -51,7 +51,7 @@ export async function GET(request, { params }) {
       LIMIT 1
     `;
 
-    const app = db.prepare(appQuery).get(isNumeric ? Number(id) : String(id));
+    const app = await db.prepare(appQuery).get(isNumeric ? Number(id) : String(id));
     if (!app) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 });
     }
@@ -88,7 +88,7 @@ export async function GET(request, { params }) {
       ORDER BY sd.is_required DESC, sd.sort_order ASC
     `;
 
-    const documents = db.prepare(docsQuery).all(app.id, app.service_id, app.state_id);
+    const documents = await db.prepare(docsQuery).all(app.id, app.service_id, app.state_id);
 
     // Also include any other uploaded documents that may not be in service_documents
     const otherDocsQuery = `
@@ -114,7 +114,7 @@ export async function GET(request, { params }) {
           SELECT document_type_id FROM service_documents WHERE service_id = ? AND state_id = ?
         )
     `;
-    const otherDocs = db.prepare(otherDocsQuery).all(app.id, app.service_id, app.state_id);
+    const otherDocs = await db.prepare(otherDocsQuery).all(app.id, app.service_id, app.state_id);
     const allDocuments = [...documents, ...otherDocs];
 
     // Status Timeline
@@ -133,7 +133,7 @@ export async function GET(request, { params }) {
       WHERE ash.application_id = ?
       ORDER BY ash.created_at ASC
     `;
-    const timeline = db.prepare(historyQuery).all(app.id);
+    const timeline = await db.prepare(historyQuery).all(app.id);
 
     // Document counts for transition evaluation
     const requiredDocs = allDocuments.filter(d => d.is_required === 1);

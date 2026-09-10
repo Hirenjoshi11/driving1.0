@@ -13,7 +13,7 @@ export async function GET(request) {
     }
 
     const db = getDb();
-    const grievances = db.prepare(`
+    const grievances = await db.prepare(`
       SELECT g.*, 
              (SELECT COUNT(*) FROM grievance_events WHERE grievance_id = g.id) as event_count
       FROM grievances g
@@ -64,8 +64,8 @@ export async function POST(request) {
     // Statutory resolution SLA (e.g., 30 days under statutory rules)
     const dueDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
-    const tx = db.transaction(() => {
-      const res = db.prepare(`
+    const tx = db.transaction(async () => {
+      const res = await db.prepare(`
         INSERT INTO grievances (
           grievance_number, user_id, category, subject, description,
           status, resolution_due_date, created_at, updated_at
@@ -74,12 +74,12 @@ export async function POST(request) {
 
       const grievanceId = res.lastInsertRowid;
 
-      db.prepare(`
+      await db.prepare(`
         INSERT INTO grievance_events (grievance_id, from_status, to_status, actor_id, actor_role, notes, created_at)
         VALUES (?, NULL, 'submitted', ?, ?, 'Grievance submitted by citizen', datetime('now'))
       `).run(grievanceId, session.userId, session.role);
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: 'GRIEVANCE_SUBMITTED',
@@ -92,7 +92,7 @@ export async function POST(request) {
       return { grievanceId, grievanceNumber, status: 'submitted', resolutionDueDate: dueDate };
     });
 
-    const result = tx();
+    const result = await tx();
     return NextResponse.json({ success: true, grievance: result }, { status: 201 });
   } catch (error) {
     console.error('Error submitting grievance:', error);

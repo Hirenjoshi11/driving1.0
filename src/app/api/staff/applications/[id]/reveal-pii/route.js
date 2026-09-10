@@ -19,7 +19,7 @@ export async function POST(request, { params }) {
     }
 
     const isNumeric = !isNaN(Number(id));
-    const app = db.prepare(`
+    const app = await db.prepare(`
       SELECT id, application_number, identity_number, identity_type, date_of_birth, mobile, guardian_aadhaar
       FROM applications
       WHERE ${isNumeric ? 'id = ?' : 'application_number = ?'}
@@ -30,7 +30,7 @@ export async function POST(request, { params }) {
     }
 
     // Log the unmasking action in audit log (NEVER store raw PII in metadata)
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: session.role,
       action: 'pii.reveal',

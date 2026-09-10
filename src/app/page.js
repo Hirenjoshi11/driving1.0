@@ -6,11 +6,11 @@ export const metadata = {
   description: 'Prepare your driving licence application with guided steps, document checklists, and transparent statutory fee calculations.',
 };
 
-export default function HomePage() {
+export default async function HomePage() {
   const db = getDb();
 
   // Active core licence services with multilingual fields
-  const services = db.prepare(`
+  const services = await db.prepare(`
     SELECT id, slug, name, name_hi, name_gu, description, description_hi, description_gu, icon
     FROM licence_services
     WHERE is_active = 1
@@ -18,7 +18,7 @@ export default function HomePage() {
   `).all();
 
   // Active supported states with district, RTO and service counts
-  const states = db.prepare(`
+  const states = await db.prepare(`
     SELECT s.*, 
       (SELECT COUNT(*) FROM districts d WHERE d.state_id = s.id) as district_count,
       (SELECT COUNT(*) FROM rto_offices r WHERE r.state_id = s.id) as rto_count,

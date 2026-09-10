@@ -131,18 +131,6 @@ export default function ConsoleNav({ role, onNavigate }) {
               </Link>
             );
           })}
-
-          <div className={styles.sectionHeading} style={{ marginTop: '16px' }}>
-            {t('staff.sectionOperatorQueue') || 'RTO Ops View'}
-          </div>
-          <Link
-            href="/operator"
-            onClick={onNavigate}
-            className={`${styles.navLink} ${pathname.startsWith('/operator') ? styles.navLinkActive : ''}`}
-          >
-            <span className={styles.navIcon} aria-hidden="true">⚡</span>
-            <span>{t('staff.switchWorkbench') || 'Open RTO Workbench'}</span>
-          </Link>
         </>
       )}
     </nav>

@@ -1,0 +1,794 @@
+[
+  {
+    "path": "/account/privacy/consent",
+    "type": "Page",
+    "role": "Citizen (Authenticated)",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/account/privacy/data",
+    "type": "Page",
+    "role": "Citizen (Authenticated)",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/account/privacy/grievances",
+    "type": "Page",
+    "role": "Citizen (Authenticated)",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/account/privacy/nomination",
+    "type": "Page",
+    "role": "Citizen (Authenticated)",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/account/privacy",
+    "type": "Page",
+    "role": "Citizen (Authenticated)",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/account/privacy/requests",
+    "type": "Page",
+    "role": "Citizen (Authenticated)",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/applications",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/applications/[id]",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/audit",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/fees",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/locations",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/operators",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy/audit",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy/consents",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy/data-inventory",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy/incidents",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy/policy",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy/processors",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy/requests",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/privacy/retention",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/services",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/admin/settings",
+    "type": "Page",
+    "role": "Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/audit",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/export",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/fees",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/locations",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/operators",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/audit",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/incidents",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/inventory",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/policy",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/processors",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/purposes",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/requests",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/retention",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/privacy/stats",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/services",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/admin/stats",
+    "type": "API",
+    "role": "Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/applications",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/applications/track/[appNo]",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/applications/[id]/documents",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/applications/[id]",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/auth/email",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/auth/login",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/auth/logout",
+    "type": "API",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/auth/me",
+    "type": "API",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/auth/oauth/callback",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/auth/oauth/google",
+    "type": "API",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/auth/otp",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/districts",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/documents/download/[docId]",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/documents",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/fees",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/notifications/read",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/notifications",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/otp-relay",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/otp-relay/submit",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/payment",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/privacy/consent",
+    "type": "API",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/privacy/export",
+    "type": "API",
+    "role": "Citizen (Authenticated)",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/privacy/grievances",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/privacy/nomination",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/privacy/notice",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/privacy/policy",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/privacy/requests",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/rto-offices",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/services",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/staff/applications/[id]/assign",
+    "type": "API",
+    "role": "Operator/Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/staff/applications/[id]/otp-request/clear",
+    "type": "API",
+    "role": "Operator/Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/staff/applications/[id]/otp-request",
+    "type": "API",
+    "role": "Operator/Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/staff/applications/[id]/reveal-pii",
+    "type": "API",
+    "role": "Operator/Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/staff/applications/[id]",
+    "type": "API",
+    "role": "Operator/Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/staff/applications/[id]/transition",
+    "type": "API",
+    "role": "Operator/Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/staff/documents/[docId]/verify",
+    "type": "API",
+    "role": "Operator/Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/staff/queue",
+    "type": "API",
+    "role": "Operator/Admin",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/states",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/steps",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/test-centres",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/api/vehicle-classes",
+    "type": "API",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/apply",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/apply/[stateSlug]",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/apply/[stateSlug]/[serviceSlug]",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/contact",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/dashboard",
+    "type": "Page",
+    "role": "Citizen (Authenticated)",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/documents",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/help",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/login",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/operator/applications/[id]",
+    "type": "Page",
+    "role": "Operator/Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/operator/documents",
+    "type": "Page",
+    "role": "Operator/Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/operator/history",
+    "type": "Page",
+    "role": "Operator/Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/operator",
+    "type": "Page",
+    "role": "Operator/Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/operator/queue",
+    "type": "Page",
+    "role": "Operator/Admin",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "Supabase Postgres",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/privacy",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/refunds",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/terms",
+    "type": "Page",
+    "role": "Public",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  },
+  {
+    "path": "/track",
+    "type": "Page",
+    "role": "Citizen (Authenticated)",
+    "datastore": "None / Client-Fetch",
+    "e2eStatus": "Verified (Build 0 errors)",
+    "demoContent": "None (Stripped)"
+  }
+]

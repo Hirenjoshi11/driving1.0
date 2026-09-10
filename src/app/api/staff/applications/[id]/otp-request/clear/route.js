@@ -37,7 +37,7 @@ export async function POST(request, { params }) {
       )
       .run(app.id);
 
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: session.role,
       action: 'otp.relay.cleared',

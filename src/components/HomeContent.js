@@ -11,8 +11,7 @@ import {
 import styles from '@/app/page.module.css';
 
 export default function HomeContent({ services = [], states = [] }) {
-  const { state: appState, t, localize } = useApp();
-  const activeStateSlug = appState?.selectedState?.slug || 'gujarat';
+  const { t, localize } = useApp();
 
   const timelineSteps = [
     { num: '01', title: t('home.step1'), desc: t('home.step1Desc') },
@@ -44,10 +43,10 @@ export default function HomeContent({ services = [], states = [] }) {
 
 
             <div className={styles.heroActions}>
-              <a href="#services" className={`btn btn-primary btn-lg ${styles.primaryCta}`}>
+              <Link href="/apply/start/learner-licence" className={`btn btn-primary btn-lg ${styles.primaryCta}`}>
                 <span>{t('home.startCta') || 'Start Your Application'}</span>
                 <IconArrowRight size={18} className={styles.primaryCtaArrow} />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -81,7 +80,7 @@ export default function HomeContent({ services = [], states = [] }) {
               return (
                 <Link
                   key={service.id}
-                  href={`/apply/${activeStateSlug}/${service.slug}`}
+                  href={`/apply/start/${service.slug}`}
                   className={styles.serviceCard}
                   style={{ '--card-index': index }}
                   aria-label={`${serviceName} — ${t('home.startService') || 'Start Application'}`}
@@ -125,10 +124,10 @@ export default function HomeContent({ services = [], states = [] }) {
           <div className="container">
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>
-                {t('home.statesTitle') || 'Where are you applying from?'}
+                {t('home.statesTitle') || 'We Provide Our Services Across 3 States'}
               </h2>
               <p className={styles.sectionSubtitle}>
-                {t('home.statesSubtitle') || 'Licence forms, RTO jurisdictions, fees, and rules adapt automatically to your state.'}
+                {t('home.statesSubtitle') || 'Full digital application assistance, document guidance, and RTO jurisdictional support for Gujarat, Rajasthan, and Uttar Pradesh.'}
               </p>
             </div>
             <HomeStateSection states={states} />

@@ -22,7 +22,7 @@ export async function GET(request) {
     }
 
     query += ' ORDER BY sort_order, name';
-    const rtoOffices = db.prepare(query).all(...params);
+    const rtoOffices = await db.prepare(query).all(...params);
 
     return NextResponse.json({ rtoOffices });
   } catch (error) {

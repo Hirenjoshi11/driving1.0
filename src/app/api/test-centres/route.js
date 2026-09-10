@@ -19,8 +19,8 @@ export async function GET(request) {
       params.push(stateId);
     }
 
-    query += ' ORDER BY CASE WHEN status = "active" THEN 0 ELSE 1 END, name';
-    const testCentres = db.prepare(query).all(...params);
+    query += " ORDER BY CASE WHEN status = 'active' THEN 0 ELSE 1 END, name";
+    const testCentres = await db.prepare(query).all(...params);
 
     return NextResponse.json({ testCentres });
   } catch (error) {

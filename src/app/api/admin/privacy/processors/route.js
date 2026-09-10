@@ -12,7 +12,7 @@ export async function GET(request) {
     }
 
     const db = getDb();
-    const processors = db.prepare(`
+    const processors = await db.prepare(`
       SELECT dp.*, 
              pc.contract_reference, pc.dpa_signed, pc.effective_from, pc.expires_at,
              pc.status as contract_validity
@@ -21,7 +21,7 @@ export async function GET(request) {
       ORDER BY dp.is_active DESC, dp.id ASC
     `).all();
 
-    const sharingStats = db.prepare(`
+    const sharingStats = await db.prepare(`
       SELECT recipient, COUNT(*) as count 
       FROM data_sharing_records 
       GROUP BY recipient
@@ -50,8 +50,8 @@ export async function POST(request) {
     }
 
     const db = getDb();
-    const tx = db.transaction(() => {
-      const res = db.prepare(`
+    const tx = db.transaction(async () => {
+      const res = await db.prepare(`
         INSERT INTO data_processors (
           code, name, vendor, service_type, country, storage_location,
           processor_status, contract_status, security_review_status,
@@ -71,14 +71,14 @@ export async function POST(request) {
       const processorId = res.lastInsertRowid;
 
       if (contractReference) {
-        db.prepare(`
+        await db.prepare(`
           INSERT INTO processor_contracts (
             processor_id, contract_reference, dpa_signed, effective_from, expires_at, status, created_at, updated_at
           ) VALUES (?, ?, ?, datetime('now'), ?, 'active', datetime('now'), datetime('now'))
         `).run(processorId, contractReference, dpaSigned ? 1 : 0, expiresAt || '2028-12-31');
       }
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: 'admin',
         action: 'DATA_PROCESSOR_REGISTERED',
@@ -91,7 +91,7 @@ export async function POST(request) {
       return { processorId };
     });
 
-    const result = tx();
+    const result = await tx();
     return NextResponse.json({ success: true, processorId: result.processorId }, { status: 201 });
   } catch (error) {
     console.error('Error registering processor:', error);

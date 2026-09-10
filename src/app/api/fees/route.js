@@ -12,7 +12,7 @@ export async function GET(request) {
       return NextResponse.json({ error: 'serviceId and stateId are required' }, { status: 400 });
     }
 
-    const fees = db.prepare(`
+    const fees = await db.prepare(`
       SELECT * FROM fee_structure 
       WHERE service_id = ? AND state_id = ? AND is_active = 1
       ORDER BY effective_from DESC LIMIT 1

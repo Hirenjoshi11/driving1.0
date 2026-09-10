@@ -13,7 +13,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const stateId = searchParams.get('stateId');
 
-    const states = db.prepare(`
+    const states = await db.prepare(`
       SELECT 
         s.*,
         (SELECT COUNT(*) FROM districts d WHERE d.state_id = s.id) as district_count,
@@ -42,10 +42,10 @@ export async function GET(request) {
     }
     rtosQuery += ' ORDER BY s.name ASC, r.rto_code ASC';
 
-    const rawRtos = db.prepare(rtosQuery).all(...rtoParams);
+    const rawRtos = await db.prepare(rtosQuery).all(...rtoParams);
     const rtos = rawRtos.map(r => ({ ...r, code: r.rto_code }));
 
-    const testCentres = db.prepare(`
+    const testCentres = await db.prepare(`
       SELECT 
         dtc.*,
         r.name as rto_name,

@@ -40,7 +40,7 @@ export async function GET(request) {
     const db = getDb();
 
     // Fetch operators
-    const operators = db.prepare(`
+    const operators = await db.prepare(`
       SELECT 
         u.id,
         u.name,
@@ -60,7 +60,7 @@ export async function GET(request) {
     `).all();
 
     // Fetch all active assignments
-    const allAssignments = db.prepare(`
+    const allAssignments = await db.prepare(`
       SELECT 
         oa.id,
         oa.operator_id,
@@ -119,15 +119,15 @@ export async function POST(request) {
     const { name, phone, email, password, stateId, assignments = [] } = parsed.data;
 
     // Check if phone or email already exists
-    const existing = db.prepare('SELECT id FROM users WHERE phone = ? OR (email IS NOT NULL AND email != \'\' AND email = ?)').get(phone, email || null);
+    const existing = await db.prepare('SELECT id FROM users WHERE phone = ? OR (email IS NOT NULL AND email != \'\' AND email = ?)').get(phone, email || null);
     if (existing) {
       return NextResponse.json({ error: 'A user with this phone or email already exists' }, { status: 409 });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const createOp = db.transaction(() => {
-      const insertUser = db.prepare(`
+    const createOp = db.transaction(async () => {
+      const insertUser = await db.prepare(`
         INSERT INTO users (name, phone, email, password_hash, role, state_id, is_active, phone_verified, created_at, updated_at)
         VALUES (?, ?, ?, ?, 'operator', ?, 1, 1, datetime('now'), datetime('now'))
       `).run(name, phone, email || null, passwordHash, stateId || null);
@@ -135,7 +135,7 @@ export async function POST(request) {
       const operatorId = insertUser.lastInsertRowid;
 
       // Insert jurisdiction assignments
-      const insertAssign = db.prepare(`
+      const insertAssign = await db.prepare(`
         INSERT INTO operator_assignments (operator_id, state_id, service_id, rto_id, is_active, created_at)
         VALUES (?, ?, ?, ?, 1, datetime('now'))
       `);
@@ -144,7 +144,7 @@ export async function POST(request) {
         insertAssign.run(operatorId, a.stateId, a.serviceId || null, a.rtoId || null);
       }
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: 'operator.create',
@@ -162,7 +162,7 @@ export async function POST(request) {
       return operatorId;
     });
 
-    const newOperatorId = createOp();
+    const newOperatorId = await createOp();
 
     return NextResponse.json({
       success: true,
@@ -191,31 +191,31 @@ export async function PATCH(request) {
 
     const { operatorId, isActive, name, reassignToOperatorId, assignments } = parsed.data;
 
-    const op = db.prepare('SELECT id, name, is_active FROM users WHERE id = ?').get(operatorId);
+    const op = await db.prepare('SELECT id, name, is_active FROM users WHERE id = ?').get(operatorId);
     if (!op) {
       return NextResponse.json({ error: 'Operator not found' }, { status: 404 });
     }
 
-    const updateOp = db.transaction(() => {
+    const updateOp = db.transaction(async () => {
       // Update name or status if provided
       if (typeof isActive === 'boolean' || name) {
         const newActive = typeof isActive === 'boolean' ? (isActive ? 1 : 0) : op.is_active;
         const newName = name || op.name;
 
-        db.prepare('UPDATE users SET is_active = ?, name = ?, updated_at = datetime(\'now\') WHERE id = ?')
+        await db.prepare('UPDATE users SET is_active = ?, name = ?, updated_at = datetime(\'now\') WHERE id = ?')
           .run(newActive, newName, operatorId);
 
         // If deactivating, reassign open cases or unassign them (never silently strand work)
         if (typeof isActive === 'boolean' && !isActive) {
           if (reassignToOperatorId) {
-            db.prepare(`
+            await db.prepare(`
               UPDATE applications 
               SET assigned_operator_id = ?, updated_at = datetime('now')
               WHERE assigned_operator_id = ? AND status NOT IN ('completed', 'draft')
             `).run(reassignToOperatorId, operatorId);
           } else {
             // Orphan cases cleanly back to 'submitted' or unassigned
-            db.prepare(`
+            await db.prepare(`
               UPDATE applications 
               SET assigned_operator_id = NULL, status = CASE WHEN status = 'assigned' THEN 'submitted' ELSE status END, updated_at = datetime('now')
               WHERE assigned_operator_id = ? AND status NOT IN ('completed', 'draft')
@@ -226,8 +226,8 @@ export async function PATCH(request) {
 
       // Replace assignments if provided
       if (assignments && Array.isArray(assignments)) {
-        db.prepare('DELETE FROM operator_assignments WHERE operator_id = ?').run(operatorId);
-        const insertAssign = db.prepare(`
+        await db.prepare('DELETE FROM operator_assignments WHERE operator_id = ?').run(operatorId);
+        const insertAssign = await db.prepare(`
           INSERT INTO operator_assignments (operator_id, state_id, service_id, rto_id, is_active, created_at)
           VALUES (?, ?, ?, ?, 1, datetime('now'))
         `);
@@ -237,7 +237,7 @@ export async function PATCH(request) {
         }
       }
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: 'operator.update',
@@ -252,7 +252,7 @@ export async function PATCH(request) {
       });
     });
 
-    updateOp();
+    await updateOp();
 
     return NextResponse.json({ success: true, message: 'Operator updated successfully' });
   } catch (error) {

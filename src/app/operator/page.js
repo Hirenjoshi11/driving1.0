@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/contexts/AppContext';
 import { StatusPill } from '@/components/console';
-import styles from '@/app/admin/AdminConsole.module.css';
+import styles from './OperatorConsole.module.css';
 
 export default function OperatorTodayPage() {
   const { t } = useApp();

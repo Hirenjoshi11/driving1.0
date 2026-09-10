@@ -2,9 +2,7 @@ import './globals.css';
 import { cookies } from 'next/headers';
 import { Inter } from 'next/font/google';
 import { AppProvider } from '@/contexts/AppContext';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import OtpRelayWatcher from '@/components/OtpRelayWatcher/OtpRelayWatcher';
+import PortalLayout from '@/components/PortalLayout';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -54,12 +52,9 @@ export default async function RootLayout({ children }) {
           Skip to main content
         </a>
         <AppProvider initialLang={lang}>
-          <Header />
-          <main id="main-content" className="page-wrapper">
+          <PortalLayout>
             {children}
-          </main>
-          <Footer />
-          <OtpRelayWatcher />
+          </PortalLayout>
         </AppProvider>
       </body>
     </html>

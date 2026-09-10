@@ -12,7 +12,7 @@ export async function GET(request) {
       return NextResponse.json({ error: 'serviceId and stateId are required' }, { status: 400 });
     }
 
-    const documents = db.prepare(`
+    const documents = await db.prepare(`
       SELECT sd.*, dt.name, dt.name_hi, dt.name_gu, dt.code, dt.category, 
              dt.description, dt.description_hi, dt.description_gu,
              dt.where_to_get, dt.where_to_get_hi, dt.where_to_get_gu,

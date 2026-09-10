@@ -12,7 +12,7 @@ export async function GET(request) {
     }
 
     const db = getDb();
-    const nomination = db.prepare(`
+    const nomination = await db.prepare(`
       SELECT * FROM nominations 
       WHERE user_id = ? AND status = 'active'
       LIMIT 1
@@ -39,13 +39,13 @@ export async function POST(request) {
     const db = getDb();
 
     if (action === 'revoke') {
-      db.prepare(`
+      await db.prepare(`
         UPDATE nominations 
         SET status = 'revoked', updated_at = datetime('now')
         WHERE user_id = ? AND status = 'active'
       `).run(session.userId);
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: 'NOMINATION_REVOKED',
@@ -71,15 +71,15 @@ export async function POST(request) {
       maskedId = clean.length >= 4 ? `XXXX-XXXX-${clean.slice(-4)}` : 'XXXX-XXXX';
     }
 
-    const tx = db.transaction(() => {
+    const tx = db.transaction(async () => {
       // Deactivate existing
-      db.prepare(`
+      await db.prepare(`
         UPDATE nominations SET status = 'revoked', updated_at = datetime('now')
         WHERE user_id = ? AND status = 'active'
       `).run(session.userId);
 
       // Insert new
-      const res = db.prepare(`
+      const res = await db.prepare(`
         INSERT INTO nominations (
           user_id, nominee_name, nominee_relationship, nominee_phone,
           nominee_email, nominee_id_type, nominee_id_masked, status,
@@ -95,7 +95,7 @@ export async function POST(request) {
         maskedId
       );
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: 'NOMINATION_DESIGNATED',
@@ -107,7 +107,7 @@ export async function POST(request) {
       return { nominationId: res.lastInsertRowid };
     });
 
-    const result = tx();
+    const result = await tx();
     return NextResponse.json({ success: true, nominationId: result.nominationId }, { status: 201 });
   } catch (error) {
     console.error('Error saving nomination:', error);

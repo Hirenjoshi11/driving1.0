@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/contexts/AppContext';
 import styles from './Console.module.css';
 
-export default function ConsoleHeader({ user, density, onDensityChange }) {
+export default function ConsoleHeader({ user, role = 'operator', density, onDensityChange, isMobileOpen, onToggleMobile }) {
   const pathname = usePathname();
   const router = useRouter();
   const { state, dispatch, t } = useApp();
@@ -42,30 +42,56 @@ export default function ConsoleHeader({ user, density, onDensityChange }) {
     if (part === 'audit') label = t('staff.navAudit') || 'Audit';
     if (part === 'settings') label = t('staff.navSettings') || 'Settings';
     if (part === 'history') label = t('staff.navHistory') || 'History';
+    if (part === 'privacy') label = t('adminPrivacy.dashboardTitle') || 'DPDP Privacy';
 
     return { url, label, isLast };
   });
 
+  const currentPageTitle = breadcrumbs.length > 0 ? breadcrumbs[breadcrumbs.length - 1].label : 'Console';
+
   return (
     <header className={styles.header}>
-      {/* Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
-        <span>DLF</span>
-        {breadcrumbs.map((bc) => (
-          <span key={bc.url} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-            <span className={styles.breadcrumbSeparator} aria-hidden="true">/</span>
-            {bc.isLast ? (
-              <span className={styles.breadcrumbCurrent} aria-current="page">{bc.label}</span>
-            ) : (
-              <a href={bc.url} style={{ color: 'inherit', textDecoration: 'none' }}>{bc.label}</a>
-            )}
+      <div className={styles.headerLeft}>
+        {/* Mobile Hamburger Toggle */}
+        <button
+          type="button"
+          className={styles.mobileMenuToggle}
+          onClick={onToggleMobile}
+          aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isMobileOpen}
+        >
+          <span className={styles.hamburgerBar}></span>
+          <span className={styles.hamburgerBar}></span>
+          <span className={styles.hamburgerBar}></span>
+        </button>
+
+        {/* Mobile-only current page title */}
+        <div className={styles.mobilePageTitle} aria-current="page">
+          <span className={styles.mobileTitleText}>{currentPageTitle}</span>
+          <span className={`${styles.headerRolePill} ${role === 'admin' ? styles.headerRoleAdmin : styles.headerRoleOperator}`}>
+            {role === 'admin' ? 'ADMIN' : 'CLERK'}
           </span>
-        ))}
-      </nav>
+        </div>
+
+        {/* Desktop Breadcrumbs */}
+        <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
+          <span className={styles.brandCrumb}>{role === 'admin' ? 'State Authority' : 'RTO Ops'}</span>
+          {breadcrumbs.map((bc) => (
+            <span key={bc.url} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              <span className={styles.breadcrumbSeparator} aria-hidden="true">/</span>
+              {bc.isLast ? (
+                <span className={styles.breadcrumbCurrent} aria-current="page">{bc.label}</span>
+              ) : (
+                <a href={bc.url} style={{ color: 'inherit', textDecoration: 'none' }}>{bc.label}</a>
+              )}
+            </span>
+          ))}
+        </nav>
+      </div>
 
       {/* Actions */}
       <div className={styles.headerActions}>
-        {/* Density Toggle */}
+        {/* Density Toggle (Desktop only) */}
         <div className={styles.densityToggle} role="group" aria-label={t('staff.density') || 'Density'}>
           <button
             type="button"
@@ -94,9 +120,9 @@ export default function ConsoleHeader({ user, density, onDensityChange }) {
           value={state.language}
           onChange={handleLanguageChange}
         >
-          <option value="en">English (EN)</option>
-          <option value="gu">ગુજરાતી (GU)</option>
-          <option value="hi">हिन्दी (HI)</option>
+          <option value="en">EN</option>
+          <option value="gu">ગુજ</option>
+          <option value="hi">हिन्दी</option>
         </select>
 
         {/* Sign Out */}
@@ -105,9 +131,10 @@ export default function ConsoleHeader({ user, density, onDensityChange }) {
           className={styles.logoutBtn}
           onClick={handleLogout}
           aria-label={t('nav.logout') || 'Sign Out'}
+          title="Sign Out"
         >
           <span aria-hidden="true">🚪</span>
-          <span>{t('nav.logout') || 'Sign Out'}</span>
+          <span className={styles.logoutLabel}>{t('nav.logout') || 'Sign Out'}</span>
         </button>
       </div>
     </header>

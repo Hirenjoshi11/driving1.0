@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useApp } from '@/contexts/AppContext';
 import { StatusPill } from '@/components/console';
-import styles from '@/app/admin/AdminConsole.module.css';
+import styles from '@/app/operator/OperatorConsole.module.css';
 
 export default function OperatorDocumentsBatchPage() {
   const { t } = useApp();

@@ -46,7 +46,7 @@ export async function GET(request) {
 
     const whereClause = `WHERE ${whereConditions.join(' AND ')}`;
 
-    const countRow = db.prepare(`
+    const countRow = await db.prepare(`
       SELECT COUNT(*) as total 
       FROM audit_log al
       LEFT JOIN users u ON al.actor_id = u.id
@@ -55,7 +55,7 @@ export async function GET(request) {
 
     const total = countRow ? countRow.total : 0;
 
-    const logs = db.prepare(`
+    const logs = await db.prepare(`
       SELECT 
         al.id,
         al.actor_id,

@@ -1,37 +1,56 @@
 'use client';
-import { useState } from 'react';
-import Link from 'next/link';
 import { useApp } from '@/contexts/AppContext';
+import { IconCheck } from '@/components/icons/Icons';
 import styles from '@/app/page.module.css';
 
 export default function HomeStateSection({ states = [] }) {
-  const { state: appState, dispatch, localize } = useApp();
-  const [selectedSlug, setSelectedSlug] = useState(appState.selectedState?.slug || 'gujarat');
-
-  const handleSelect = (st) => {
-    setSelectedSlug(st.slug);
-    dispatch({ type: 'SET_STATE', payload: st });
-  };
+  const { localize, language } = useApp();
 
   return (
-    <div className={styles.statesHorizontalWrap}>
-      <div className={styles.statesHorizontalGrid}>
+    <div className={styles.statesShowcaseWrap}>
+      <div className={styles.statesShowcaseGrid}>
         {states.map((st) => {
-          const isSelected = selectedSlug === st.slug;
           const stateName = localize ? (localize(st, 'name') || st.name) : st.name;
+          const nativeName = language === 'gu' ? st.name_gu : language === 'hi' ? st.name_hi : (st.name_gu || st.name_hi);
 
           return (
-            <Link
-              key={st.slug}
-              href={`/apply/${st.slug}`}
-              className={`${styles.horizontalStateCard} ${isSelected ? styles.horizontalStateCardActive : ''}`}
-              onClick={() => handleSelect(st)}
-            >
-              <span className={styles.horizontalStateName}>{stateName}</span>
-            </Link>
+            <div key={st.slug} className={styles.stateShowcaseCard}>
+              <div className={styles.stateShowcaseHeader}>
+                <span className={styles.stateCodeBadge}>{st.code}</span>
+                <span className={styles.stateActiveBadge}>
+                  <span className={styles.stateActiveDot} />
+                  <span>Service Active</span>
+                </span>
+              </div>
+
+              <div className={styles.stateShowcaseBody}>
+                <div className={styles.stateNameRow}>
+                  <h3 className={styles.stateShowcaseName}>{stateName}</h3>
+                  {nativeName && nativeName !== stateName && (
+                    <span className={styles.stateShowcaseNative}>({nativeName})</span>
+                  )}
+                </div>
+                
+                <p className={styles.stateShowcaseDesc}>
+                  {localize ? (localize(st, 'description') || st.description) : st.description}
+                </p>
+              </div>
+
+              <div className={styles.stateShowcaseFooter}>
+                <div className={styles.stateShowcaseFeature}>
+                  <IconCheck size={14} className={styles.stateCheckIcon} />
+                  <span>{st.district_count ? `${st.district_count}+ Districts & RTOs` : 'Statewide RTOs'}</span>
+                </div>
+                <div className={styles.stateShowcaseFeature}>
+                  <IconCheck size={14} className={styles.stateCheckIcon} />
+                  <span>Online Application Assistance</span>
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>
     </div>
   );
 }
+

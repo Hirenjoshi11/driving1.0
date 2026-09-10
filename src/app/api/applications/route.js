@@ -25,10 +25,15 @@ export async function GET(request) {
     let whereClause = 'WHERE 1=1';
     const params = [];
 
-    // Scope to session user for citizen (SEC-03)
+    // Scope to session user for citizen (SEC-03) — matches user_id OR registered email
     if (session.role === 'citizen') {
-      whereClause += ' AND a.user_id = ?';
-      params.push(session.userId);
+      if (session.email) {
+        whereClause += ' AND (a.user_id = ? OR (a.email IS NOT NULL AND LOWER(a.email) = LOWER(?)))';
+        params.push(session.userId, session.email.trim());
+      } else {
+        whereClause += ' AND a.user_id = ?';
+        params.push(session.userId);
+      }
     } else if (session.role === 'operator' || session.role === 'admin') {
       const requestedUserId = searchParams.get('userId');
       if (requestedUserId) {
@@ -40,10 +45,14 @@ export async function GET(request) {
     }
 
     // Compute user summary metrics before extra status/search filters
-    const userScopeSql = session.role === 'citizen' ? 'WHERE a.user_id = ?' : 'WHERE 1=1';
-    const userScopeParams = session.role === 'citizen' ? [session.userId] : [];
+    const userScopeSql = session.role === 'citizen'
+      ? (session.email ? 'WHERE (a.user_id = ? OR (a.email IS NOT NULL AND LOWER(a.email) = LOWER(?)))' : 'WHERE a.user_id = ?')
+      : 'WHERE 1=1';
+    const userScopeParams = session.role === 'citizen'
+      ? (session.email ? [session.userId, session.email.trim()] : [session.userId])
+      : [];
     
-    const summaryRow = db.prepare(`
+    const summaryRow = await db.prepare(`
       SELECT 
         COUNT(*) as total,
         SUM(CASE WHEN a.status IN ('submitted', 'paid', 'assigned', 'under_review', 'resubmitted', 'government_processing') THEN 1 ELSE 0 END) as in_progress,
@@ -88,12 +97,13 @@ export async function GET(request) {
         a.first_name LIKE ? OR 
         a.last_name LIKE ? OR 
         a.mobile LIKE ? OR 
+        a.email LIKE ? OR 
         ls.name LIKE ? OR 
         r.name LIKE ? OR 
         a.government_application_number LIKE ?
       )`;
       const term = `%${search.trim()}%`;
-      params.push(term, term, term, term, term, term, term);
+      params.push(term, term, term, term, term, term, term, term);
     }
 
     // Determine sorting
@@ -124,7 +134,7 @@ export async function GET(request) {
         LEFT JOIN rto_offices r ON a.rto_id = r.id
         ${whereClause}
       `;
-      const countRes = db.prepare(countSql).get(...params);
+      const countRes = await db.prepare(countSql).get(...params);
       const total = countRes ? countRes.total : 0;
 
       pagination = {
@@ -174,7 +184,7 @@ export async function GET(request) {
       ${limitClause}
     `;
 
-    const applications = db.prepare(query).all(...queryParams);
+    const applications = await db.prepare(query).all(...queryParams);
 
     return NextResponse.json({ applications, pagination, summary });
   } catch (error) {
@@ -210,7 +220,7 @@ export async function POST(request) {
     }
 
     // Get service details
-    const serviceRow = db.prepare('SELECT * FROM licence_services WHERE id = ?').get(serviceId);
+    const serviceRow = await db.prepare('SELECT * FROM licence_services WHERE id = ?').get(serviceId);
 
     // Validation (FLOW-05): if not a preliminary draft, validate full schema
     if (!isDraft) {
@@ -241,23 +251,30 @@ export async function POST(request) {
       }
     }
 
-    // Enforce user from session or associate with verified phone (SEC-07)
+    // Enforce user from session or associate with verified email or phone (SEC-07)
     let effectiveUserId = session ? session.userId : null;
     if (!effectiveUserId) {
+      const email = (formData.email || '').trim().toLowerCase();
       const phone = (formData.mobile || '').replace(/\D/g, '').slice(-10);
-      if (phone && phone.length === 10) {
-        let existingUser = db.prepare('SELECT id FROM users WHERE phone = ?').get(phone);
-        if (existingUser) {
-          effectiveUserId = existingUser.id;
-        } else {
-          const citizenName = `${formData.firstName || ''} ${formData.lastName || ''}`.trim() || 'Citizen';
-          const info = db
-            .prepare(
-              "INSERT INTO users (name, phone, role, password_hash, phone_verified) VALUES (?, ?, 'citizen', '', 1)"
-            )
-            .run(citizenName, phone);
-          effectiveUserId = info.lastInsertRowid;
-        }
+
+      let existingUser = null;
+      if (email) {
+        existingUser = await db.prepare('SELECT id FROM users WHERE LOWER(email) = ?').get(email);
+      }
+      if (!existingUser && phone && phone.length === 10) {
+        existingUser = await db.prepare('SELECT id FROM users WHERE phone = ?').get(phone);
+      }
+
+      if (existingUser) {
+        effectiveUserId = existingUser.id;
+      } else if (email || (phone && phone.length === 10)) {
+        const citizenName = `${formData.firstName || ''} ${formData.lastName || ''}`.trim() || 'Citizen';
+        const info = db
+          .prepare(
+            "INSERT INTO users (name, email, phone, role, password_hash, email_verified, phone_verified) VALUES (?, ?, ?, 'citizen', '', ?, ?)"
+          )
+          .run(citizenName, email || null, phone || null, email ? 1 : 0, phone ? 1 : 0);
+        effectiveUserId = info.lastInsertRowid;
       } else {
         effectiveUserId = 1;
       }
@@ -267,7 +284,7 @@ export async function POST(request) {
     const initialStatus = isDraft ? 'draft' : 'submitted';
 
     // Get state code for application number
-    const stateRow = db.prepare('SELECT code FROM states WHERE id = ?').get(stateId);
+    const stateRow = await db.prepare('SELECT code FROM states WHERE id = ?').get(stateId);
     const stateCode = stateRow ? stateRow.code : 'XX';
 
     // Get fee snapshot
@@ -344,14 +361,14 @@ export async function POST(request) {
 
     // Check if updating existing draft
     if (applicationId) {
-      const existing = db.prepare('SELECT * FROM applications WHERE id = ?').get(applicationId);
+      const existing = await db.prepare('SELECT * FROM applications WHERE id = ?').get(applicationId);
       if (existing) {
         if (session && session.role === 'citizen' && existing.user_id !== session.userId) {
           return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
         finalAppNumber = existing.application_number;
-        db.prepare(`
+        await db.prepare(`
           UPDATE applications SET
             status = ?,
             rto_id = ?,
@@ -464,7 +481,7 @@ export async function POST(request) {
     // If new insert
     if (!finalAppNumber) {
       finalAppNumber = generateApplicationNumber(stateCode, serviceId);
-      const stmt = db.prepare(`
+      const stmt = await db.prepare(`
         INSERT INTO applications (
           application_number, user_id, state_id, service_id, rto_id, test_centre_id, district_id,
           status, first_name, middle_name, last_name, father_name, mother_name, relation_type, guardian_name,
@@ -577,7 +594,7 @@ export async function POST(request) {
       while (attempts < 5) {
         try {
           insertParams.application_number = finalAppNumber;
-          result = stmt.run(insertParams);
+          result = await stmt.run(insertParams);
           break;
         } catch (err) {
           if (err.code === 'SQLITE_CONSTRAINT_UNIQUE' || err.message?.includes('UNIQUE constraint failed: applications.application_number')) {
@@ -594,7 +611,7 @@ export async function POST(request) {
 
     // Record status history
     try {
-      db.prepare(`
+      await db.prepare(`
         INSERT INTO application_status_history (
           application_id, from_status, to_status, changed_by, notes
         ) VALUES (?, ?, ?, ?, ?)

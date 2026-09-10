@@ -37,13 +37,13 @@ export async function POST(request, { params }) {
     }
 
     // Verify operator exists
-    const operator = db.prepare('SELECT id, name, role, is_active FROM users WHERE id = ?').get(targetOperatorId);
+    const operator = await db.prepare('SELECT id, name, role, is_active FROM users WHERE id = ?').get(targetOperatorId);
     if (!operator || (operator.role !== 'operator' && operator.role !== 'admin')) {
       return NextResponse.json({ error: 'Target user is not an active staff member' }, { status: 400 });
     }
 
     const isNumeric = !isNaN(Number(id));
-    const app = db.prepare(`
+    const app = await db.prepare(`
       SELECT id, application_number, status, assigned_operator_id 
       FROM applications 
       WHERE ${isNumeric ? 'id = ?' : 'application_number = ?'}
@@ -54,25 +54,25 @@ export async function POST(request, { params }) {
     }
 
     // Run transaction
-    const executeAssign = db.transaction(() => {
+    const executeAssign = db.transaction(async () => {
       // If application is submitted, update status to assigned; otherwise keep status
       const newStatus = app.status === 'submitted' ? 'assigned' : app.status;
 
-      db.prepare(`
+      await db.prepare(`
         UPDATE applications 
         SET assigned_operator_id = ?, assigned_at = datetime('now'), status = ?, updated_at = datetime('now')
         WHERE id = ?
       `).run(targetOperatorId, newStatus, app.id);
 
       if (newStatus !== app.status) {
-        db.prepare(`
+        await db.prepare(`
           INSERT INTO application_status_history (
             application_id, from_status, to_status, changed_by, reason, created_at
           ) VALUES (?, ?, ?, ?, ?, datetime('now'))
         `).run(app.id, app.status, newStatus, session.userId, `Assigned to ${operator.name} (ID: ${operator.id})`);
       }
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: 'application.assign',
@@ -87,7 +87,7 @@ export async function POST(request, { params }) {
       });
     });
 
-    executeAssign();
+    await executeAssign();
 
     return NextResponse.json({
       success: true,

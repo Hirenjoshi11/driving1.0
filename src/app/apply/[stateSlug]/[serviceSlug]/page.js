@@ -70,7 +70,7 @@ export default function FormPage() {
   const [paymentResult, setPaymentResult] = useState(null);
   const [fees, setFees] = useState(null);
 
-  const draftStorageKey = `dlf_draft_${stateSlug}_${serviceSlug}`;
+  const draftStorageKey = `dlf_draft_${serviceSlug}`;
   const saveTimeoutRef = useRef(null);
 
   // Auto-scroll and focus to the first invalid field
@@ -123,115 +123,7 @@ export default function FormPage() {
     }
   }, []);
 
-  // Quick Demo Data Auto-Fill across all form pages/steps
-  const handleFillDemoData = useCallback(() => {
-    const isRajasthan = stateSlug === 'rajasthan';
-    const isUP = stateSlug === 'uttar-pradesh';
 
-    const stateName = isRajasthan ? 'Rajasthan' : isUP ? 'Uttar Pradesh' : 'Gujarat';
-    const districtName = isRajasthan ? 'Jaipur' : isUP ? 'Lucknow' : 'Ahmedabad';
-    const rtoName = isRajasthan ? 'RTO Jaipur' : isUP ? 'RTO Lucknow' : 'RTO Ahmedabad';
-    const rtoCode = isRajasthan ? 'RJ-14' : isUP ? 'UP-32' : 'GJ-01';
-    const pin = isRajasthan ? '302015' : isUP ? '226001' : '380054';
-    const llNum = isRajasthan ? 'RJ14/0045892/2024' : isUP ? 'UP32/0045892/2024' : 'GJ01/0045892/2024';
-    const dlNum = isRajasthan ? 'RJ14 20180045892' : isUP ? 'UP32 20180045892' : 'GJ01 20180045892';
-
-    const completeDemoData = {
-      // Step 1: Applicant Details
-      firstName: 'Aarav',
-      middleName: 'Kumar',
-      lastName: 'Patel',
-      relationType: 'Father',
-      relationName: 'Rajesh Patel',
-      gender: 'Male',
-      dob: '1998-05-15',
-      mobile: '9876543210',
-      email: 'aarav.patel@example.com',
-      bloodGroup: 'B+',
-      education: 'Graduate',
-      identityType: 'aadhaar',
-      identityNumber: '987654321098',
-      identificationMark1: 'Mole on right forearm',
-      identificationMark2: 'Scar near left eyebrow',
-
-      // Step 2: Address Details
-      currentHouse: 'B-402, Shivalik Residency',
-      currentStreet: 'Main Highway Road',
-      currentCity: districtName,
-      currentTaluka: districtName,
-      districtId: isRajasthan ? 34 : isUP ? 67 : 1,
-      currentDistrictName: districtName,
-      currentPincode: pin,
-      sameAsCurrent: true,
-      permanentHouse: 'B-402, Shivalik Residency',
-      permanentStreet: 'Main Highway Road',
-      permanentCity: districtName,
-      permanentState: stateName,
-      permanentPincode: pin,
-
-      // Step: Vehicle Classes
-      selectedVehicleClasses: [2, 3],
-      selectedVehicleClassNames: ['Motorcycle With Gear (MCWG)', 'Light Motor Vehicle (LMV)'],
-
-      // Step: RTO Details
-      rtoId: isRajasthan ? 34 : isUP ? 67 : 1,
-      rtoName: rtoName,
-      rtoCode: rtoCode,
-      rtoAddress: `Main Transport Office, ${districtName}, ${stateName}`,
-      testCentreId: 1,
-      testCentreName: `Automated District Driving Test Centre, ${districtName}`,
-      testCentreAddress: `Near Transport Office, ${districtName}`,
-
-      // Step: Licence Details
-      learnerLicenceNumber: llNum,
-      existingDlNumber: dlNum,
-      licenceIssueDate: '2020-01-15',
-      licenceExpiryDate: '2040-01-14',
-      issuingAuthority: rtoName,
-      reasonForDuplicate: 'Original licence card lost while traveling',
-      policeReportNumber: `FIR/${rtoCode.replace('-', '')}/2024/0981`,
-      policeReportDate: '2024-02-10',
-      policeStation: `${districtName} Central Police Station`,
-      newName: 'Aarav Kumar Patel',
-      reasonForChange: 'Correction of middle name as per Aadhaar Card',
-      countryOfVisit: 'United Kingdom',
-      visaNumber: 'VISA-UK-9876543',
-      passportNumber: 'Z1234567',
-
-      // Step: Documents Uploaded
-      uploadedDocuments: {
-        1: { name: 'Aadhaar_Card_Verified.pdf', size: '1.2 MB', type: 'application/pdf', uploadedAt: '10:30 AM' },
-        2: { name: 'Birth_Certificate_Age_Proof.pdf', size: '850 KB', type: 'application/pdf', uploadedAt: '10:31 AM' },
-        3: { name: 'Medical_Fitness_Form1A.pdf', size: '920 KB', type: 'application/pdf', uploadedAt: '10:32 AM' },
-        4: { name: 'Passport_Size_Photo.jpg', size: '420 KB', type: 'image/jpeg', uploadedAt: '10:33 AM' },
-        5: { name: 'Existing_Licence_Copy.pdf', size: '1.1 MB', type: 'application/pdf', uploadedAt: '10:34 AM' },
-        6: { name: 'Police_FIR_Report.pdf', size: '650 KB', type: 'application/pdf', uploadedAt: '10:35 AM' },
-      },
-
-      // Step: Declaration & Consent
-      consentUnified: true,
-      consentProcessing: true,
-      consentCommunication: true,
-      declared: true,
-      guardianConsent: true,
-      guardianName: 'Rajesh Patel',
-
-      // Step: Payment Method
-      paymentMethod: 'upi',
-    };
-
-    setFormData((prev) => ({
-      ...prev,
-      ...completeDemoData,
-    }));
-    setStepErrors({});
-    setSubmitError('');
-    setAutoSaveStatus('saved');
-    setDemoFilledToast(true);
-    setTimeout(() => {
-      setDemoFilledToast(false);
-    }, 4000);
-  }, [stateSlug]);
 
   // Read draft from localStorage on load
   useEffect(() => {
@@ -327,31 +219,25 @@ export default function FormPage() {
       setLoading(true);
       try {
         let activeState = appState.selectedState;
-        if (!activeState || activeState.slug !== stateSlug) {
-          const statesRes = await fetch('/api/states');
-          const statesData = await statesRes.json();
-          const found = (statesData.states || []).find((s) => s.slug === stateSlug);
+        const statesRes = await fetch('/api/states');
+        const statesData = await statesRes.json();
+        const allStates = statesData.states || [];
+
+        if (stateSlug && stateSlug !== 'start' && stateSlug !== 'select') {
+          const found = allStates.find((s) => s.slug === stateSlug);
           if (found) {
             activeState = found;
             dispatch({ type: 'SET_STATE', payload: found });
-          } else {
-            router.push('/apply');
-            return;
           }
         }
 
         const resolvedStateId = activeState?.id;
-        if (!resolvedStateId) {
-          router.push('/apply');
-          return;
-        }
-
-        const svcRes = await fetch(`/api/services?stateId=${resolvedStateId}`);
+        const svcRes = await fetch(resolvedStateId ? `/api/services?stateId=${resolvedStateId}` : '/api/services');
         const svcData = await svcRes.json();
         const svc = (svcData.services || []).find((s) => s.slug === serviceSlug);
 
         if (!svc) {
-          router.push(`/apply/${stateSlug}`);
+          router.push('/apply');
           return;
         }
 
@@ -363,17 +249,32 @@ export default function FormPage() {
         const stepsData = await stepsRes.json();
         setSteps(stepsData.steps || []);
 
-        // Load fees
-        const feeRes = await fetch(`/api/fees?serviceId=${svc.id}&stateId=${resolvedStateId}`);
-        const feeData = await feeRes.json();
-        if (feeData.fees) setFees(feeData.fees);
+        // Load fees if state is resolved
+        if (resolvedStateId) {
+          const feeRes = await fetch(`/api/fees?serviceId=${svc.id}&stateId=${resolvedStateId}`);
+          const feeData = await feeRes.json();
+          if (feeData.fees) setFees(feeData.fees);
+        }
       } catch (e) {
         console.error('Error initializing form page:', e);
       }
       setLoading(false);
     };
     init();
-  }, [stateSlug, serviceSlug, appState.selectedState, dispatch, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stateSlug, serviceSlug, dispatch, router]);
+
+  // Dynamically load fees whenever state is selected/changed
+  useEffect(() => {
+    if (appState.selectedState?.id && service?.id) {
+      fetch(`/api/fees?serviceId=${service.id}&stateId=${appState.selectedState.id}`)
+        .then((res) => res.json())
+        .then((feeData) => {
+          if (feeData.fees) setFees(feeData.fees);
+        })
+        .catch((e) => console.error('Failed to load state fees:', e));
+    }
+  }, [appState.selectedState?.id, service?.id]);
 
   const updateFormData = useCallback((key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -387,6 +288,56 @@ export default function FormPage() {
       return prev;
     });
   }, []);
+
+  const handleFillDemoData = async () => {
+    let resolvedSlug = formData.state || appState.selectedState?.slug || (stateSlug !== 'start' && stateSlug !== 'select' ? stateSlug : 'gujarat');
+    
+    if (!appState.selectedState || appState.selectedState.slug !== resolvedSlug) {
+      try {
+        const res = await fetch('/api/states');
+        const data = await res.json();
+        const found = (data.states || []).find((s) => s.slug === resolvedSlug);
+        if (found) {
+          dispatch({ type: 'SET_STATE', payload: found });
+        }
+      } catch (err) {
+        console.error('Failed to sync demo state:', err);
+      }
+    }
+
+    const demoValues = {
+      state: resolvedSlug,
+      stateSlug: resolvedSlug,
+      firstName: 'Rahul',
+      lastName: 'Sharma',
+      middleName: 'Kumar',
+      relationType: 'Father',
+      relationName: 'Suresh Sharma',
+      gender: 'Male',
+      dob: '1998-05-15',
+      mobile: '9876543210',
+      email: 'rahul.sharma@example.com',
+      identityType: 'aadhaar',
+      identityNumber: '999988887777',
+      bloodGroup: 'O+',
+      education: 'Graduate',
+      identificationMark: 'Mole on right forearm',
+      addressLine1: '102, Shivalik Heights',
+      addressLine2: 'Near Central Station',
+      pincode: '380001',
+      sameAsCurrent: true,
+      vehicleClass: ['LMV', 'MCWG'],
+    };
+
+    setFormData((prev) => ({
+      ...prev,
+      ...demoValues,
+    }));
+
+    setStepErrors({});
+    setDemoFilledToast(true);
+    setTimeout(() => setDemoFilledToast(false), 3000);
+  };
 
   const handleNext = () => {
     const currentStep = steps[currentStepIndex];
@@ -712,17 +663,15 @@ export default function FormPage() {
             >
               {t('common.apply')}
             </button>
-            {stateSlug && (
+            {appState?.selectedState?.slug && (
               <>
                 <IconChevronRight size={13} className={styles.breadcrumbSep} />
                 <button
                   type="button"
-                  onClick={() => handleInterceptedNavigation(`/apply/${stateSlug}`)}
+                  onClick={() => handleInterceptedNavigation(`/apply/${appState.selectedState.slug}`)}
                   className={styles.breadcrumbLink}
                 >
-                  {localize && appState?.selectedState
-                    ? localize(appState.selectedState, 'name')
-                    : appState?.selectedState?.name || (stateSlug.charAt(0).toUpperCase() + stateSlug.slice(1))}
+                  {localize ? localize(appState.selectedState, 'name') : appState.selectedState.name}
                 </button>
               </>
             )}
@@ -748,19 +697,8 @@ export default function FormPage() {
                 </p>
               </div>
 
-              {/* Quick Demo Data & Real-time Draft Auto-save status */}
+              {/* Real-time Draft Auto-save status */}
               <div className={styles.formHeaderActions}>
-                <button
-                  type="button"
-                  id="btn-fill-demo-data"
-                  onClick={handleFillDemoData}
-                  className={styles.demoDataBtn}
-                  title={t('common.fillDemoData')}
-                >
-                  <IconBolt size={14} />
-                  <span>{t('common.fillDemoData')}</span>
-                </button>
-
                 {autoSaveStatus === 'saving' && (
                   <span className={validationStyles.autoSaveSaving}>
                     <span className={`spinner ${styles.autoSaveSpinner}`}></span>

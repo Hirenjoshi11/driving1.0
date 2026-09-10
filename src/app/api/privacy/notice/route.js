@@ -11,7 +11,7 @@ export async function GET(request) {
     const db = getDb();
 
     // Query versioned notice
-    let notice = db.prepare(`
+    let notice = await db.prepare(`
       SELECT pnv.*, pn.slug as notice_slug, pn.title as master_title
       FROM privacy_notice_versions pnv
       JOIN privacy_notices pn ON pnv.notice_id = pn.id
@@ -21,7 +21,7 @@ export async function GET(request) {
 
     // Fallback to English if requested language version not found
     if (!notice && lang !== 'en') {
-      notice = db.prepare(`
+      notice = await db.prepare(`
         SELECT pnv.*, pn.slug as notice_slug, pn.title as master_title
         FROM privacy_notice_versions pnv
         JOIN privacy_notices pn ON pnv.notice_id = pn.id
@@ -31,7 +31,7 @@ export async function GET(request) {
     }
 
     // Available versions list
-    const availableVersions = db.prepare(`
+    const availableVersions = await db.prepare(`
       SELECT DISTINCT version, effective_from, status 
       FROM privacy_notice_versions 
       WHERE status = 'published'

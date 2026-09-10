@@ -12,37 +12,37 @@ export async function GET(request) {
     const db = getDb();
 
     // 1. Pending Privacy Requests
-    const openRequestsCount = db.prepare(`
+    const openRequestsCount = (await db.prepare(`
       SELECT COUNT(*) as count FROM privacy_requests 
       WHERE status NOT IN ('completed', 'rejected')
-    `).get().count;
+    `).get())?.count || 0;
 
     // 2. Active Incidents & 72-hr timers
-    const activeIncidents = db.prepare(`
+    const activeIncidents = (await db.prepare(`
       SELECT COUNT(*) as count FROM security_incidents 
       WHERE status NOT IN ('remediated', 'closed')
-    `).get().count;
+    `).get())?.count || 0;
 
     // 3. Processors needing review or missing contract
-    const processorAlerts = db.prepare(`
+    const processorAlerts = (await db.prepare(`
       SELECT COUNT(*) as count FROM data_processors 
       WHERE processor_status IN ('missing_contract', 'review_required') OR contract_status != 'active'
-    `).get().count;
+    `).get())?.count || 0;
 
     // 4. Open Grievances
-    const openGrievancesCount = db.prepare(`
+    const openGrievancesCount = (await db.prepare(`
       SELECT COUNT(*) as count FROM grievances 
       WHERE status NOT IN ('resolved', 'closed')
-    `).get().count;
+    `).get())?.count || 0;
 
     // 5. Active Legal Holds
-    const activeHoldsCount = db.prepare(`
+    const activeHoldsCount = (await db.prepare(`
       SELECT COUNT(*) as count FROM legal_holds 
       WHERE is_active = 1
-    `).get().count;
+    `).get())?.count || 0;
 
     // 6. Consent Metrics
-    const consentStats = db.prepare(`
+    const consentStats = await db.prepare(`
       SELECT consent_status, COUNT(*) as count 
       FROM consents 
       GROUP BY consent_status
@@ -52,7 +52,7 @@ export async function GET(request) {
     const alerts = [];
 
     // Check overdue privacy requests (> 30 days)
-    const overdueRequests = db.prepare(`
+    const overdueRequests = await db.prepare(`
       SELECT id, request_number, request_type, created_at 
       FROM privacy_requests 
       WHERE status NOT IN ('completed', 'rejected') 
@@ -69,7 +69,7 @@ export async function GET(request) {
     }
 
     // Check incidents pending board notification (< 24h remaining or overdue)
-    const urgentIncidents = db.prepare(`
+    const urgentIncidents = await db.prepare(`
       SELECT id, incident_number, board_notification_due_at 
       FROM security_incidents 
       WHERE status IN ('detected', 'contained', 'investigating')

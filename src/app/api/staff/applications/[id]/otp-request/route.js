@@ -50,9 +50,9 @@ export async function POST(request, { params }) {
 
     const expiresAt = new Date(Date.now() + RELAY_TTL_MS).toISOString();
 
-    const open = db.transaction(() => {
+    const open = db.transaction(async () => {
       // Retire any earlier live request for this application.
-      db.prepare(
+      await db.prepare(
         `UPDATE otp_relay_requests SET status = 'superseded', ciphertext = NULL
          WHERE application_id = ? AND status IN ('pending', 'fulfilled')`
       ).run(app.id);
@@ -65,7 +65,7 @@ export async function POST(request, { params }) {
         )
         .run(app.id, app.user_id, session.userId, parsed.data.operatorPublicKey, expiresAt);
 
-      createNotification(db, {
+      await createNotification(db, {
         userId: app.user_id,
         applicationId: app.id,
         type: 'otp_requested',
@@ -74,7 +74,7 @@ export async function POST(request, { params }) {
         params: { appNo: app.application_number },
       });
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: 'otp.relay.requested',
@@ -87,7 +87,7 @@ export async function POST(request, { params }) {
       return info.lastInsertRowid;
     });
 
-    const requestId = open();
+    const requestId = await open();
     return NextResponse.json({ success: true, requestId, expiresAt });
   } catch (error) {
     console.error('OTP relay open error:', error);
@@ -129,7 +129,7 @@ export async function GET(request, { params }) {
     // Lazily expire a pending request whose window has passed.
     let status = relay.status;
     if (status === 'pending' && Date.now() > new Date(relay.expires_at).getTime()) {
-      db.prepare(`UPDATE otp_relay_requests SET status = 'expired' WHERE id = ?`).run(relay.id);
+      await db.prepare(`UPDATE otp_relay_requests SET status = 'expired' WHERE id = ?`).run(relay.id);
       status = 'expired';
     }
 

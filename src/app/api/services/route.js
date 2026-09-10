@@ -10,14 +10,14 @@ export async function GET(request) {
     let services;
 
     if (stateId) {
-      services = db.prepare(`
+      services = await db.prepare(`
         SELECT ls.* FROM licence_services ls
         INNER JOIN state_services ss ON ls.id = ss.service_id
         WHERE ss.state_id = ? AND ss.is_active = 1 AND ls.is_active = 1
         ORDER BY ls.sort_order
       `).all(stateId);
     } else {
-      services = db.prepare(
+      services = await db.prepare(
         'SELECT * FROM licence_services WHERE is_active = 1 ORDER BY sort_order'
       ).all();
     }

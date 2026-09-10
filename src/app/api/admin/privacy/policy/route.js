@@ -18,13 +18,13 @@ export async function GET(request) {
 
     // If specific version & lang requested, return full details & sections
     if (version) {
-      const versionRecord = db.prepare(`
+      const versionRecord = await db.prepare(`
         SELECT * FROM privacy_notice_versions
         WHERE version = ? AND language = ?
         LIMIT 1
       `).get(version, lang);
 
-      const sections = db.prepare(`
+      const sections = await db.prepare(`
         SELECT * FROM privacy_policy_sections
         WHERE version = ? AND language = ?
         ORDER BY sort_order ASC
@@ -37,7 +37,7 @@ export async function GET(request) {
     }
 
     // Otherwise list all policy notice versions
-    const allVersions = db.prepare(`
+    const allVersions = await db.prepare(`
       SELECT pnv.*, 
         (SELECT COUNT(*) FROM privacy_policy_sections s WHERE s.version = pnv.version AND s.language = pnv.language) as section_count
       FROM privacy_notice_versions pnv
@@ -71,7 +71,7 @@ export async function POST(request) {
     const db = getDb();
 
     // Check if version already exists
-    const existing = db.prepare(`
+    const existing = await db.prepare(`
       SELECT count(*) as count FROM privacy_notice_versions WHERE version = ?
     `).get(newVersion);
 
@@ -80,12 +80,12 @@ export async function POST(request) {
     }
 
     // Insert draft records for en, gu, hi
-    const insertVersion = db.prepare(`
+    const insertVersion = await db.prepare(`
       INSERT INTO privacy_notice_versions (notice_id, version, language, title, content, summary, status, effective_from, created_by)
       VALUES (1, ?, ?, ?, ?, ?, 'draft', ?, ?)
     `);
 
-    const copySections = db.prepare(`
+    const copySections = await db.prepare(`
       INSERT INTO privacy_policy_sections (
         section_key, version, language, section_number, heading, subheading,
         content, structured_json, callout_title, callout_content, sort_order, is_active
@@ -96,7 +96,7 @@ export async function POST(request) {
       WHERE version = ?
     `);
 
-    const runTransaction = db.transaction(() => {
+    const runTransaction = db.transaction(async () => {
       // Create entries in en, gu, hi with 'draft' state
       insertVersion.run(newVersion, 'en', title || `Privacy Policy v${newVersion} (Draft)`, 'Draft privacy policy', 'Draft version in preparation', effectiveFrom || '2026-10-01', auth.user.id);
       insertVersion.run(newVersion, 'gu', `ગોપનીયતા નીતિ v${newVersion} (ડ્રાફ્ટ)`, 'ડ્રાફ્ટ ગોપનીયતા નીતિ', 'તૈયારી હેઠળ ડ્રાફ્ટ આવૃત્તિ', effectiveFrom || '2026-10-01', auth.user.id);
@@ -106,7 +106,7 @@ export async function POST(request) {
       copySections.run(newVersion, sourceVersion);
     });
 
-    runTransaction();
+    await runTransaction();
 
     return NextResponse.json({
       success: true,
@@ -141,24 +141,24 @@ export async function PUT(request) {
       }
 
       // If publishing, archive any older version that was published
-      const updateTransaction = db.transaction(() => {
+      const updateTransaction = db.transaction(async () => {
         if (status === 'published') {
           // Archive other published versions
-          db.prepare(`
+          await db.prepare(`
             UPDATE privacy_notice_versions
             SET status = 'archived'
             WHERE status = 'published' AND version != ?
           `).run(version);
         }
 
-        db.prepare(`
+        await db.prepare(`
           UPDATE privacy_notice_versions
           SET status = ?, effective_from = COALESCE(?, effective_from), updated_at = datetime('now')
           WHERE version = ?
         `).run(status, effectiveFrom || null, version);
       });
 
-      updateTransaction();
+      await updateTransaction();
 
       return NextResponse.json({
         success: true,
@@ -172,7 +172,7 @@ export async function PUT(request) {
         return NextResponse.json({ error: 'sectionId is required.' }, { status: 400 });
       }
 
-      db.prepare(`
+      await db.prepare(`
         UPDATE privacy_policy_sections
         SET heading = COALESCE(?, heading),
             content = COALESCE(?, content),

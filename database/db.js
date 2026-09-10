@@ -1,179 +1,197 @@
-const Database = require('better-sqlite3');
-const path = require('path');
+const { Pool, types } = require('pg');
+const crypto = require('crypto');
 const fs = require('fs');
 
-const DB_PATH = process.env.VERCEL 
-  ? path.join('/tmp', 'driving_license.db')
-  : path.join(process.cwd(), 'database', 'driving_license.db');
+// Ensure BIGINT (type ID 20) is parsed as an integer rather than string
+types.setTypeParser(20, (val) => (val === null ? null : parseInt(val, 10)));
 
-let db;
+// Load .env.local if present in dev
+if (fs.existsSync('.env.local')) {
+  const content = fs.readFileSync('.env.local', 'utf-8');
+  content.split('\n').forEach(line => {
+    const match = line.match(/^\s*([\w_]+)\s*=\s*(.*)?\s*$/);
+    if (match && !process.env[match[1]]) {
+      process.env[match[1]] = match[2].trim().replace(/^['"]|['"]$/g, '');
+    }
+  });
+}
 
-function getDb() {
-  if (!db) {
-    const dbDir = path.dirname(DB_PATH);
-    if (!fs.existsSync(dbDir)) {
-      fs.mkdirSync(dbDir, { recursive: true });
-    }
-    
-    db = new Database(DB_PATH);
-    db.pragma('journal_mode = WAL');
-    db.pragma('foreign_keys = ON');
-    
-    // Check if tables exist and have data
-    const tableCheck = db.prepare("SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='states'").get();
-    let hasData = false;
-    if (tableCheck && tableCheck.count > 0) {
-      const stateCount = db.prepare("SELECT count(*) as count FROM states").get();
-      hasData = stateCount && stateCount.count > 0;
-    }
-    
-    if (!hasData) {
-      initializeDatabase();
-    }
+const DEFAULT_PG_URL = process.env.DATABASE_URL || '';
 
-    // Check if DPDP tables exist and are initialized
-    const dpdpCheck = db.prepare("SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='data_inventory'").get();
-    let hasDpdpData = false;
-    if (dpdpCheck && dpdpCheck.count > 0) {
-      const invCount = db.prepare("SELECT count(*) as count FROM data_inventory").get();
-      hasDpdpData = invCount && invCount.count > 0;
-    }
+let pool;
 
-    if (!hasDpdpData) {
-      initializeDpdpDatabase();
+function getPgPool() {
+  if (!pool) {
+    const connectionString = process.env.DATABASE_URL || DEFAULT_PG_URL;
+    if (!connectionString) {
+      throw new Error('DATABASE_URL environment variable is not configured.');
     }
+    pool = new Pool({
+      connectionString,
+      ssl: { rejectUnauthorized: false },
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
+    });
+  }
+  return pool;
+}
 
-    // Check if privacy_policy_sections exists and has data
-    try {
-      const sectionTableCheck = db.prepare("SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='privacy_policy_sections'").get();
-      if (!sectionTableCheck || sectionTableCheck.count === 0) {
-        const { seedPrivacySections } = require('./seed_privacy_sections');
-        seedPrivacySections();
+function translateSql(sql) {
+  let s = sql;
+  // SQLite to PostgreSQL dialect mappings
+  s = s.replace(/datetime\('now'\)/gi, "to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')");
+  s = s.replace(/date\('now'\)/gi, "CURRENT_DATE");
+  s = s.replace(/SUBSTR\(([^,]+),\s*-(\d+)\)/gi, 'RIGHT($1, $2)');
+
+  // Convert positional placeholders ? to $1, $2, ... outside string literals
+  let paramIndex = 1;
+  let inString = false;
+  let result = '';
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (ch === "'") {
+      inString = !inString;
+      result += ch;
+    } else if (ch === '?' && !inString) {
+      result += `$${paramIndex++}`;
+    } else {
+      result += ch;
+    }
+  }
+  return result;
+}
+
+function normalizeParams(args) {
+  let list = (args.length === 1 && Array.isArray(args[0])) ? args[0] : args;
+  return list.map(v => (v === undefined ? null : v));
+}
+
+function createStatement(sql, executor) {
+  let s = sql;
+  s = s.replace(/datetime\('now'\)/gi, "to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')");
+  s = s.replace(/date\('now'\)/gi, "CURRENT_DATE");
+  s = s.replace(/SUBSTR\(([^,]+),\s*-(\d+)\)/gi, 'RIGHT($1, $2)');
+
+  const namedParamRegex = /[@:]([a-zA-Z0-9_]+)/g;
+  const namedParams = [];
+  let match;
+  while ((match = namedParamRegex.exec(s)) !== null) {
+    namedParams.push(match[1]);
+  }
+
+  let finalSql = s;
+  if (namedParams.length > 0) {
+    let index = 1;
+    finalSql = s.replace(/[@:]([a-zA-Z0-9_]+)/g, () => `$${index++}`);
+  } else {
+    let index = 1;
+    let inString = false;
+    let res = '';
+    for (let i = 0; i < s.length; i++) {
+      if (s[i] === "'") {
+        inString = !inString;
+        res += s[i];
+      } else if (s[i] === '?' && !inString) {
+        res += `$${index++}`;
       } else {
-        const secCount = db.prepare("SELECT count(*) as count FROM privacy_policy_sections").get();
-        if (!secCount || secCount.count === 0) {
-          const { seedPrivacySections } = require('./seed_privacy_sections');
-          seedPrivacySections();
+        res += s[i];
+      }
+    }
+    finalSql = res;
+  }
+
+  const isInsert = /^\s*INSERT\s/i.test(finalSql);
+  const hasReturning = /RETURNING/i.test(finalSql);
+
+  function resolveParams(args) {
+    if (args.length === 1 && typeof args[0] === 'object' && !Array.isArray(args[0]) && args[0] !== null) {
+      const obj = args[0];
+      return namedParams.map(k => (obj[k] !== undefined ? obj[k] : null));
+    }
+    let list = (args.length === 1 && Array.isArray(args[0])) ? args[0] : args;
+    return list.map(v => (v === undefined ? null : v));
+  }
+
+  return {
+    async all(...params) {
+      const p = resolveParams(params);
+      const res = await executor.query(finalSql, p);
+      return res.rows;
+    },
+    async get(...params) {
+      const p = resolveParams(params);
+      const res = await executor.query(finalSql, p);
+      return res.rows[0] !== undefined ? res.rows[0] : undefined;
+    },
+    async run(...params) {
+      const p = resolveParams(params);
+      if (isInsert && !hasReturning) {
+        try {
+          const res = await executor.query(finalSql + ' RETURNING id', p);
+          return {
+            lastInsertRowid: res.rows[0]?.id || 0,
+            changes: res.rowCount
+          };
+        } catch (err) {
+          if (err.message && err.message.includes('does not exist')) {
+            const res = await executor.query(finalSql, p);
+            return { lastInsertRowid: 0, changes: res.rowCount };
+          }
+          throw err;
         }
       }
-    } catch (e) {
-      console.warn('Error checking privacy_policy_sections table:', e.message);
+      const res = await executor.query(finalSql, p);
+      return {
+        lastInsertRowid: res.rows[0]?.id || 0,
+        changes: res.rowCount
+      };
     }
+  };
+}
 
-    // Ensure payment_orders table exists
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS payment_orders (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        order_id TEXT UNIQUE NOT NULL,
-        application_id INTEGER NOT NULL,
-        user_id INTEGER,
-        state_id INTEGER,
-        service_id INTEGER,
-        government_fee REAL NOT NULL,
-        service_fee REAL NOT NULL,
-        gateway_fee REAL NOT NULL,
-        discount REAL DEFAULT 0,
-        total_amount REAL NOT NULL,
-        currency TEXT DEFAULT 'INR',
-        status TEXT DEFAULT 'created',
-        payment_method TEXT,
-        gateway_reference TEXT,
-        idempotency_key TEXT UNIQUE,
-        error_message TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (application_id) REFERENCES applications(id)
-      );
-      CREATE INDEX IF NOT EXISTS idx_payment_orders_app ON payment_orders(application_id);
-      CREATE INDEX IF NOT EXISTS idx_payment_orders_status ON payment_orders(status);
-    `);
-
-    // In-app notifications (citizen-facing). Store a translation KEY + params,
-    // never a baked English sentence, so the citizen reads it in their language.
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS notifications (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        application_id INTEGER,
-        type TEXT NOT NULL,
-        title_key TEXT NOT NULL,
-        body_key TEXT NOT NULL,
-        params TEXT,
-        read_at TEXT,
-        created_at TEXT NOT NULL DEFAULT (datetime('now')),
-        FOREIGN KEY (user_id) REFERENCES users(id),
-        FOREIGN KEY (application_id) REFERENCES applications(id)
-      );
-      CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id, read_at);
-      CREATE INDEX IF NOT EXISTS idx_notifications_app ON notifications(application_id);
-    `);
-
-    // OTP relay requests. E2E by design: the plaintext OTP NEVER lands here.
-    // The citizen's app encrypts the code to operator_public_key before it
-    // leaves the device; only ciphertext is stored, and it is purged on use or
-    // expiry. There is deliberately no plaintext column.
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS otp_relay_requests (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        application_id INTEGER NOT NULL,
-        citizen_user_id INTEGER NOT NULL,
-        requested_by INTEGER NOT NULL,
-        operator_public_key TEXT NOT NULL,
-        ciphertext TEXT,
-        status TEXT NOT NULL DEFAULT 'pending',
-        created_at TEXT NOT NULL DEFAULT (datetime('now')),
-        expires_at TEXT NOT NULL,
-        fulfilled_at TEXT,
-        cleared_at TEXT,
-        FOREIGN KEY (application_id) REFERENCES applications(id),
-        FOREIGN KEY (citizen_user_id) REFERENCES users(id),
-        FOREIGN KEY (requested_by) REFERENCES users(id)
-      );
-      CREATE INDEX IF NOT EXISTS idx_otp_relay_app ON otp_relay_requests(application_id, status);
-    `);
-
-    // Timestamp for "an operator has started filling this form", surfaced to
-    // the citizen. Added via ALTER because applications predates it; guarded so
-    // it runs once.
-    const appCols = db.prepare("PRAGMA table_info(applications)").all();
-    if (!appCols.some((c) => c.name === 'fill_started_at')) {
-      db.exec("ALTER TABLE applications ADD COLUMN fill_started_at TEXT");
+function createDbWrapper(executor) {
+  return {
+    pool: executor,
+    prepare(sql) {
+      return createStatement(sql, executor);
+    },
+    async query(sql, params = []) {
+      const translatedSql = translateSql(sql);
+      return executor.query(translatedSql, normalizeParams(params));
+    },
+    async exec(sql) {
+      return executor.query(sql);
+    },
+    transaction(callback) {
+      return async (...args) => {
+        const client = await (executor.connect ? executor.connect() : executor);
+        const shouldRelease = !!executor.connect;
+        try {
+          await client.query('BEGIN');
+          const clientDb = createDbWrapper(client);
+          const result = await callback(clientDb, ...args);
+          await client.query('COMMIT');
+          return result;
+        } catch (err) {
+          await client.query('ROLLBACK');
+          throw err;
+        } finally {
+          if (shouldRelease) client.release();
+        }
+      };
     }
-  }
-  return db;
+  };
 }
 
-function initializeDatabase() {
-  const schemaPath = path.join(process.cwd(), 'database', 'schema.sql');
-  const seedPath = path.join(process.cwd(), 'database', 'seed.sql');
-  
-  if (fs.existsSync(schemaPath)) {
-    const schema = fs.readFileSync(schemaPath, 'utf-8');
-    db.exec(schema);
+let dbInstance = null;
+
+function getDb() {
+  if (!dbInstance) {
+    dbInstance = createDbWrapper(getPgPool());
   }
-  
-  if (fs.existsSync(seedPath)) {
-    const seed = fs.readFileSync(seedPath, 'utf-8');
-    db.exec(seed);
-  }
+  return dbInstance;
 }
-
-function initializeDpdpDatabase() {
-  const dpdpSchemaPath = path.join(process.cwd(), 'database', 'dpdp_schema.sql');
-  const dpdpSeedPath = path.join(process.cwd(), 'database', 'dpdp_seed.sql');
-
-  if (fs.existsSync(dpdpSchemaPath)) {
-    const dpdpSchema = fs.readFileSync(dpdpSchemaPath, 'utf-8');
-    db.exec(dpdpSchema);
-  }
-
-  if (fs.existsSync(dpdpSeedPath)) {
-    const dpdpSeed = fs.readFileSync(dpdpSeedPath, 'utf-8');
-    db.exec(dpdpSeed);
-  }
-}
-
-const crypto = require('crypto');
 
 function generateApplicationNumber(stateCode, serviceId) {
   const now = new Date();
@@ -183,4 +201,8 @@ function generateApplicationNumber(stateCode, serviceId) {
   return `DLF-${stateCode}-${year}${month}-${random}`;
 }
 
-module.exports = { getDb, generateApplicationNumber };
+module.exports = {
+  getDb,
+  getPgPool,
+  generateApplicationNumber
+};

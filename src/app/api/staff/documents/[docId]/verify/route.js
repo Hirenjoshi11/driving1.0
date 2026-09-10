@@ -37,7 +37,7 @@ export async function POST(request, { params }) {
     const { decision, rejectionReason } = parsed.data;
 
     // Fetch document and associated application
-    const doc = db.prepare(`
+    const doc = await db.prepare(`
       SELECT 
         ad.id,
         ad.application_id,
@@ -61,8 +61,8 @@ export async function POST(request, { params }) {
     }
 
     // Update document record
-    const updateDoc = db.transaction(() => {
-      db.prepare(`
+    const updateDoc = db.transaction(async () => {
+      await db.prepare(`
         UPDATE application_documents 
         SET upload_status = ?,
             rejection_reason = ?,
@@ -75,7 +75,7 @@ export async function POST(request, { params }) {
       );
 
       // Write Audit Log
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: decision === 'verified' ? 'document.verify' : 'document.reject',
@@ -92,7 +92,7 @@ export async function POST(request, { params }) {
       });
     });
 
-    updateDoc();
+    await updateDoc();
 
     return NextResponse.json({
       success: true,

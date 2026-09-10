@@ -13,7 +13,7 @@ export async function GET(request) {
     }
 
     const db = getDb();
-    const incidents = db.prepare(`
+    const incidents = await db.prepare(`
       SELECT si.*, 
              u.name as creator_name,
              (SELECT COUNT(*) FROM breach_notifications WHERE incident_id = si.id) as user_notifications_count
@@ -78,31 +78,31 @@ export async function POST(request) {
       }
 
       const db = getDb();
-      const inc = db.prepare('SELECT * FROM security_incidents WHERE id = ?').get(incidentId);
+      const inc = await db.prepare('SELECT * FROM security_incidents WHERE id = ?').get(incidentId);
       if (!inc) return NextResponse.json({ error: 'Incident not found' }, { status: 404 });
 
       // Target users or sample users for incident broadcast
-      const users = db.prepare('SELECT id, name, phone, email FROM users WHERE role = "citizen" LIMIT 50').all();
+      const users = await db.prepare('SELECT id, name, phone, email FROM users WHERE role = "citizen" LIMIT 50').all();
       
-      const insertNotification = db.prepare(`
+      const insertNotification = await db.prepare(`
         INSERT INTO breach_notifications (
           incident_id, user_id, recipient_email, recipient_phone, channel,
           status, language, title, message, sent_at, created_at
         ) VALUES (?, ?, ?, ?, ?, 'sent', 'en', ?, ?, datetime('now'), datetime('now'))
       `);
 
-      const tx = db.transaction(() => {
+      const tx = db.transaction(async () => {
         for (const u of users) {
           for (const ch of channels) {
             insertNotification.run(incidentId, u.id, u.email, u.phone, ch, title, message);
           }
         }
-        db.prepare("UPDATE security_incidents SET status = 'users_notified', updated_at = datetime('now') WHERE id = ?").run(incidentId);
+        await db.prepare("UPDATE security_incidents SET status = 'users_notified', updated_at = datetime('now') WHERE id = ?").run(incidentId);
       });
 
-      tx();
+      await tx();
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: 'admin',
         action: 'BREACH_NOTIFICATIONS_DISPATCHED',

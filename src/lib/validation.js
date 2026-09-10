@@ -37,6 +37,14 @@ export function getApplicantSchema() {
       email: z.string().email('Invalid email address').optional().or(z.literal('')),
       identityType: z.string().optional().default('aadhaar'),
       identityNumber: z.string().min(1, 'Identity / Aadhaar number is required'),
+      state: z
+        .string({ required_error: 'Please select the state you are applying from' })
+        .trim()
+        .min(1, 'Please select the state you are applying from')
+        .refine((val) => ['gujarat', 'rajasthan', 'uttar-pradesh'].includes(val), {
+          message: 'Please select a valid state from the list (Gujarat, Rajasthan, or Uttar Pradesh)',
+        }),
+      stateSlug: z.string().optional(),
       bloodGroup: z.string().optional(),
       education: z.string().optional(),
       identificationMark: z.string().optional(),

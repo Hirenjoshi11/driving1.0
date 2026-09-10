@@ -9,9 +9,10 @@
     "lint": "eslint src"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^13.0.3",
     "next": "16.3.4",
+    "pg": "^8.23.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "uuid": "^14.0.2",

@@ -13,14 +13,14 @@ export async function GET(request) {
     }
 
     const db = getDb();
-    const policies = db.prepare('SELECT * FROM retention_policies ORDER BY is_active DESC, id ASC').all();
-    const legalHolds = db.prepare(`
+    const policies = await db.prepare('SELECT * FROM retention_policies ORDER BY is_active DESC, id ASC').all();
+    const legalHolds = await db.prepare(`
       SELECT lh.*, u.name as citizen_name, u.phone as citizen_phone
       FROM legal_holds lh
       LEFT JOIN users u ON lh.user_id = u.id
       ORDER BY lh.is_active DESC, lh.placed_at DESC
     `).all();
-    const recentDeletionJobs = db.prepare(`
+    const recentDeletionJobs = await db.prepare(`
       SELECT dj.*, u.name as citizen_name
       FROM deletion_jobs dj
       LEFT JOIN users u ON dj.user_id = u.id
@@ -51,7 +51,7 @@ export async function POST(request) {
     // Action 1: Manual sweep
     if (action === 'run_sweep') {
       const sweepReport = runRetentionSweep();
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: 'admin',
         action: 'RETENTION_SWEEP_EXECUTED',
@@ -69,12 +69,12 @@ export async function POST(request) {
         return NextResponse.json({ error: 'entityType, entityId, and reason are required' }, { status: 400 });
       }
 
-      const res = db.prepare(`
+      const res = await db.prepare(`
         INSERT INTO legal_holds (entity_type, entity_id, user_id, reason, legal_reference, placed_by, placed_at, is_active)
         VALUES (?, ?, ?, ?, ?, ?, datetime('now'), 1)
       `).run(entityType, String(entityId), userId || null, reason, legalReference || null, session.userId);
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: 'admin',
         action: 'LEGAL_HOLD_PLACED',
@@ -92,13 +92,13 @@ export async function POST(request) {
       const { holdId } = body;
       if (!holdId) return NextResponse.json({ error: 'holdId is required' }, { status: 400 });
 
-      db.prepare(`
+      await db.prepare(`
         UPDATE legal_holds 
         SET is_active = 0, released_by = ?, released_at = datetime('now')
         WHERE id = ?
       `).run(session.userId, holdId);
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: 'admin',
         action: 'LEGAL_HOLD_RELEASED',

@@ -19,7 +19,7 @@ const { getDb } = require('./db');
  * @param {string} n.bodyKey   - i18n key, e.g. 'notifications.fillStarted.body'
  * @param {object} [n.params]  - interpolation params for the body, e.g. { appNo }
  */
-function createNotification(db, { userId, applicationId = null, type, titleKey, bodyKey, params = null }) {
+async function createNotification(db, { userId, applicationId = null, type, titleKey, bodyKey, params = null }) {
   if (!db) db = getDb();
   if (!userId || !type || !titleKey || !bodyKey) {
     throw new Error('createNotification requires userId, type, titleKey, bodyKey');
@@ -32,7 +32,7 @@ function createNotification(db, { userId, applicationId = null, type, titleKey, 
     .run(userId, applicationId, type, titleKey, bodyKey, params ? JSON.stringify(params) : null);
 }
 
-function listForUser(db, userId, { limit = 30 } = {}) {
+async function listForUser(db, userId, { limit = 30 } = {}) {
   if (!db) db = getDb();
   const rows = db
     .prepare(
@@ -46,7 +46,7 @@ function listForUser(db, userId, { limit = 30 } = {}) {
   return rows.map((r) => ({ ...r, params: r.params ? JSON.parse(r.params) : null }));
 }
 
-function unreadCount(db, userId) {
+async function unreadCount(db, userId) {
   if (!db) db = getDb();
   const row = db
     .prepare(`SELECT COUNT(*) AS c FROM notifications WHERE user_id = ? AND read_at IS NULL`)
@@ -54,7 +54,7 @@ function unreadCount(db, userId) {
   return row ? row.c : 0;
 }
 
-function markRead(db, userId, ids = null) {
+async function markRead(db, userId, ids = null) {
   if (!db) db = getDb();
   if (Array.isArray(ids) && ids.length > 0) {
     const placeholders = ids.map(() => '?').join(',');

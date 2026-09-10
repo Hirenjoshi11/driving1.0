@@ -15,6 +15,9 @@ export default function Header() {
   const [langOpen, setLangOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/operator')) {
+    return null;
+  }
   const langRef = useRef(null);
   const langBtnRef = useRef(null);
   const langOptionRefs = useRef([]);
@@ -279,7 +282,13 @@ export default function Header() {
               aria-label={t('nav.logout') || 'Logout'}
             >
               <span className={`${styles.authRoundIcon} ${styles.authRoundIconLoggedIn}`}>
-                {state.user?.name ? state.user.name.charAt(0).toUpperCase() : <IconUser size={15} />}
+                {state.user?.avatar ? (
+                  <img src={state.user.avatar} alt="" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                ) : state.user?.name ? (
+                  state.user.name.charAt(0).toUpperCase()
+                ) : (
+                  <IconUser size={15} />
+                )}
               </span>
               <span className={styles.authBtnLabel}>
                 {t('nav.logout') || 'Logout'}
@@ -398,7 +407,13 @@ export default function Header() {
                     title={`${t('nav.logout') || 'Logout'} (${state.user?.name || 'User'})`}
                   >
                     <span className={`${styles.authRoundIcon} ${styles.authRoundIconLoggedIn}`}>
-                      {state.user?.name ? state.user.name.charAt(0).toUpperCase() : <IconUser size={15} />}
+                      {state.user?.avatar ? (
+                        <img src={state.user.avatar} alt="" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                      ) : state.user?.name ? (
+                        state.user.name.charAt(0).toUpperCase()
+                      ) : (
+                        <IconUser size={15} />
+                      )}
                     </span>
                     <span className={styles.authBtnLabel}>
                       {t('nav.logout') || 'Logout'} ({state.user?.name || 'User'})

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useApp } from '@/contexts/AppContext';
 import { StatusPill } from '@/components/console';
 import OperatorOtpPanel from '@/components/console/OperatorOtpPanel';
-import styles from '@/app/admin/AdminConsole.module.css';
+import styles from '@/app/operator/OperatorConsole.module.css';
 
 export default function OperatorCaseDetailPage({ params }) {
   const resolvedParams = use(params);

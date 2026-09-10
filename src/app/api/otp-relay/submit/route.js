@@ -41,18 +41,18 @@ export async function POST(request) {
       return NextResponse.json({ error: 'This request is no longer active' }, { status: 409 });
     }
     if (Date.now() > new Date(relay.expires_at).getTime()) {
-      db.prepare(`UPDATE otp_relay_requests SET status = 'expired' WHERE id = ?`).run(relay.id);
+      await db.prepare(`UPDATE otp_relay_requests SET status = 'expired' WHERE id = ?`).run(relay.id);
       return NextResponse.json({ error: 'This request has expired' }, { status: 409 });
     }
 
-    db.prepare(
+    await db.prepare(
       `UPDATE otp_relay_requests
        SET ciphertext = ?, status = 'fulfilled', fulfilled_at = datetime('now')
        WHERE id = ?`
     ).run(ciphertext, relay.id);
 
     // Audit the event, never the value.
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: session.role,
       action: 'otp.relay.fulfilled',

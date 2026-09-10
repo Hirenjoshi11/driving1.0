@@ -11,7 +11,7 @@ export async function GET(request) {
       return NextResponse.json({ error: 'serviceId is required' }, { status: 400 });
     }
 
-    const steps = db.prepare(
+    const steps = await db.prepare(
       'SELECT * FROM service_steps WHERE service_id = ? AND is_active = 1 ORDER BY step_number'
     ).all(serviceId);
 

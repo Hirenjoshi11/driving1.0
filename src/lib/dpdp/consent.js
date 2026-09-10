@@ -15,10 +15,10 @@ import { getDb } from '@/lib/db';
  * @param {number} userId
  * @returns {Array<object>}
  */
-export function getUserConsents(userId) {
+export async function getUserConsents(userId) {
   if (!userId) return [];
   const db = getDb();
-  return db.prepare(`
+  return await db.prepare(`
     SELECT c.*, p.code as purpose_code, p.name as purpose_name, 
            p.name_hi as purpose_name_hi, p.name_gu as purpose_name_gu,
            p.description as purpose_description, p.legal_basis, p.is_mandatory
@@ -44,7 +44,7 @@ export function getUserConsents(userId) {
  *   reason?: string
  * }} options
  */
-export function recordConsentChoice({
+export async function recordConsentChoice({
   userId,
   purposeCodeOrId,
   action,
@@ -60,9 +60,9 @@ export function recordConsentChoice({
   // Resolve purpose
   let purpose;
   if (typeof purposeCodeOrId === 'number' || !isNaN(Number(purposeCodeOrId))) {
-    purpose = db.prepare('SELECT * FROM processing_purposes WHERE id = ?').get(Number(purposeCodeOrId));
+    purpose = await db.prepare('SELECT * FROM processing_purposes WHERE id = ?').get(Number(purposeCodeOrId));
   } else {
-    purpose = db.prepare('SELECT * FROM processing_purposes WHERE code = ?').get(String(purposeCodeOrId));
+    purpose = await db.prepare('SELECT * FROM processing_purposes WHERE code = ?').get(String(purposeCodeOrId));
   }
 
   if (!purpose) {
@@ -77,13 +77,13 @@ export function recordConsentChoice({
   const now = new Date().toISOString();
   const withdrawnAt = action === 'withdraw' ? now : null;
 
-  const tx = db.transaction(() => {
+  const tx = db.transaction(async () => {
     // 1. Upsert into consents table
-    const existing = db.prepare('SELECT id FROM consents WHERE user_id = ? AND purpose_id = ?').get(userId, purpose.id);
+    const existing = await db.prepare('SELECT id FROM consents WHERE user_id = ? AND purpose_id = ?').get(userId, purpose.id);
     let consentId;
 
     if (existing) {
-      db.prepare(`
+      await db.prepare(`
         UPDATE consents
         SET notice_version_id = ?,
             language = ?,
@@ -107,7 +107,7 @@ export function recordConsentChoice({
       );
       consentId = existing.id;
     } else {
-      const res = db.prepare(`
+      const res = await db.prepare(`
         INSERT INTO consents (
           user_id, purpose_id, notice_version_id, language, consent_status,
           timestamp, source, ip_address, device_ref, withdrawn_at, created_at, updated_at
@@ -127,7 +127,7 @@ export function recordConsentChoice({
     }
 
     // 2. Append immutable consent event log (Never delete or overwrite!)
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO consent_events (
         consent_id, user_id, purpose_id, notice_version_id, language, action,
         reason, ip_address, device_ref, timestamp
@@ -147,7 +147,7 @@ export function recordConsentChoice({
     return { consentId, status, purposeCode: purpose.code };
   });
 
-  return tx();
+  return await tx();
 }
 
 /**
@@ -157,10 +157,10 @@ export function recordConsentChoice({
  * @param {string} purposeCode
  * @returns {boolean}
  */
-export function hasActiveConsent(userId, purposeCode) {
+export async function hasActiveConsent(userId, purposeCode) {
   if (!userId || !purposeCode) return false;
   const db = getDb();
-  const row = db.prepare(`
+  const row = await db.prepare(`
     SELECT c.consent_status, p.legal_basis, p.is_mandatory
     FROM processing_purposes p
     LEFT JOIN consents c ON c.purpose_id = p.id AND c.user_id = ?

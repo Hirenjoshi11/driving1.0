@@ -5,7 +5,7 @@ import ServiceSelectionView from '@/components/ServiceSelectionView';
 export async function generateMetadata({ params }) {
   const { stateSlug } = await params;
   const db = getDb();
-  const state = db.prepare('SELECT name FROM states WHERE slug = ?').get(stateSlug);
+  const state = await db.prepare('SELECT name FROM states WHERE slug = ?').get(stateSlug);
   return {
     title: `${state ? state.name : 'State'} Driving Licence Services | Driving License Form`,
     description: `Select and apply for driving licence services in ${state ? state.name : 'your state'}. Guided step-by-step preparation with instant document validation.`,
@@ -16,16 +16,16 @@ export default async function ServiceSelectionPage({ params }) {
   const { stateSlug } = await params;
   const db = getDb();
 
-  const state = db.prepare('SELECT * FROM states WHERE slug = ?').get(stateSlug);
+  const state = await db.prepare('SELECT * FROM states WHERE slug = ?').get(stateSlug);
   if (!state) {
-    const serviceCheck = db.prepare('SELECT slug FROM licence_services WHERE slug = ?').get(stateSlug);
+    const serviceCheck = await db.prepare('SELECT slug FROM licence_services WHERE slug = ?').get(stateSlug);
     if (serviceCheck) {
-      redirect(`/apply/gujarat/${serviceCheck.slug}`);
+      redirect(`/apply/start/${serviceCheck.slug}`);
     }
     notFound();
   }
 
-  const services = db.prepare(`
+  const services = await db.prepare(`
     SELECT 
       ls.id,
       ls.name,

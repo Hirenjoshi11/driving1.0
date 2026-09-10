@@ -319,7 +319,7 @@ export default function LicenceStep({
                     className={`${styles.input} ${stepErrors.passportNumber ? 'fieldErrorBorder' : ''}`}
                     aria-invalid={!!stepErrors.passportNumber}
                     aria-describedby={stepErrors.passportNumber ? 'err-passportNumber' : undefined}
-                    placeholder="e.g. Z1234567"
+                    placeholder="K2094851"
                     value={formData.passportNumber || ''}
                     onChange={(e) => updateFormData('passportNumber', e.target.value.toUpperCase())}
                     required

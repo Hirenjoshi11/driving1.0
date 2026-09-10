@@ -54,19 +54,50 @@ export default function ConsoleShell({ children, role: forcedRole = null }) {
     return () => { isMounted = false; };
   }, []);
 
+  // Handle Escape key to close mobile menu
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isMobileOpen) {
+        setIsMobileOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMobileOpen]);
+
+  // Lock body scroll on small screens when mobile drawer is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isMobileOpen]);
+
   const activeRole = forcedRole || user?.role || 'operator';
+  const rolePortalClass = activeRole === 'admin' ? styles.adminPortal : styles.operatorPortal;
 
   return (
-    <div className={`${styles.consoleRoot} ${styles[density]}`}>
+    <div className={`${styles.consoleRoot} ${styles[density]} ${rolePortalClass}`}>
       {/* WCAG 2.2 AA Skip Link */}
       <a href="#main-content" className={styles.skipLink}>
         {t('staff.skipToContent') || 'Skip to main content'}
       </a>
 
+      {/* Mobile Backdrop Overlay */}
+      {isMobileOpen && (
+        <div
+          className={styles.sidebarBackdrop}
+          onClick={() => setIsMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar */}
       <aside
         className={`${styles.sidebar} ${isMobileOpen ? styles.sidebarOpen : ''}`}
-        aria-label="Staff Administration Sidebar"
+        aria-label={activeRole === 'admin' ? 'State Administration Sidebar' : 'RTO Operator Sidebar'}
       >
         {/* Brand Banner */}
         <div className={styles.brand}>
@@ -89,6 +120,15 @@ export default function ConsoleShell({ children, role: forcedRole = null }) {
                 : (t('staff.roleOperator') || 'RTO Clerk')}
             </span>
           </div>
+          {/* Mobile Drawer Close Button */}
+          <button
+            type="button"
+            className={styles.sidebarCloseBtn}
+            onClick={() => setIsMobileOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            ✕
+          </button>
         </div>
 
         {/* Dynamic Navigation */}
@@ -102,7 +142,7 @@ export default function ConsoleShell({ children, role: forcedRole = null }) {
             </div>
             <div className={styles.userInfo}>
               <span className={styles.userName}>
-                {user?.phone ? maskMobile(user.phone) : 'Staff User'}
+                {user?.phone ? maskMobile(user.phone) : (user?.name || (activeRole === 'admin' ? 'Admin Authority' : 'RTO Clerk'))}
               </span>
               <span className={styles.userRoleText}>
                 ID #{user?.userId || '—'} • {activeRole.toUpperCase()}
@@ -116,8 +156,11 @@ export default function ConsoleShell({ children, role: forcedRole = null }) {
       <div className={styles.mainContainer}>
         <ConsoleHeader
           user={user}
+          role={activeRole}
           density={density}
           onDensityChange={handleDensityChange}
+          isMobileOpen={isMobileOpen}
+          onToggleMobile={() => setIsMobileOpen(prev => !prev)}
         />
 
         <main id="main-content" tabIndex="-1" className={styles.contentArea}>

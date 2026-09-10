@@ -14,7 +14,7 @@ export async function GET(request, { params }) {
     const resolvedParams = await params;
     const id = resolvedParams.id;
 
-    const application = db.prepare(`
+    const application = await db.prepare(`
       SELECT a.id,
              a.application_number,
              a.user_id,
@@ -83,8 +83,17 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 });
     }
 
+    // Citizen can only access their own application (by user_id or linked email)
+    if (session.role === 'citizen') {
+      const isOwner = application.user_id === session.userId ||
+        (session.email && application.email && application.email.toLowerCase() === session.email.toLowerCase());
+      if (!isOwner) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    }
+
     // Query documents for this application
-    const documents = db.prepare(`
+    const documents = await db.prepare(`
       SELECT d.id, dt.name as document_name, dt.category as document_category, 
              (CASE WHEN d.verified_at IS NOT NULL THEN 1 ELSE 0 END) as verified, 
              d.upload_status as status, 
@@ -96,7 +105,7 @@ export async function GET(request, { params }) {
     `).all(application.id);
 
     // Query status history
-    const history = db.prepare(`
+    const history = await db.prepare(`
       SELECT from_status, to_status, notes, created_at 
       FROM application_status_history 
       WHERE application_id = ? 
@@ -133,7 +142,7 @@ export async function PATCH(request, { params }) {
     const govRef = governmentApplicationNumber !== undefined ? governmentApplicationNumber : govReferenceNumber;
     const notesVal = notes !== undefined ? notes : internalNotes;
 
-    const existing = db.prepare('SELECT status FROM applications WHERE id = ?').get(id);
+    const existing = await db.prepare('SELECT status FROM applications WHERE id = ?').get(id);
     if (!existing) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 });
     }
@@ -175,11 +184,11 @@ export async function PATCH(request, { params }) {
     values.push(id);
 
     // Atomic transaction ensuring status history is guaranteed (FLOW-10 fix)
-    const updateTx = db.transaction(() => {
-      db.prepare(query).run(...values);
+    const updateTx = db.transaction(async () => {
+      await db.prepare(query).run(...values);
 
       if (status && status !== existing.status) {
-        db.prepare(`
+        await db.prepare(`
           INSERT INTO application_status_history (
             application_id, from_status, to_status, changed_by, notes
           ) VALUES (?, ?, ?, ?, ?)
@@ -187,7 +196,7 @@ export async function PATCH(request, { params }) {
       }
     });
 
-    updateTx();
+    await updateTx();
 
     return NextResponse.json({ success: true, status });
   } catch (error) {

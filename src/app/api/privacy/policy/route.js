@@ -11,7 +11,7 @@ export async function GET(request) {
     const db = getDb();
 
     // Query version metadata
-    let versionMeta = db.prepare(`
+    let versionMeta = await db.prepare(`
       SELECT * FROM privacy_notice_versions
       WHERE version = ? AND language = ? AND status = 'published'
       LIMIT 1
@@ -19,7 +19,7 @@ export async function GET(request) {
 
     // Fallback to English if requested language version not found
     if (!versionMeta && lang !== 'en') {
-      versionMeta = db.prepare(`
+      versionMeta = await db.prepare(`
         SELECT * FROM privacy_notice_versions
         WHERE version = ? AND language = 'en' AND status = 'published'
         LIMIT 1
@@ -27,7 +27,7 @@ export async function GET(request) {
     }
 
     // Available versions list
-    const availableVersions = db.prepare(`
+    const availableVersions = await db.prepare(`
       SELECT DISTINCT version, effective_from, status, title 
       FROM privacy_notice_versions 
       WHERE status = 'published'
@@ -35,7 +35,7 @@ export async function GET(request) {
     `).all();
 
     // Query all 14 structured sections
-    let sections = db.prepare(`
+    let sections = await db.prepare(`
       SELECT * FROM privacy_policy_sections
       WHERE version = ? AND language = ? AND is_active = 1
       ORDER BY sort_order ASC
@@ -43,7 +43,7 @@ export async function GET(request) {
 
     // Fallback to English if sections in requested language are missing
     if ((!sections || sections.length === 0) && lang !== 'en') {
-      sections = db.prepare(`
+      sections = await db.prepare(`
         SELECT * FROM privacy_policy_sections
         WHERE version = ? AND language = 'en' AND is_active = 1
         ORDER BY sort_order ASC

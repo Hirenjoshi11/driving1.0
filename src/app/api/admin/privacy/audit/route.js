@@ -42,7 +42,7 @@ export async function GET(request) {
     query += ' ORDER BY al.created_at DESC LIMIT ?';
     params.push(limit);
 
-    const logs = db.prepare(query).all(...params);
+    const logs = await db.prepare(query).all(...params);
 
     if (format === 'csv') {
       const headers = ['ID', 'Timestamp', 'Actor Role', 'Actor Name', 'Action', 'Entity Type', 'Entity ID', 'Summary', 'IP'];

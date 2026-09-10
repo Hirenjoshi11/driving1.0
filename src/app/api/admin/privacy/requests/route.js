@@ -35,7 +35,7 @@ export async function GET(request) {
     }
 
     query += ' ORDER BY pr.created_at DESC';
-    const requests = db.prepare(query).all(...params);
+    const requests = await db.prepare(query).all(...params);
 
     return NextResponse.json({ requests });
   } catch (error) {
@@ -60,7 +60,7 @@ export async function PUT(request) {
     }
 
     const db = getDb();
-    const req = db.prepare('SELECT * FROM privacy_requests WHERE id = ?').get(requestId);
+    const req = await db.prepare('SELECT * FROM privacy_requests WHERE id = ?').get(requestId);
     if (!req) {
       return NextResponse.json({ error: 'Privacy request not found' }, { status: 404 });
     }
@@ -96,8 +96,8 @@ export async function PUT(request) {
       nextStatus = 'rejected';
     }
 
-    const tx = db.transaction(() => {
-      db.prepare(`
+    const tx = db.transaction(async () => {
+      await db.prepare(`
         UPDATE privacy_requests
         SET status = ?,
             verification_status = ?,
@@ -108,12 +108,12 @@ export async function PUT(request) {
         WHERE id = ?
       `).run(nextStatus, verificationStatus, resolution, session.userId, nextStatus, requestId);
 
-      db.prepare(`
+      await db.prepare(`
         INSERT INTO privacy_request_events (request_id, from_status, to_status, actor_id, actor_role, notes, created_at)
         VALUES (?, ?, ?, ?, 'admin', ?, datetime('now'))
       `).run(requestId, req.status, nextStatus, session.userId, notes || `Admin action: ${action}`);
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: 'admin',
         action: `PRIVACY_REQUEST_${action.toUpperCase()}`,
@@ -124,7 +124,7 @@ export async function PUT(request) {
       });
     });
 
-    tx();
+    await tx();
     return NextResponse.json({ success: true, status: nextStatus });
   } catch (error) {
     console.error('Error updating privacy request:', error);

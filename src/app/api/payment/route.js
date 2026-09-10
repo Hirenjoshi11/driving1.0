@@ -32,7 +32,7 @@ export async function POST(request) {
       }
 
       // Fetch application and verify ownership
-      const application = db.prepare('SELECT * FROM applications WHERE id = ?').get(applicationId);
+      const application = await db.prepare('SELECT * FROM applications WHERE id = ?').get(applicationId);
       if (!application) {
         return NextResponse.json(
           { success: false, error_code: 'APPLICATION_NOT_FOUND', message: 'Application not found' },
@@ -60,7 +60,7 @@ export async function POST(request) {
 
       // Idempotency check: if an active order exists with same idempotency key or created in last 2 mins
       if (idempotencyKey) {
-        const existingOrder = db.prepare(
+        const existingOrder = await db.prepare(
           'SELECT * FROM payment_orders WHERE idempotency_key = ? AND application_id = ?'
         ).get(idempotencyKey, applicationId);
 
@@ -86,7 +86,7 @@ export async function POST(request) {
       }
 
       // Server calculates fees authoritatively from fee_structure table
-      const feeRow = db.prepare(`
+      const feeRow = await db.prepare(`
         SELECT * FROM fee_structure 
         WHERE service_id = ? AND state_id = ? AND is_active = 1
         ORDER BY effective_from DESC LIMIT 1
@@ -103,7 +103,7 @@ export async function POST(request) {
       const orderId = `ORD-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
       const actualIdempotencyKey = idempotencyKey || `IDEM-${orderId}`;
 
-      db.prepare(`
+      await db.prepare(`
         INSERT INTO payment_orders (
           order_id, application_id, user_id, state_id, service_id,
           government_fee, service_fee, gateway_fee, discount, total_amount,
@@ -129,7 +129,7 @@ export async function POST(request) {
       );
 
       // Update application state
-      db.prepare(`
+      await db.prepare(`
         UPDATE applications
         SET status = CASE WHEN status = 'draft' THEN 'payment_pending' ELSE status END,
             payment_status = 'pending',
@@ -166,7 +166,7 @@ export async function POST(request) {
         );
       }
 
-      const order = db.prepare('SELECT * FROM payment_orders WHERE order_id = ?').get(orderId);
+      const order = await db.prepare('SELECT * FROM payment_orders WHERE order_id = ?').get(orderId);
       if (!order) {
         return NextResponse.json(
           { success: false, error_code: 'ORDER_NOT_FOUND', message: 'Payment order not found' },
@@ -174,7 +174,7 @@ export async function POST(request) {
         );
       }
 
-      const application = db.prepare('SELECT * FROM applications WHERE id = ?').get(order.application_id);
+      const application = await db.prepare('SELECT * FROM applications WHERE id = ?').get(order.application_id);
       if (!application) {
         return NextResponse.json(
           { success: false, error_code: 'APPLICATION_NOT_FOUND', message: 'Application not found' },
@@ -186,7 +186,7 @@ export async function POST(request) {
       const paymentRef = `PAY-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
 
       // Update order status
-      db.prepare(`
+      await db.prepare(`
         UPDATE payment_orders
         SET status = 'completed',
             gateway_reference = ?,
@@ -196,7 +196,7 @@ export async function POST(request) {
       `).run(paymentRef, paymentMethod, order.id);
 
       // Update application status to submitted & completed payment
-      db.prepare(`
+      await db.prepare(`
         UPDATE applications
         SET status = 'submitted',
             payment_status = 'completed',
@@ -210,7 +210,7 @@ export async function POST(request) {
 
       // Status history entry
       try {
-        db.prepare(`
+        await db.prepare(`
           INSERT INTO application_status_history (
             application_id, from_status, to_status, changed_by, notes
           ) VALUES (?, ?, ?, ?, ?)
@@ -241,9 +241,9 @@ export async function POST(request) {
       const { orderId, applicationId } = body;
       let order;
       if (orderId) {
-        order = db.prepare('SELECT * FROM payment_orders WHERE order_id = ?').get(orderId);
+        order = await db.prepare('SELECT * FROM payment_orders WHERE order_id = ?').get(orderId);
       } else if (applicationId) {
-        order = db.prepare(
+        order = await db.prepare(
           'SELECT * FROM payment_orders WHERE application_id = ? ORDER BY id DESC LIMIT 1'
         ).get(applicationId);
       }
@@ -255,7 +255,7 @@ export async function POST(request) {
         );
       }
 
-      const app = db.prepare('SELECT status, payment_status, application_number FROM applications WHERE id = ?').get(order.application_id);
+      const app = await db.prepare('SELECT status, payment_status, application_number FROM applications WHERE id = ?').get(order.application_id);
 
       return NextResponse.json({
         success: true,

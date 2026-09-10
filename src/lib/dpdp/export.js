@@ -13,12 +13,12 @@
 import { getDb } from '@/lib/db';
 import crypto from 'crypto';
 
-export function generateCitizenDataPackage(userId) {
+export async function generateCitizenDataPackage(userId) {
   const db = getDb();
   const uid = Number(userId);
 
   // 1. User Profile
-  const user = db.prepare(`
+  const user = await db.prepare(`
     SELECT id, name, email, phone, role, preferred_language, created_at, updated_at
     FROM users 
     WHERE id = ?
@@ -29,7 +29,7 @@ export function generateCitizenDataPackage(userId) {
   }
 
   // 2. Applications
-  const applications = db.prepare(`
+  const applications = await db.prepare(`
     SELECT a.id, a.application_number, a.status, a.first_name, a.middle_name, a.last_name,
            a.date_of_birth, a.gender, a.mobile, a.email, a.blood_group,
            a.identity_type, a.current_city, a.current_pincode,
@@ -47,7 +47,7 @@ export function generateCitizenDataPackage(userId) {
   let documents = [];
   if (appIds.length > 0) {
     const placeholders = appIds.map(() => '?').join(',');
-    documents = db.prepare(`
+    documents = await db.prepare(`
       SELECT ad.id, ad.application_id, dt.name as document_type,
              ad.original_filename, ad.mime_type, ad.file_size, ad.upload_status, ad.uploaded_at
       FROM application_documents ad
@@ -57,14 +57,14 @@ export function generateCitizenDataPackage(userId) {
   }
 
   // 4. Consents & Historical Consent Events
-  const consents = db.prepare(`
+  const consents = await db.prepare(`
     SELECT c.*, p.name as purpose_name, p.code as purpose_code, p.legal_basis
     FROM consents c
     JOIN processing_purposes p ON c.purpose_id = p.id
     WHERE c.user_id = ?
   `).all(uid);
 
-  const consentEvents = db.prepare(`
+  const consentEvents = await db.prepare(`
     SELECT ce.*, p.name as purpose_name
     FROM consent_events ce
     JOIN processing_purposes p ON ce.purpose_id = p.id
@@ -73,7 +73,7 @@ export function generateCitizenDataPackage(userId) {
   `).all(uid);
 
   // 5. Privacy Requests
-  const privacyRequests = db.prepare(`
+  const privacyRequests = await db.prepare(`
     SELECT id, request_number, request_type, status, reason, resolution, created_at, resolved_at
     FROM privacy_requests
     WHERE user_id = ?
@@ -81,7 +81,7 @@ export function generateCitizenDataPackage(userId) {
   `).all(uid);
 
   // 6. Grievances
-  const grievances = db.prepare(`
+  const grievances = await db.prepare(`
     SELECT id, grievance_number, category, subject, status, resolution, created_at, resolved_at
     FROM grievances
     WHERE user_id = ?
@@ -89,7 +89,7 @@ export function generateCitizenDataPackage(userId) {
   `).all(uid);
 
   // 7. Data Sharing Disclosures
-  const sharingRecords = db.prepare(`
+  const sharingRecords = await db.prepare(`
     SELECT recipient, recipient_type, data_categories, purpose, legal_basis, timestamp
     FROM data_sharing_records
     WHERE user_id = ?
@@ -97,7 +97,7 @@ export function generateCitizenDataPackage(userId) {
   `).all(uid);
 
   // 8. Nomination Details
-  const nomination = db.prepare(`
+  const nomination = await db.prepare(`
     SELECT nominee_name, nominee_relationship, nominee_phone, nominee_email, status, created_at
     FROM nominations
     WHERE user_id = ? AND status = 'active'

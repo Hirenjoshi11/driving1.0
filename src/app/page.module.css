@@ -439,79 +439,139 @@
   }
 }
 
-.statesHorizontalWrap {
-  max-width: 920px;
+.statesShowcaseWrap {
+  max-width: 1040px;
   margin: 0 auto;
 }
 
-.statesHorizontalGrid {
+.statesShowcaseGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
-@media (max-width: 640px) {
-  .statesHorizontalGrid {
-    gap: var(--space-3);
-  }
-}
-
-@media (max-width: 440px) {
-  .statesHorizontalGrid {
+@media (max-width: 860px) {
+  .statesShowcaseGrid {
     grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 }
 
-.horizontalStateCard {
+.stateShowcaseCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stateShowcaseCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.08);
+  border-color: rgba(var(--color-primary-rgb), 0.35);
+}
+
+.stateShowcaseHeader {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.stateCodeBadge {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  min-height: 60px;
-  padding: var(--space-4) var(--space-3);
-  background: var(--color-white);
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  text-decoration: none;
-  text-align: center;
-  box-shadow: var(--shadow-xs);
-  transition:
-    transform 200ms var(--ease-out-expo),
-    border-color 200ms var(--ease-out-expo),
-    box-shadow 200ms var(--ease-out-expo),
-    background-color 200ms var(--ease-out-expo);
+  padding: 4px 10px;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--color-primary-darker, #065f46);
+  background: var(--color-primary-lighter, #d1fae5);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
-.horizontalStateCard:hover {
-  transform: translateY(-3px);
-  border-color: rgba(var(--color-primary-rgb), 0.4);
-  box-shadow: 0 10px 22px -6px rgba(var(--color-primary-rgb), 0.14);
+.stateActiveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #059669;
+  background: #f0fdf4;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(5, 150, 105, 0.2);
 }
 
-.horizontalStateCard:active {
-  transform: translateY(0);
+.stateActiveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
 }
 
-.horizontalStateCard:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 3px;
+.stateShowcaseBody {
+  flex: 1;
+  margin-bottom: var(--space-5);
 }
 
-.horizontalStateCardActive {
-  border-color: var(--color-primary);
-  background: var(--color-primary-light);
+.stateNameRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-2);
 }
 
-.horizontalStateName {
-  font-size: var(--font-size-base);
+.stateShowcaseName {
+  font-size: var(--font-size-lg);
   font-weight: 700;
   color: var(--color-text-dark);
-  line-height: 1.3;
-  transition: color 200ms ease;
+  margin: 0;
+  letter-spacing: -0.01em;
 }
 
-.horizontalStateCardActive .horizontalStateName,
-.horizontalStateCard:hover .horizontalStateName {
-  color: var(--color-primary-dark);
+.stateShowcaseNative {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.stateShowcaseDesc {
+  font-size: var(--font-size-xs);
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.stateShowcaseFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--color-border-light);
+}
+
+.stateShowcaseFeature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.stateCheckIcon {
+  color: var(--color-primary, #059669);
+  flex-shrink: 0;
 }
 
 /* ============================================================

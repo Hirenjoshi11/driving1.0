@@ -14,9 +14,9 @@
  * @param {number|string} operatorId
  * @returns {Array<{ id: number, state_id: number, service_id: number|null, rto_id: number|null }>}
  */
-export function getOperatorAssignments(db, operatorId) {
+export async function getOperatorAssignments(db, operatorId) {
   if (!operatorId) return [];
-  return db.prepare(`
+  return await db.prepare(`
     SELECT id, state_id, service_id, rto_id
     FROM operator_assignments
     WHERE operator_id = ? AND is_active = 1
@@ -30,7 +30,7 @@ export function getOperatorAssignments(db, operatorId) {
  * @param {string} [tableAlias='a']
  * @returns {{ sql: string, params: Array<number|string> }}
  */
-export function scopeClause(db, session, tableAlias = 'a') {
+export async function scopeClause(db, session, tableAlias = 'a') {
   if (!session) {
     return { sql: '1=0', params: [] };
   }
@@ -40,7 +40,7 @@ export function scopeClause(db, session, tableAlias = 'a') {
   }
 
   if (session.role === 'operator') {
-    const assignments = getOperatorAssignments(db, session.userId);
+    const assignments = await getOperatorAssignments(db, session.userId);
     if (!assignments || assignments.length === 0) {
       // Operator has no assigned jurisdictions; deny access to all records
       return { sql: '1=0', params: [] };
@@ -83,12 +83,12 @@ export function scopeClause(db, session, tableAlias = 'a') {
  * @param {number|string} applicationId - id or application_number
  * @returns {boolean}
  */
-export function isApplicationInScope(db, session, applicationId) {
+export async function isApplicationInScope(db, session, applicationId) {
   if (!session || !applicationId) return false;
   if (session.role === 'admin') return true;
   if (session.role !== 'operator') return false;
 
-  const { sql: scopeSql, params: scopeParams } = scopeClause(db, session, 'a');
+  const { sql: scopeSql, params: scopeParams } = await scopeClause(db, session, 'a');
   const isNumeric = !isNaN(Number(applicationId));
 
   const query = `
@@ -99,6 +99,6 @@ export function isApplicationInScope(db, session, applicationId) {
     LIMIT 1
   `;
 
-  const match = db.prepare(query).get(isNumeric ? Number(applicationId) : String(applicationId), ...scopeParams);
+  const match = await db.prepare(query).get(isNumeric ? Number(applicationId) : String(applicationId), ...scopeParams);
   return Boolean(match);
 }

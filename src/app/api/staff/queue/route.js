@@ -31,7 +31,7 @@ export async function GET(request) {
     const offset = (page - 1) * limit;
 
     // Apply jurisdiction scope
-    const { sql: scopeSql, params: scopeParams } = scopeClause(db, session, 'a');
+    const { sql: scopeSql, params: scopeParams } = await scopeClause(db, session, 'a');
 
     let whereConditions = [scopeSql];
     let queryParams = [...scopeParams];
@@ -77,7 +77,7 @@ export async function GET(request) {
 
     // Total count
     const countSql = `SELECT COUNT(*) as total FROM applications a ${whereClause}`;
-    const countRow = db.prepare(countSql).get(...queryParams);
+    const countRow = await db.prepare(countSql).get(...queryParams);
     const total = countRow ? countRow.total : 0;
 
     // Narrow column projection (NO PII like unmasked Aadhaar, DoB, full address)
@@ -125,7 +125,7 @@ export async function GET(request) {
       LIMIT ? OFFSET ?
     `;
 
-    const rows = db.prepare(selectSql).all(...queryParams, limit, offset);
+    const rows = await db.prepare(selectSql).all(...queryParams, limit, offset);
 
     // Mask phone number before sending
     const sanitizedRows = rows.map(r => ({

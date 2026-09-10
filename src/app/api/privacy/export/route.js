@@ -23,7 +23,7 @@ export async function GET(request) {
 
     // Audit log this sensitive export
     const db = getDb();
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: session.role,
       action: 'DATA_PRINCIPAL_EXPORT',

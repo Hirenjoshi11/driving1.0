@@ -27,18 +27,18 @@ export async function GET(request) {
 
     if (serviceId) {
       // Get detailed steps & fields for this service
-      const service = db.prepare('SELECT * FROM licence_services WHERE id = ?').get(Number(serviceId));
+      const service = await db.prepare('SELECT * FROM licence_services WHERE id = ?').get(Number(serviceId));
       if (!service) {
         return NextResponse.json({ error: 'Service not found' }, { status: 404 });
       }
 
-      const steps = db.prepare(`
+      const steps = await db.prepare(`
         SELECT * FROM service_steps 
         WHERE service_id = ? 
         ORDER BY step_number ASC
       `).all(Number(serviceId));
 
-      const fields = db.prepare(`
+      const fields = await db.prepare(`
         SELECT sf.*, ss.step_number, ss.title as step_title
         FROM service_fields sf
         JOIN service_steps ss ON sf.step_id = ss.id
@@ -46,7 +46,7 @@ export async function GET(request) {
         ORDER BY ss.step_number ASC, sf.sort_order ASC
       `).all(Number(serviceId));
 
-      const documents = db.prepare(`
+      const documents = await db.prepare(`
         SELECT sd.*, dt.name as doc_name, dt.code as doc_code, s.name as state_name
         FROM service_documents sd
         JOIN document_types dt ON sd.document_type_id = dt.id
@@ -64,7 +64,7 @@ export async function GET(request) {
     }
 
     // List all services with counts
-    const services = db.prepare(`
+    const services = await db.prepare(`
       SELECT 
         ls.*,
         (SELECT COUNT(*) FROM service_steps ss WHERE ss.service_id = ls.id) as step_count,
@@ -98,12 +98,12 @@ export async function PATCH(request) {
 
     const { id, name, name_hi, name_gu, description, is_active, sort_order } = parsed.data;
 
-    const current = db.prepare('SELECT * FROM licence_services WHERE id = ?').get(id);
+    const current = await db.prepare('SELECT * FROM licence_services WHERE id = ?').get(id);
     if (!current) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
 
-    db.prepare(`
+    await db.prepare(`
       UPDATE licence_services
       SET name = COALESCE(?, name),
           name_hi = COALESCE(?, name_hi),
@@ -119,7 +119,7 @@ export async function PATCH(request) {
       sort_order, id
     );
 
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: session.role,
       action: 'service.update',

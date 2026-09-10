@@ -29,7 +29,7 @@ export async function GET(request) {
     }
 
     query += ' ORDER BY sensitivity_level DESC, field_name ASC';
-    const items = db.prepare(query).all(...params);
+    const items = await db.prepare(query).all(...params);
 
     return NextResponse.json({ inventory: items });
   } catch (error) {
@@ -54,7 +54,7 @@ export async function PUT(request) {
     }
 
     const db = getDb();
-    db.prepare(`
+    await db.prepare(`
       UPDATE data_inventory
       SET legal_basis = COALESCE(?, legal_basis),
           sensitivity_level = COALESCE(?, sensitivity_level),
@@ -64,7 +64,7 @@ export async function PUT(request) {
       WHERE field_id = ?
     `).run(legalBasis, sensitivityLevel, erasable, correctable, fieldId);
 
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: 'admin',
       action: 'DATA_INVENTORY_UPDATED',

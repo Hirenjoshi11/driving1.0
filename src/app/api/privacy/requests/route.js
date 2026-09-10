@@ -14,7 +14,7 @@ export async function GET(request) {
     }
 
     const db = getDb();
-    const requests = db.prepare(`
+    const requests = await db.prepare(`
       SELECT pr.*, 
              (SELECT COUNT(*) FROM privacy_request_events WHERE request_id = pr.id) as event_count
       FROM privacy_requests pr
@@ -64,9 +64,9 @@ export async function POST(request) {
     const db = getDb();
     const requestNumber = `DPR-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
 
-    const tx = db.transaction(() => {
+    const tx = db.transaction(async () => {
       // Insert request
-      const res = db.prepare(`
+      const res = await db.prepare(`
         INSERT INTO privacy_requests (
           request_number, user_id, request_type, status, verification_status,
           verification_method, reason, request_details, created_at, updated_at
@@ -82,12 +82,12 @@ export async function POST(request) {
       const requestId = res.lastInsertRowid;
 
       // Event log
-      db.prepare(`
+      await db.prepare(`
         INSERT INTO privacy_request_events (request_id, from_status, to_status, actor_id, actor_role, notes, created_at)
         VALUES (?, NULL, 'created', ?, ?, 'Request submitted by citizen via authenticated session', datetime('now'))
       `).run(requestId, session.userId, session.role);
 
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: 'PRIVACY_REQUEST_CREATED',
@@ -101,7 +101,7 @@ export async function POST(request) {
       return { requestId, requestNumber, status: 'created' };
     });
 
-    const result = tx();
+    const result = await tx();
     return NextResponse.json({ success: true, request: result }, { status: 201 });
   } catch (error) {
     console.error('Error submitting privacy request:', error);

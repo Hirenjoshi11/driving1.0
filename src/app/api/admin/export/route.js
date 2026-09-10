@@ -34,7 +34,7 @@ export async function GET(request) {
 
     const whereClause = `WHERE ${whereConditions.join(' AND ')}`;
 
-    const rows = db.prepare(`
+    const rows = await db.prepare(`
       SELECT 
         a.application_number,
         a.first_name,
@@ -102,7 +102,7 @@ export async function GET(request) {
     const csvContent = csvLines.join('\r\n');
 
     // Audit the CSV export
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: session.role,
       action: 'export.csv',

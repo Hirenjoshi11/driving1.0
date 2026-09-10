@@ -40,7 +40,7 @@ export async function POST(request, { params }) {
     const isNumeric = !isNaN(Number(id));
 
     // Fetch current state
-    const app = db.prepare(`
+    const app = await db.prepare(`
       SELECT
         a.id,
         a.application_number,
@@ -60,7 +60,7 @@ export async function POST(request, { params }) {
     }
 
     // Count unverified documents
-    const docStats = db.prepare(`
+    const docStats = await db.prepare(`
       SELECT 
         COUNT(CASE WHEN sd.is_required = 1 AND (ad.upload_status IS NULL OR ad.upload_status != 'verified') THEN 1 END) as unverified_required,
         COUNT(CASE WHEN ad.upload_status = 'rejected' THEN 1 END) as rejected_count
@@ -91,7 +91,7 @@ export async function POST(request, { params }) {
     }
 
     // Execute state change atomically in transaction
-    const executeTransition = db.transaction(() => {
+    const executeTransition = db.transaction(async () => {
       let updateSql = 'UPDATE applications SET status = ?, updated_at = datetime(\'now\')';
       const updateParams = [targetStatus];
 
@@ -114,11 +114,11 @@ export async function POST(request, { params }) {
       updateSql += ' WHERE id = ?';
       updateParams.push(app.id);
 
-      db.prepare(updateSql).run(...updateParams);
+      await db.prepare(updateSql).run(...updateParams);
 
       // Status history row
       const historyReason = isOverride ? `[ADMIN OVERRIDE] ${overrideReason}` : (reason || null);
-      db.prepare(`
+      await db.prepare(`
         INSERT INTO application_status_history (
           application_id, from_status, to_status, changed_by, reason, notes, created_at
         ) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
@@ -132,7 +132,7 @@ export async function POST(request, { params }) {
       );
 
       // Audit Log
-      logAudit(db, {
+      await logAudit(db, {
         actorId: session.userId,
         actorRole: session.role,
         action: isOverride ? 'application.status_override' : 'application.status_transition',
@@ -182,11 +182,11 @@ export async function POST(request, { params }) {
       };
       const notif = notifyMap[targetStatus];
       if (notif && app.user_id) {
-        createNotification(db, { userId: app.user_id, applicationId: app.id, ...notif });
+        await createNotification(db, { userId: app.user_id, applicationId: app.id, ...notif });
       }
     });
 
-    executeTransition();
+    await executeTransition();
 
     return NextResponse.json({
       success: true,

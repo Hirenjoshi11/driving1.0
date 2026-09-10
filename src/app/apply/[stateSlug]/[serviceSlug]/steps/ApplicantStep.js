@@ -1,5 +1,6 @@
 'use client';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { useApp } from '@/contexts/AppContext';
 import { calculateAge, isMinorAge } from '@/lib/age.js';
 import FieldError from '@/components/validation/FieldError';
@@ -12,12 +13,45 @@ export default function ApplicantStep({
   t,
   stepErrors = {},
 }) {
-  const { t: contextT } = useApp();
+  const { t: contextT, dispatch } = useApp();
   const tr = t || contextT;
+  const params = useParams();
+  const router = useRouter();
+
+  const stateSlug = params?.stateSlug || 'gujarat';
+  const serviceSlug = params?.serviceSlug || 'learner-licence';
 
   // Calculate applicant age
   const age = useMemo(() => calculateAge(formData.dob), [formData.dob]);
   const isMinor = isMinorAge(formData.dob);
+
+  const handleStateChange = async (e) => {
+    const selectedStateSlug = e.target.value;
+    updateFormData('state', selectedStateSlug);
+    updateFormData('stateSlug', selectedStateSlug);
+    // Reset dependent location fields since RTOs/districts belong to this state
+    updateFormData('districtId', '');
+    updateFormData('district', '');
+    updateFormData('rtoCode', '');
+    updateFormData('rtoOffice', '');
+    updateFormData('currentDistrictName', '');
+
+    if (selectedStateSlug) {
+      try {
+        const res = await fetch('/api/states');
+        const data = await res.json();
+        const found = (data.states || []).find((s) => s.slug === selectedStateSlug);
+        if (found) {
+          dispatch({ type: 'SET_STATE', payload: found });
+        }
+      } catch (err) {
+        console.error('Failed to sync state:', err);
+      }
+      if (typeof window !== 'undefined') {
+        window.history.replaceState(null, '', `/apply/${selectedStateSlug}/${serviceSlug}`);
+      }
+    }
+  };
 
   return (
     <div className={styles.stepContainer}>
@@ -26,6 +60,59 @@ export default function ApplicantStep({
         <p className={styles.stepDesc}>
           {tr('form.applicantSubhead')}
         </p>
+      </div>
+
+      {/* State Field */}
+      <div
+        className={`${styles.formGroup} ${stepErrors.state ? styles.hasError : ''}`}
+        style={{
+          marginBottom: 'var(--space-6)',
+          background: stepErrors.state ? '#FEF2F2' : '#F8FAFC',
+          padding: '16px 18px',
+          borderRadius: 'var(--radius-lg)',
+          border: stepErrors.state ? '1.5px solid var(--color-danger, #ef4444)' : '1.5px solid var(--color-border)',
+          transition: 'all 0.2s ease',
+        }}
+      >
+        <label
+          className={styles.label}
+          htmlFor="field-state"
+          style={{
+            fontSize: 'var(--font-size-sm)',
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: stepErrors.state ? 'var(--color-danger, #b91c1c)' : 'var(--color-text-dark)',
+          }}
+        >
+          <span>🏛️</span>
+          <span>{tr('form.applyingFrom') || 'From where you are applying from?'}</span>
+          <span className={styles.required}>*</span>
+        </label>
+        <p style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-secondary)', margin: '2px 0 10px 0' }}>
+          {tr('form.stateSelectDesc') || 'Select from which state you belong (Gujarat, Rajasthan, or Uttar Pradesh)'}
+        </p>
+        <select
+          id="field-state"
+          name="state"
+          className={`${styles.select} ${stepErrors.state ? styles.inputError : ''}`}
+          value={formData.state || ''}
+          onChange={handleStateChange}
+          style={{
+            fontWeight: 600,
+            fontSize: 'var(--font-size-sm)',
+            background: '#ffffff',
+            borderColor: stepErrors.state ? 'var(--color-danger, #ef4444)' : undefined,
+          }}
+          required
+        >
+          <option value="">{tr('form.selectStatePrompt') || '-- Select State You Are Applying From --'}</option>
+          <option value="gujarat">Gujarat (ગુજરાત)</option>
+          <option value="rajasthan">Rajasthan (राजस्थान)</option>
+          <option value="uttar-pradesh">Uttar Pradesh (उत्तर प्रदेश)</option>
+        </select>
+        {stepErrors.state && <FieldError error={stepErrors.state} />}
       </div>
 
       {/* Minor Notice if age < 18 */}

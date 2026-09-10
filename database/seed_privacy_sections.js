@@ -1,50 +1,7 @@
 const { getDb } = require('../src/lib/db');
 
-function seedPrivacySections() {
-  const db = getDb();
-
-  // Create table if not exists
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS privacy_policy_sections (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        section_key TEXT NOT NULL,
-        version TEXT NOT NULL DEFAULT '1.2',
-        language TEXT NOT NULL DEFAULT 'en',
-        section_number TEXT NOT NULL DEFAULT '01',
-        heading TEXT NOT NULL,
-        subheading TEXT,
-        content TEXT NOT NULL,
-        structured_json TEXT,
-        callout_title TEXT,
-        callout_content TEXT,
-        sort_order INTEGER NOT NULL DEFAULT 0,
-        is_active INTEGER NOT NULL DEFAULT 1,
-        created_at TEXT NOT NULL DEFAULT (datetime('now')),
-        updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-        UNIQUE(section_key, version, language)
-    );
-    CREATE INDEX IF NOT EXISTS idx_sections_ver_lang ON privacy_policy_sections(version, language);
-    CREATE INDEX IF NOT EXISTS idx_sections_sort ON privacy_policy_sections(sort_order);
-  `);
-
-  // Ensure version 1.2 is in privacy_notice_versions
-  db.prepare(`
-    INSERT OR IGNORE INTO privacy_notice_versions (notice_id, version, language, title, content, summary, status, effective_from)
-    VALUES (1, '1.2', 'en', 'Master Privacy Policy v1.2', 'Complete DPDP Act 2023 & DPDP Rules 2025 compliant notice.', 'Standard citizen privacy policy', 'published', '2026-09-01')
-  `).run();
-
-  db.prepare(`
-    INSERT OR IGNORE INTO privacy_notice_versions (notice_id, version, language, title, content, summary, status, effective_from)
-    VALUES (1, '1.2', 'gu', 'માસ્ટર ગોપનીયતા નીતિ v1.2', 'સંપૂર્ણ ડીપીડીપી કાયદો 2023 અને ડીપીડીપી નિયમો 2025 સુસંગત સૂચના.', 'નાગરિક ગોપનીયતા નીતિ', 'published', '2026-09-01')
-  `).run();
-
-  db.prepare(`
-    INSERT OR IGNORE INTO privacy_notice_versions (notice_id, version, language, title, content, summary, status, effective_from)
-    VALUES (1, '1.2', 'hi', 'मास्टर गोपनीयता नीति v1.2', 'पूर्ण डीपीडीपी अधिनियम 2023 एवं डीपीडीपी नियम 2025 अनुपालन सूचना।', 'नागरिक गोपनीयता नीति', 'published', '2026-09-01')
-  `).run();
-
-  // Define data for all 14 sections across en, gu, hi for version 1.2
-  const sectionsData = [
+// Define data for all 14 sections across en, gu, hi for version 1.2
+const sectionsData = [
     // 01 Overview
     {
       key: '01-overview',
@@ -885,6 +842,47 @@ function seedPrivacySections() {
     }
   ];
 
+function seedPrivacySections() {
+  const db = getDb();
+
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS privacy_policy_sections (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        section_key TEXT NOT NULL,
+        version TEXT NOT NULL DEFAULT '1.2',
+        language TEXT NOT NULL DEFAULT 'en',
+        section_number TEXT NOT NULL DEFAULT '01',
+        heading TEXT NOT NULL,
+        subheading TEXT,
+        content TEXT NOT NULL,
+        structured_json TEXT,
+        callout_title TEXT,
+        callout_content TEXT,
+        sort_order INTEGER NOT NULL DEFAULT 0,
+        is_active INTEGER NOT NULL DEFAULT 1,
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+        UNIQUE(section_key, version, language)
+    );
+    CREATE INDEX IF NOT EXISTS idx_sections_ver_lang ON privacy_policy_sections(version, language);
+    CREATE INDEX IF NOT EXISTS idx_sections_sort ON privacy_policy_sections(sort_order);
+  `);
+
+  db.prepare(`
+    INSERT OR IGNORE INTO privacy_notice_versions (notice_id, version, language, title, content, summary, status, effective_from)
+    VALUES (1, '1.2', 'en', 'Master Privacy Policy v1.2', 'Complete DPDP Act 2023 & DPDP Rules 2025 compliant notice.', 'Standard citizen privacy policy', 'published', '2026-09-01')
+  `).run();
+
+  db.prepare(`
+    INSERT OR IGNORE INTO privacy_notice_versions (notice_id, version, language, title, content, summary, status, effective_from)
+    VALUES (1, '1.2', 'gu', 'માસ્ટર ગોપનીયતા નીતિ v1.2', 'સંપૂર્ણ ડીપીડીપી કાયદો 2023 અને ડીપીડીપી નિયમો 2025 સુસંગત સૂચના.', 'નાગરિક ગોપનીયતા નીતિ', 'published', '2026-09-01')
+  `).run();
+
+  db.prepare(`
+    INSERT OR IGNORE INTO privacy_notice_versions (notice_id, version, language, title, content, summary, status, effective_from)
+    VALUES (1, '1.2', 'hi', 'मास्टर गोपनीयता नीति v1.2', 'पूर्ण डीपीडीपी अधिनियम 2023 एवं डीपीडीपी नियम 2025 अनुपालन सूचना।', 'नागरिक गोपनीयता नीति', 'published', '2026-09-01')
+  `).run();
+
   // Prepare insert/replace statement
   const insertStmt = db.prepare(`
     INSERT INTO privacy_policy_sections (
@@ -947,8 +945,4 @@ function seedPrivacySections() {
   console.log(`Successfully seeded all ${sectionsData.length} privacy policy sections in EN, GU, HI for versions 1.2 & 1.0!`);
 }
 
-if (require.main === module) {
-  seedPrivacySections();
-}
-
-module.exports = { seedPrivacySections };
+module.exports = { seedPrivacySections, sectionsData };

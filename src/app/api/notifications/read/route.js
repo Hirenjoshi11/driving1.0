@@ -21,8 +21,8 @@ export async function POST(request) {
     } catch {
       // no body — mark all read
     }
-    markRead(db, session.userId, ids);
-    return NextResponse.json({ success: true, unread: unreadCount(db, session.userId) });
+    await markRead(db, session.userId, ids);
+    return NextResponse.json({ success: true, unread: await unreadCount(db, session.userId) });
   } catch (error) {
     console.error('Failed to mark notifications read:', error);
     return NextResponse.json({ error: 'Failed to update notifications' }, { status: 500 });

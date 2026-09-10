@@ -43,7 +43,7 @@ export async function GET(request) {
       params.push(Number(serviceId));
     }
 
-    const fees = db.prepare(`
+    const fees = await db.prepare(`
       SELECT 
         f.*,
         s.name as state_name,
@@ -86,7 +86,7 @@ export async function POST(request) {
 
     // Overlap validation: Ensure no two active rows overlap for same service x state
     if (isActive) {
-      const activeOverlap = db.prepare(`
+      const activeOverlap = await db.prepare(`
         SELECT id, effective_from, effective_to 
         FROM fee_structure
         WHERE service_id = ? AND state_id = ? AND is_active = 1
@@ -101,7 +101,7 @@ export async function POST(request) {
       }
     }
 
-    const insertFee = db.prepare(`
+    const insertFee = await db.prepare(`
       INSERT INTO fee_structure (
         service_id, state_id, government_fee, service_fee, smart_card_fee,
         test_fee, gateway_fee, late_fee, effective_from, effective_to, is_active,
@@ -114,7 +114,7 @@ export async function POST(request) {
       testFee, gatewayFee, lateFee, effectiveFrom, effectiveTo || null, isActive ? 1 : 0
     );
 
-    logAudit(db, {
+    await logAudit(db, {
       actorId: session.userId,
       actorRole: session.role,
       action: 'fee.create',

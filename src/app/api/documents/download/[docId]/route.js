@@ -27,7 +27,7 @@ export async function GET(request, { params }) {
     }
 
     const db = getDb();
-    const doc = db.prepare(`
+    const doc = await db.prepare(`
       SELECT ad.*, a.user_id as applicant_user_id, a.id as app_id
       FROM application_documents ad
       JOIN applications a ON ad.application_id = a.id
@@ -58,7 +58,7 @@ export async function GET(request, { params }) {
     }
 
     // Log document access audit
-    logDocumentAccess(db, {
+    await logDocumentAccess(db, {
       documentId: doc.id,
       applicationId: doc.app_id,
       actorId: session.userId,

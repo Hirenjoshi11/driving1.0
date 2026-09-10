@@ -22,8 +22,8 @@ import { logAudit } from '@/lib/audit';
  * @param {number} userId
  * @returns {{ hasHold: boolean, reason?: string, legalReference?: string }}
  */
-export function checkLegalHold(db, userId) {
-  const hold = db.prepare(`
+export async function checkLegalHold(db, userId) {
+  const hold = await db.prepare(`
     SELECT * FROM legal_holds 
     WHERE user_id = ? AND is_active = 1
     LIMIT 1
@@ -38,7 +38,7 @@ export function checkLegalHold(db, userId) {
   }
 
   // Also check if any of user's applications have a specific hold
-  const appHold = db.prepare(`
+  const appHold = await db.prepare(`
     SELECT lh.* FROM legal_holds lh
     JOIN applications a ON lh.entity_id = CAST(a.id AS TEXT) AND lh.entity_type = 'application'
     WHERE a.user_id = ? AND lh.is_active = 1
@@ -63,11 +63,11 @@ export function checkLegalHold(db, userId) {
  * @param {number} userId
  * @returns {{ hasActiveApplications: boolean, activeCount: number }}
  */
-export function checkActiveApplications(db, userId) {
+export async function checkActiveApplications(db, userId) {
   const activeStatuses = ['draft', 'payment_pending', 'paid', 'submitted', 'assigned', 'under_review', 'correction_required', 'resubmitted', 'government_processing'];
   const placeholders = activeStatuses.map(() => '?').join(',');
   
-  const result = db.prepare(`
+  const result = await db.prepare(`
     SELECT COUNT(*) as count 
     FROM applications 
     WHERE user_id = ? AND status IN (${placeholders})
@@ -93,14 +93,14 @@ export function checkActiveApplications(db, userId) {
  *   reason?: string
  * }} options
  */
-export function executeControlledErasure({ userId, requestId = null, actorId = null, reason = 'Citizen erasure request under DPDP Act' }) {
+export async function executeControlledErasure({ userId, requestId = null, actorId = null, reason = 'Citizen erasure request under DPDP Act' }) {
   const db = getDb();
 
   // Step 1 & 2: Verify legal hold
-  const holdCheck = checkLegalHold(db, userId);
+  const holdCheck = await checkLegalHold(db, userId);
   if (holdCheck.hasHold) {
     // Record failed deletion job
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO deletion_jobs (
         request_id, user_id, status, legal_hold_check, error_message, created_at, updated_at
       ) VALUES (?, ?, 'blocked_by_legal_hold', 'failed', ?, datetime('now'), datetime('now'))
@@ -110,9 +110,9 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
   }
 
   // Step 3: Check active purposes
-  const activeCheck = checkActiveApplications(db, userId);
+  const activeCheck = await checkActiveApplications(db, userId);
   if (activeCheck.hasActiveApplications) {
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO deletion_jobs (
         request_id, user_id, status, active_purpose_check, error_message, created_at, updated_at
       ) VALUES (?, ?, 'blocked_by_active_purpose', 'failed', ?, datetime('now'), datetime('now'))
@@ -122,12 +122,12 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
   }
 
   // Step 4 & 5: Execute controlled erasure in transaction
-  const tx = db.transaction(() => {
+  const tx = db.transaction(async () => {
     // Anonymize user row
     const anonPhone = `00000${Math.floor(10000 + Math.random() * 90000)}`;
     const anonEmail = `erased_${userId}_${Date.now()}@anonymized.local`;
 
-    db.prepare(`
+    await db.prepare(`
       UPDATE users 
       SET name = 'Data Principal (Erased)',
           email = ?,
@@ -140,7 +140,7 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
     `).run(anonEmail, anonPhone, userId);
 
     // Anonymize applications
-    db.prepare(`
+    await db.prepare(`
       UPDATE applications
       SET first_name = 'Anonymized',
           middle_name = NULL,
@@ -166,7 +166,7 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
     `).run(userId);
 
     // Delete or mark documents
-    db.prepare(`
+    await db.prepare(`
       UPDATE application_documents
       SET original_filename = 'redacted_document.pdf',
           file_path = '',
@@ -176,7 +176,7 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
     `).run(userId);
 
     // Mark consents as withdrawn / superseded
-    db.prepare(`
+    await db.prepare(`
       UPDATE consents
       SET consent_status = 'withdrawn',
           withdrawn_at = datetime('now'),
@@ -185,7 +185,7 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
     `).run(userId);
 
     // Mark nomination as revoked
-    db.prepare(`
+    await db.prepare(`
       UPDATE nominations
       SET status = 'revoked',
           updated_at = datetime('now')
@@ -193,7 +193,7 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
     `).run(userId);
 
     // Log deletion job
-    const jobRes = db.prepare(`
+    const jobRes = await db.prepare(`
       INSERT INTO deletion_jobs (
         request_id, user_id, status, legal_retention_check, active_purpose_check,
         legal_hold_check, processor_deletion_status, anonymized_at, audit_trail, created_at, updated_at
@@ -211,7 +211,7 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
 
     // Update privacy request if linked
     if (requestId) {
-      db.prepare(`
+      await db.prepare(`
         UPDATE privacy_requests
         SET status = 'completed',
             resolved_at = datetime('now'),
@@ -220,14 +220,14 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
         WHERE id = ?
       `).run(requestId);
 
-      db.prepare(`
+      await db.prepare(`
         INSERT INTO privacy_request_events (request_id, from_status, to_status, actor_id, notes, created_at)
         VALUES (?, 'processing', 'completed', ?, 'Erasure and anonymization workflow completed', datetime('now'))
       `).run(requestId, actorId);
     }
 
     // System audit log
-    logAudit(db, {
+    await logAudit(db, {
       actorId: actorId || userId,
       actorRole: actorId ? 'admin' : 'citizen',
       action: 'DPDP_ERASURE_COMPLETED',
@@ -240,16 +240,16 @@ export function executeControlledErasure({ userId, requestId = null, actorId = n
     return { success: true, jobId: jobRes.lastInsertRowid };
   });
 
-  return tx();
+  return await tx();
 }
 
 /**
  * Retention Evaluator Worker
  * Scans for records that have exceeded their retention policy period.
  */
-export function runRetentionSweep() {
+export async function runRetentionSweep() {
   const db = getDb();
-  const policies = db.prepare('SELECT * FROM retention_policies WHERE is_active = 1').all();
+  const policies = await db.prepare('SELECT * FROM retention_policies WHERE is_active = 1').all();
   const report = [];
 
   for (const policy of policies) {
@@ -259,7 +259,7 @@ export function runRetentionSweep() {
 
     // Scan draft applications exceeding retention
     if (policy.data_category === 'application_data' && policy.deletion_action === 'purge') {
-      const candidates = db.prepare(`
+      const candidates = await db.prepare(`
         SELECT id, user_id, updated_at 
         FROM applications 
         WHERE status = 'draft' 
@@ -269,7 +269,7 @@ export function runRetentionSweep() {
       `).all(days);
 
       for (const app of candidates) {
-        db.prepare('DELETE FROM applications WHERE id = ?').run(app.id);
+        await db.prepare('DELETE FROM applications WHERE id = ?').run(app.id);
         report.push({
           policy: policy.policy_name,
           action: 'purged_draft_application',
