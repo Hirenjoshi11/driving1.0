@@ -926,6 +926,256 @@
   color: var(--color-white);
 }
 
+/* Secondary CTA Button in Hero */
+.secondaryCta {
+  border-color: var(--color-border);
+  color: var(--color-text-dark);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.secondaryCta:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+  background: var(--color-primary-50);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================================
+   5. DOCUMENT CONFIDENCE
+   ============================================================ */
+.docConfidenceSection {
+  padding: var(--space-16) 0;
+  background: var(--color-white);
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.docConfidenceGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .docConfidenceGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.docConfidenceCard {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+}
+
+.docConfidenceCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+  border-color: rgba(21, 148, 71, 0.3);
+}
+
+.docCardIconWrap {
+  font-size: 2rem;
+  margin-bottom: var(--space-3);
+}
+
+.docConfidenceCardTitle {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-2);
+}
+
+.docConfidenceCardDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.docConfidenceCta {
+  text-align: center;
+}
+
+/* ============================================================
+   6. TRACKING PREVIEW
+   ============================================================ */
+.trackingPreviewSection {
+  padding: var(--space-16) 0;
+}
+
+.trackingPreviewBox {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .trackingPreviewBox {
+    grid-template-columns: 1.2fr 1fr;
+    padding: var(--space-10);
+  }
+}
+
+.trackingPreviewTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  margin: var(--space-3) 0 var(--space-3);
+  line-height: 1.25;
+}
+
+.trackingPreviewDesc {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-6);
+}
+
+.trackingMockCard {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.mockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.mockId {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.mockService {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+  font-weight: 500;
+}
+
+.mockSteps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.mockStep {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.mockStepDot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mockStepDone .mockStepDot {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.mockStepActive {
+  color: var(--color-text-dark);
+  font-weight: 600;
+}
+
+.mockStepActive .mockStepDot {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* ============================================================
+   8. FINAL CTA
+   ============================================================ */
+.finalCtaSection {
+  padding: 0 0 var(--space-16);
+}
+
+.finalCtaCard {
+  background: linear-gradient(135deg, #18232D 0%, #159447 140%);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  color: var(--color-white);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (min-width: 768px) {
+  .finalCtaCard {
+    padding: var(--space-16) var(--space-10);
+  }
+}
+
+.finalCtaTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-white);
+  margin-bottom: var(--space-3);
+  line-height: 1.25;
+}
+
+@media (min-width: 768px) {
+  .finalCtaTitle {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+.finalCtaSubtitle {
+  font-size: var(--font-size-base);
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 580px;
+  margin: 0 auto var(--space-8);
+  line-height: 1.6;
+}
+
+.finalCtaActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.finalCtaActions .btn-outline {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--color-white);
+}
+
+.finalCtaActions .btn-outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-white);
+}
+
 /* ============================================================
    MOTION
    One entrance grammar for the page. Content is visible by

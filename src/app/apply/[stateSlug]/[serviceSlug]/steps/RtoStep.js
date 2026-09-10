@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useApp } from '@/contexts/AppContext';
+import FieldError from '@/components/validation/FieldError';
 import styles from './steps.module.css';
 
 export default function RtoStep({ formData, updateFormData, stateId, service, selectedState, localize, t, stepErrors = {} }) {
@@ -265,11 +266,7 @@ export default function RtoStep({ formData, updateFormData, stateId, service, se
               </option>
             ))}
           </select>
-          {errors.districtId && (
-            <div id="err-districtId" style={{ color: 'var(--color-error)', fontSize: 'var(--font-size-xs)', marginTop: '4px', fontWeight: 500 }}>
-              ⚠️ {errors.districtId}
-            </div>
-          )}
+          {errors.districtId && <FieldError error={errors.districtId} id="err-districtId" />}
         </div>
 
         <div className={styles.formGroup}>

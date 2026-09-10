@@ -34,6 +34,12 @@
   }
 }
 
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1120px;
+  }
+}
+
 /* ============================================================
    1. BREADCRUMBS
    ============================================================ */
@@ -603,3 +609,277 @@
     transition: none !important;
   }
 }
+
+/* ============================================================
+   GUIDED FORM GRID & SIDEBAR (DESKTOP LEFT / RIGHT)
+   ============================================================ */
+.guidedFormGrid {
+  display: block;
+}
+
+@media (min-width: 992px) {
+  .guidedFormGrid {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+}
+
+.guidedSidebar {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .guidedSidebar {
+    display: block;
+    position: sticky;
+    top: calc(var(--header-height, 68px) + var(--space-4));
+  }
+}
+
+.sidebarCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebarHeader {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.sidebarBadge {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-2);
+}
+
+.sidebarTitle {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.sidebarStepList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sidebarStepBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  background: transparent;
+  text-align: left;
+  cursor: default;
+  transition: all var(--transition-fast);
+}
+
+.sidebarStepBtn:not(:disabled) {
+  cursor: pointer;
+}
+
+.sidebarStepBtn:not(:disabled):hover {
+  background: var(--color-bg);
+}
+
+.sidebarStepBtn.stepActive {
+  background: var(--color-primary-50);
+  border-color: rgba(21, 148, 71, 0.3);
+}
+
+.sidebarStepBadge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  transition: all var(--transition-fast);
+}
+
+.stepCompleted .sidebarStepBadge {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.stepActive .sidebarStepBadge {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 2px 6px rgba(21, 148, 71, 0.3);
+}
+
+.sidebarStepLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.stepActive .sidebarStepLabel {
+  color: var(--color-primary-darker);
+  font-weight: 700;
+}
+
+.stepCompleted .sidebarStepLabel {
+  color: var(--color-text-dark);
+}
+
+.guidedContent {
+  min-width: 0;
+}
+
+/* ============================================================
+   ACTIVE STEP HEADER (Top: Step 2 of 8, Address Details)
+   ============================================================ */
+.activeStepHeader {
+  margin-bottom: var(--space-4);
+}
+
+.activeStepMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.stepIndexPill {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.activeStepTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-1);
+}
+
+.activeStepDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   PAGE 04: APPLICATION INTRO ("Before you start")
+   ============================================================ */
+.introCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-card);
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@media (min-width: 768px) {
+  .introCard {
+    padding: var(--space-10) var(--space-8);
+  }
+}
+
+.introBadge {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.introTitle {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  letter-spacing: -0.025em;
+  margin-bottom: var(--space-2);
+}
+
+.introSubtitle {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 680px;
+  margin-bottom: var(--space-8);
+}
+
+.introGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+}
+
+@media (min-width: 768px) {
+  .introGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.introCol {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.introColIcon {
+  font-size: 1.8rem;
+  margin-bottom: var(--space-2);
+}
+
+.introColTitle {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-2);
+}
+
+.introColDesc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.introActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+

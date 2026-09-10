@@ -165,12 +165,13 @@ export default function Header() {
     ] : []),
   ];
 
-  // Curated, compact set of primary links for desktop center nav pill
+  // Primary links matching Global Header specification
   const desktopNavLinks = [
+    { href: '/', label: t('nav.home') || 'Home' },
     { href: '/apply', label: t('nav.services') || 'Services' },
-    { href: '/track', label: t('nav.trackApplication') || 'Track' },
-    { href: '/documents', label: t('nav.documents') || 'Documents' },
     { href: '/#how-it-works', label: t('nav.howItWorks') || 'How It Works' },
+    { href: '/documents', label: t('nav.documents') || 'Documents' },
+    { href: '/track', label: t('nav.trackApplication') || 'Track Application' },
     { href: '/help', label: t('nav.help') || 'Help' },
   ];
 
@@ -313,6 +314,19 @@ export default function Header() {
               </span>
             </Link>
           )}
+
+          {/* Primary CTA: Start Application */}
+          <Link
+            href="/apply"
+            className={`btn btn-primary btn-sm ${styles.headerPrimaryCta}`}
+            id="header-start-app-cta"
+          >
+            <span>{t('nav.startApplication') || 'Start Application'}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </Link>
 
           {/* Mobile Hamburger Toggle (Right Aligned) */}
           <button

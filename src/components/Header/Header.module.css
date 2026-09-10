@@ -337,6 +337,32 @@
   white-space: nowrap;
 }
 
+/* Primary CTA Button in Header */
+.headerPrimaryCta {
+  padding: 7px 14px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(21, 148, 71, 0.28);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.headerPrimaryCta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(21, 148, 71, 0.35);
+}
+
+@media (max-width: 860px) {
+  .headerPrimaryCta {
+    display: none !important;
+  }
+}
+
 /* Mobile Hamburger Menu Toggle Button (Right Aligned) */
 .menuToggle {
   display: flex;

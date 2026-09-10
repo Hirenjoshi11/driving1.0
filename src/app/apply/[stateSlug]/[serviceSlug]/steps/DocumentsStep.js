@@ -61,6 +61,8 @@ export default function DocumentsStep({
   const documentFiles = formData.documentFiles || {};
   const [uploadErrors, setUploadErrors] = useState({});
 
+  const [isDragging, setIsDragging] = useState({});
+
   const handleFileUpload = (docId, file) => {
     if (!file) return;
 
@@ -162,6 +164,7 @@ export default function DocumentsStep({
             const uploadedFile = uploadedDocs[doc.id];
             const isMandatory = doc.is_required === 1 || (doc.condition_field && isDocApplicable(doc));
             const docError = stepErrors[`doc_${doc.id}`] || stepErrors[doc.id] || uploadErrors[doc.id];
+            const draggingThis = isDragging[doc.id];
 
             return (
               <div
@@ -204,28 +207,79 @@ export default function DocumentsStep({
                     <div className={styles.uploadedFileMeta}>
                       <span style={{ fontSize: 'var(--font-size-xl)' }}>📑</span>
                       <div>
-                        <div className={styles.uploadedFileName}>{uploadedFile.name}</div>
+                        <div className={styles.uploadedFileName}>
+                          <span style={{ color: 'var(--color-primary)', fontWeight: 700, marginRight: '6px' }}>✓</span>
+                          {uploadedFile.name}
+                        </div>
                         <div className={styles.uploadedFileSize}>
-                          {uploadedFile.size}
+                          {uploadedFile.size} • {tr('documents.uploaded') || 'Uploaded'}
                         </div>
                       </div>
                     </div>
 
-                    <button
-                      type="button"
-                      className={styles.removeFileBtn}
-                      onClick={() => handleRemoveDoc(doc.id)}
-                    >
-                      ✕ {tr('documents.remove')}
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <label
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontSize: 'var(--font-size-xs)',
+                          fontWeight: 600,
+                          color: 'var(--color-primary)',
+                          cursor: 'pointer',
+                          padding: '4px 8px',
+                          borderRadius: 'var(--radius-sm)',
+                          border: '1px solid var(--color-border)',
+                          background: 'var(--color-white)',
+                        }}
+                      >
+                        <input
+                          type="file"
+                          className="sr-only"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={(e) => handleFileUpload(doc.id, e.target.files[0])}
+                        />
+                        ↻ {tr('documents.replace') || 'Replace'}
+                      </label>
+                      <button
+                        type="button"
+                        className={styles.removeFileBtn}
+                        onClick={() => handleRemoveDoc(doc.id)}
+                      >
+                        ✕ {tr('documents.remove')}
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <label
                     className={styles.uploadArea}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setIsDragging((prev) => ({ ...prev, [doc.id]: true }));
+                    }}
+                    onDragLeave={() => {
+                      setIsDragging((prev) => ({ ...prev, [doc.id]: false }));
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setIsDragging((prev) => ({ ...prev, [doc.id]: false }));
+                      if (e.dataTransfer?.files?.[0]) {
+                        handleFileUpload(doc.id, e.dataTransfer.files[0]);
+                      }
+                    }}
                     style={{
-                      border: docError ? '2px dashed var(--color-error)' : undefined,
-                      background: docError ? 'var(--color-error-light)' : undefined,
+                      border: docError
+                        ? '2px dashed var(--color-error)'
+                        : draggingThis
+                        ? '2px dashed var(--color-primary)'
+                        : undefined,
+                      background: docError
+                        ? 'var(--color-error-light)'
+                        : draggingThis
+                        ? 'var(--color-primary-light)'
+                        : undefined,
                       cursor: 'pointer',
+                      transition: 'all 0.2s ease',
                     }}
                   >
                     <input
@@ -241,6 +295,19 @@ export default function DocumentsStep({
                     <p style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-muted)', marginTop: '4px' }}>
                       {tr('form.uploadNotice')}
                     </p>
+                    <span style={{
+                      display: 'inline-block',
+                      marginTop: '6px',
+                      fontSize: '11px',
+                      padding: '2px 8px',
+                      borderRadius: 'var(--radius-full)',
+                      background: 'var(--color-bg)',
+                      border: '1px solid var(--color-border)',
+                      color: 'var(--color-text-secondary)',
+                      fontWeight: 600,
+                    }}>
+                      PDF, JPG, PNG • Max 5MB
+                    </span>
                   </label>
                 )}
 

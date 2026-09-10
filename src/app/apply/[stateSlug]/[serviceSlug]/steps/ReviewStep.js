@@ -26,6 +26,7 @@ export default function ReviewStep({
   localize,
   t,
   stepErrors = {},
+  onEditSection,
 }) {
   const { t: contextT, language } = useApp();
   const tr = t || contextT;
@@ -53,10 +54,12 @@ export default function ReviewStep({
   const uploadedCount = Object.keys(formData.uploadedDocuments || {}).length;
   const isMinor = isMinorAge(formData.dob);
 
+  const missingLabel = tr('common.missing') || 'Missing';
+
   return (
     <div className={styles.stepContainer}>
       <div className={styles.stepHeader}>
-        <h3 className={styles.stepTitle}>{tr('form.reviewApplication') || 'Application Review & Declaration'}</h3>
+        <h3 className={styles.stepTitle}>{tr('form.reviewApplication') || 'Review Your Application'}</h3>
         <p className={styles.stepDesc}>
           {tr('validation.reviewSummaryDesc') || 'Please verify all details carefully before making payment and submitting your driving licence application.'}
         </p>
@@ -69,11 +72,23 @@ export default function ReviewStep({
             <IconUser size={17} className={rv.sectionTitleIcon} />
             {tr('form.applicant')}
           </span>
+          {onEditSection && (
+            <button
+              type="button"
+              className={styles.reviewEditBtn}
+              onClick={() => onEditSection('applicant')}
+              aria-label={`${tr('common.edit') || 'Edit'} ${tr('form.applicant')}`}
+            >
+              <span>{tr('common.edit') || 'Edit'}</span> →
+            </button>
+          )}
         </div>
         <div className={styles.reviewGrid}>
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('form.firstName') || 'Full Name'}</span>
-            <span className={styles.reviewFieldValue}>{applicantName || tr('common.notSpecified')}</span>
+            <span className={styles.reviewFieldValue}>
+              {applicantName || <span className={rv.missingTag}>{missingLabel}</span>}
+            </span>
           </div>
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('form.relation')}{formData.relationType ? ` (${formData.relationType})` : ''}</span>
@@ -81,15 +96,21 @@ export default function ReviewStep({
           </div>
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('form.dateOfBirth') || 'Date of Birth'}</span>
-            <span className={styles.reviewFieldValue}>{formData.dob || '—'}</span>
+            <span className={styles.reviewFieldValue}>
+              {formData.dob || <span className={rv.missingTag}>{missingLabel}</span>}
+            </span>
           </div>
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('form.gender') || 'Gender'}</span>
-            <span className={styles.reviewFieldValue}>{formData.gender || '—'}</span>
+            <span className={styles.reviewFieldValue}>
+              {formData.gender || <span className={rv.missingTag}>{missingLabel}</span>}
+            </span>
           </div>
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('form.mobileNumber') || 'Mobile Number'}</span>
-            <span className={styles.reviewFieldValue}>{formData.mobile || '—'}</span>
+            <span className={styles.reviewFieldValue}>
+              {formData.mobile || <span className={rv.missingTag}>{missingLabel}</span>}
+            </span>
           </div>
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('form.email') || 'Email'}</span>
@@ -111,7 +132,7 @@ export default function ReviewStep({
                   ? (formData.identityType?.toLowerCase() === 'aadhaar' || /^\d{12}$/.test(formData.identityNumber)
                       ? `XXXX XXXX ${formData.identityNumber.slice(-4)}`
                       : `XXXX-${formData.identityNumber.slice(-4)}`)
-                  : '—'
+                  : <span className={rv.missingTag}>{missingLabel}</span>
               }
             </span>
           </div>
@@ -125,6 +146,16 @@ export default function ReviewStep({
             <IconHome size={17} className={rv.sectionTitleIcon} />
             {tr('form.address')}
           </span>
+          {onEditSection && (
+            <button
+              type="button"
+              className={styles.reviewEditBtn}
+              onClick={() => onEditSection('address')}
+              aria-label={`${tr('common.edit') || 'Edit'} ${tr('form.address')}`}
+            >
+              <span>{tr('common.edit') || 'Edit'}</span> →
+            </button>
+          )}
         </div>
         <div className={styles.reviewGrid}>
           <div className={`${styles.reviewField} ${rv.fullRow}`}>
@@ -140,7 +171,7 @@ export default function ReviewStep({
                 formData.currentPincode,
               ]
                 .filter(Boolean)
-                .join(', ') || '—'}
+                .join(', ') || <span className={rv.missingTag}>{missingLabel}</span>}
             </span>
           </div>
           <div className={`${styles.reviewField} ${rv.fullRow}`}>
@@ -162,13 +193,23 @@ export default function ReviewStep({
         </div>
       </div>
 
-      {/* 3. Service & Vehicle Section */}
+      {/* 3. Licence Section */}
       <div className={styles.reviewSection}>
         <div className={styles.reviewSectionHeader}>
           <span className={`${styles.reviewSectionTitle} ${rv.reviewSectionTitleRow}`}>
             <IconCar size={17} className={rv.sectionTitleIcon} />
             {tr('form.licence')}
           </span>
+          {onEditSection && (
+            <button
+              type="button"
+              className={styles.reviewEditBtn}
+              onClick={() => onEditSection('licence')}
+              aria-label={`${tr('common.edit') || 'Edit'} ${tr('form.licence')}`}
+            >
+              <span>{tr('common.edit') || 'Edit'}</span> →
+            </button>
+          )}
         </div>
         <div className={styles.reviewGrid}>
           <div className={styles.reviewField}>
@@ -178,12 +219,6 @@ export default function ReviewStep({
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('payment.stateJurisdiction')}</span>
             <span className={styles.reviewFieldValue}>{selectedState?.name}</span>
-          </div>
-          <div className={styles.reviewField}>
-            <span className={styles.reviewFieldLabel}>{tr('form.vehicleClass')}</span>
-            <span className={styles.reviewFieldValue}>
-              {(formData.selectedVehicleClassNames || []).join(', ') || tr('common.notSpecified')}
-            </span>
           </div>
           {formData.learnerLicenceNumber && (
             <div className={styles.reviewField}>
@@ -200,19 +235,57 @@ export default function ReviewStep({
         </div>
       </div>
 
-      {/* 4. RTO & Test Centre Section */}
+      {/* 4. Vehicle Section */}
+      <div className={styles.reviewSection}>
+        <div className={styles.reviewSectionHeader}>
+          <span className={`${styles.reviewSectionTitle} ${rv.reviewSectionTitleRow}`}>
+            <IconCar size={17} className={rv.sectionTitleIcon} />
+            {tr('form.vehicleClass')}
+          </span>
+          {onEditSection && (
+            <button
+              type="button"
+              className={styles.reviewEditBtn}
+              onClick={() => onEditSection('vehicle')}
+              aria-label={`${tr('common.edit') || 'Edit'} ${tr('form.vehicleClass')}`}
+            >
+              <span>{tr('common.edit') || 'Edit'}</span> →
+            </button>
+          )}
+        </div>
+        <div className={styles.reviewGrid}>
+          <div className={`${styles.reviewField} ${rv.fullRow}`}>
+            <span className={styles.reviewFieldLabel}>{tr('form.vehicleClass')}</span>
+            <span className={styles.reviewFieldValue}>
+              {(formData.selectedVehicleClassNames || []).join(', ') || <span className={rv.missingTag}>{missingLabel}</span>}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. RTO & Test Centre Section */}
       <div className={styles.reviewSection}>
         <div className={styles.reviewSectionHeader}>
           <span className={`${styles.reviewSectionTitle} ${rv.reviewSectionTitleRow}`}>
             <IconBank size={17} className={rv.sectionTitleIcon} />
             {tr('form.rto')}
           </span>
+          {onEditSection && (
+            <button
+              type="button"
+              className={styles.reviewEditBtn}
+              onClick={() => onEditSection('rto')}
+              aria-label={`${tr('common.edit') || 'Edit'} ${tr('form.rto')}`}
+            >
+              <span>{tr('common.edit') || 'Edit'}</span> →
+            </button>
+          )}
         </div>
         <div className={styles.reviewGrid}>
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('form.rtoOffice')}</span>
             <span className={styles.reviewFieldValue}>
-              {formData.rtoName ? `${formData.rtoName} (${formData.rtoCode})` : '—'}
+              {formData.rtoName ? `${formData.rtoName} (${formData.rtoCode})` : <span className={rv.missingTag}>{missingLabel}</span>}
             </span>
           </div>
           <div className={`${styles.reviewField} ${styles.fullWidth}`}>
@@ -221,10 +294,38 @@ export default function ReviewStep({
               {formData.testCentreName || tr('common.notSpecified')}
             </span>
           </div>
+        </div>
+      </div>
+
+      {/* 6. Documents Section */}
+      <div className={styles.reviewSection}>
+        <div className={styles.reviewSectionHeader}>
+          <span className={`${styles.reviewSectionTitle} ${rv.reviewSectionTitleRow}`}>
+            <IconClipboard size={17} className={rv.sectionTitleIcon} />
+            {tr('form.documents')}
+          </span>
+          {onEditSection && (
+            <button
+              type="button"
+              className={styles.reviewEditBtn}
+              onClick={() => onEditSection('documents')}
+              aria-label={`${tr('common.edit') || 'Edit'} ${tr('form.documents')}`}
+            >
+              <span>{tr('common.edit') || 'Edit'}</span> →
+            </button>
+          )}
+        </div>
+        <div className={styles.reviewGrid}>
           <div className={styles.reviewField}>
             <span className={styles.reviewFieldLabel}>{tr('form.documents') || 'Supporting Documents'}</span>
             <span className={styles.reviewFieldValue}>
-              {uploadedCount > 0 ? tr('review.docsAttached', { count: uploadedCount }) : tr('review.docsPending')}
+              {uploadedCount > 0 ? (
+                <span style={{ color: 'var(--color-primary-dark)', fontWeight: 700 }}>
+                  ✓ {tr('review.docsAttached', { count: uploadedCount }) || `${uploadedCount} document(s) uploaded`}
+                </span>
+              ) : (
+                <span className={rv.missingTag}>{tr('review.docsPending') || 'Pending Upload'}</span>
+              )}
             </span>
           </div>
         </div>

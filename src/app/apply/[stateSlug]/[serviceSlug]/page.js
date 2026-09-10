@@ -58,6 +58,7 @@ export default function FormPage() {
   const [submitError, setSubmitError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [hasSavedDraft, setHasSavedDraft] = useState(false);
+  const [hasStartedForm, setHasStartedForm] = useState(false);
   const [copied, setCopied] = useState(false);
   const [demoFilledToast, setDemoFilledToast] = useState(false);
 
@@ -684,226 +685,340 @@ export default function FormPage() {
       </div>
 
       <div className={styles.container}>
-        <div className={styles.formLayout}>
-          {/* Header with Title & Auto-Save Badge (Requirement 34) */}
-          <div className={styles.formHeader}>
-            <div className={styles.formHeaderRow}>
-              <div>
-                <h1 className={styles.serviceTitle}>
-                  {localize ? localize(service, 'name') : service?.name}
-                </h1>
-                <p className={styles.serviceDesc}>
-                  {localize ? localize(service, 'description') : service?.description}
+        {/* PAGE 04: APPLICATION INTRO ("Before you start") */}
+        {!hasStartedForm ? (
+          <div className={styles.introCard}>
+            <div className={styles.introBadge}>
+              {t('apply.beforeYouStartBadge') || 'Before you start'}
+            </div>
+            <h1 className={styles.introTitle}>
+              {localize ? localize(service, 'name') : service?.name}
+            </h1>
+            <p className={styles.introSubtitle}>
+              {t('apply.introSubtitle') || 'Please review the required details, expected timeline, and document checklist to complete your application smoothly.'}
+            </p>
+
+            <div className={styles.introGrid}>
+              <div className={styles.introCol}>
+                <div className={styles.introColIcon}>⏱️</div>
+                <h2 className={styles.introColTitle}>
+                  {t('apply.introTimeTitle') || 'Estimated Time'}
+                </h2>
+                <p className={styles.introColDesc}>
+                  {t('apply.introTimeDesc') || 'Takes approximately 8–12 minutes. Your progress saves automatically as you type.'}
                 </p>
               </div>
 
-              {/* Real-time Draft Auto-save status */}
-              <div className={styles.formHeaderActions}>
-                {autoSaveStatus === 'saving' && (
-                  <span className={validationStyles.autoSaveSaving}>
-                    <span className={`spinner ${styles.autoSaveSpinner}`}></span>
-                    {t('validation.autoSaveSaving')}
-                  </span>
-                )}
-                {autoSaveStatus === 'saved' && !submitted && (
-                  <span className={validationStyles.autoSaveSaved}>
-                    <IconCheck size={13} />
-                    {t('validation.autoSaveSaved')}
-                  </span>
-                )}
+              <div className={styles.introCol}>
+                <div className={styles.introColIcon}>📁</div>
+                <h2 className={styles.introColTitle}>
+                  {t('apply.introDocsTitle') || 'Documents You May Need'}
+                </h2>
+                <p className={styles.introColDesc}>
+                  {t('apply.introDocsDesc') || 'Age proof (Birth Certificate/10th marksheet), Address proof (Aadhaar/Voter ID), and photo in PDF or JPG format.'}
+                </p>
+              </div>
+
+              <div className={styles.introCol}>
+                <div className={styles.introColIcon}>🛣️</div>
+                <h2 className={styles.introColTitle}>
+                  {t('apply.introStepsTitle') || 'Application Steps'}
+                </h2>
+                <p className={styles.introColDesc}>
+                  {t('apply.introStepsDesc') || `${steps.length || 7} guided sections covering applicant particulars, address, licence class, RTO choice, documents, and secure payment.`}
+                </p>
               </div>
             </div>
-          </div>
 
-          {/* Demo Data Filled Success Banner */}
-          {demoFilledToast && (
-            <div className={styles.demoToast} role="status" aria-live="polite">
-              <IconCheck size={16} />
-              <span>{t('apply.demoDataFilled')}</span>
-            </div>
-          )}
-
-          {/* Mobile Progress Bar */}
-          <div className={styles.mobileProgressWrap}>
-            <div className={styles.mobileStepHeader}>
-              <span className={styles.mobileStepIndex}>
-                {t('common.step') || 'Step'} {currentStepIndex + 1} {t('common.of') || 'of'} {steps.length}
-              </span>
-              <span className={styles.mobileStepCurrentTitle}>
-                {localize ? localize(currentStep, 'label') : currentStep?.label}
-              </span>
-            </div>
-            <div
-              className={styles.mobileProgressBarTrack}
-              role="progressbar"
-              aria-valuenow={currentStepIndex + 1}
-              aria-valuemin={1}
-              aria-valuemax={steps.length || 1}
-              aria-label={t('common.step')}
-            >
-              <div
-                className={styles.mobileProgressBarFill}
-                style={{ transform: `scaleX(${(currentStepIndex + 1) / (steps.length || 1)})` }}
-              />
-            </div>
-          </div>
-
-          {/* Stepper Wizard Bar */}
-          <div className={styles.stepperWrapper}>
-            <div className={styles.stepper}>
-              {steps.map((s, idx) => {
-                const isCompleted = idx < currentStepIndex;
-                const isCurrent = idx === currentStepIndex;
-                const stepTitle = localize ? localize(s, 'label') : s.label;
-                return (
+            {/* Draft Found Banner in Intro */}
+            {hasSavedDraft && (
+              <div className={styles.draftBanner} style={{ marginBottom: 'var(--space-6)' }}>
+                <div className={styles.draftBannerMessage}>
+                  <IconRestore size={18} />
+                  <span>{t('apply.draftFound') || 'Saved draft found from your previous session.'}</span>
+                </div>
+                <div className={styles.draftBannerActions}>
                   <button
-                    key={s.id || idx}
                     type="button"
-                    className={`${styles.stepItem} ${isCompleted ? styles.stepCompleted : ''} ${
-                      isCurrent ? styles.stepActive : ''
-                    }`}
-                    onClick={() => isCompleted && goToStep(idx)}
-                    disabled={!isCompleted}
-                    aria-current={isCurrent ? 'step' : undefined}
-                    aria-label={`${t('common.step')} ${idx + 1} ${t('common.of')} ${steps.length}: ${stepTitle}`}
+                    onClick={resumeDraft}
+                    className="btn btn-primary btn-sm"
                   >
-                    <span className={styles.stepCircle} aria-hidden="true">
-                      {isCompleted ? <IconCheck size={13} /> : idx + 1}
-                    </span>
-                    <span className={styles.stepLabel}>{stepTitle}</span>
+                    {t('apply.draftResume') || 'Resume Draft'}
                   </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Draft Resume Banner if available */}
-          {hasSavedDraft && (
-            <div className={styles.draftBanner}>
-              <div className={styles.draftBannerMessage}>
-                <IconRestore size={18} />
-                <span>{t('apply.draftFound')}</span>
-              </div>
-              <div className={styles.draftBannerActions}>
-                <button
-                  type="button"
-                  onClick={resumeDraft}
-                  className="btn btn-primary btn-sm"
-                >
-                  {t('apply.draftResume')}
-                </button>
-                <button
-                  type="button"
-                  onClick={discardDraft}
-                  className="btn btn-secondary btn-sm"
-                >
-                  {t('apply.draftDiscard')}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Clean Decoupled Submit Error Alert (Requirement 28 & 41) */}
-          {submitError && (
-            <div className={styles.submitErrorAlert} role="alert">
-              <strong>{t('validation.submitErrorTitle')}</strong>
-              <div className={styles.submitErrorBody}>{submitError}</div>
-            </div>
-          )}
-
-          {/* Global Multi-Field Error Summary (Requirements 2, 4, 43) */}
-          {numErrors > 1 && (
-            <FormErrorSummary
-              errors={stepErrors}
-              onJumpToField={handleJumpToField}
-              title={t('validation.alertTitleMulti')}
-              description={t('validation.alertDescMulti', { count: numErrors })}
-            />
-          )}
-
-          {/* Step Component Area */}
-          <div className={styles.formCard}>
-            {StepComponent ? (
-              <StepComponent
-                formData={formData}
-                updateFormData={updateFormData}
-                stateId={appState.selectedState?.id}
-                serviceId={service?.id}
-                service={service}
-                selectedState={appState.selectedState}
-                localize={localize}
-                t={t}
-                stepErrors={stepErrors}
-                submitting={submitting}
-                paymentStatus={paymentStatus}
-                paymentResult={paymentResult}
-                onRetryPayment={handlePaymentAndSubmit}
-                onBackToApp={() => {
-                  setPaymentStatus('idle');
-                  setCurrentStepIndex(Math.max(0, currentStepIndex - 1));
-                }}
-              />
-            ) : (
-              <div className="loading-center">
-                <p>{t('apply.stepNotFound', { stepKey: currentStep?.step_key })}</p>
+                  <button
+                    type="button"
+                    onClick={discardDraft}
+                    className="btn btn-secondary btn-sm"
+                  >
+                    {t('apply.draftDiscard') || 'Discard'}
+                  </button>
+                </div>
               </div>
             )}
-          </div>
 
-          {/* Bottom Navigation & Sticky Mobile Payment CTA (Requirements 26 & 27) */}
-          {paymentStatus !== 'success' && (
-            <div className={styles.formNav}>
-              <div className={styles.formNavSecondary}>
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  onClick={handleBack}
-                  disabled={currentStepIndex === 0 || submitting}
-                >
-                  <IconArrowLeft size={16} />
-                  {t('common.back')}
-                </button>
+            <div className={styles.introActions}>
+              <button
+                type="button"
+                id="btn-start-application-intro"
+                onClick={() => setHasStartedForm(true)}
+                className="btn btn-primary btn-lg"
+              >
+                <span>{t('home.startCta') || 'Start Application'}</span>
+                <IconArrowRight size={18} />
+              </button>
 
-                <button
-                  type="button"
-                  id="btn-fill-demo-data-nav"
-                  className={styles.demoDataBtnSecondary}
-                  onClick={handleFillDemoData}
-                  title={t('common.fillDemoData')}
-                >
-                  <IconBolt size={14} />
-                  <span>{t('common.fillDemoData')}</span>
-                </button>
-              </div>
-
-              {isPaymentStep ? (
-                <button
-                  type="button"
-                  id="btn-pay-secure"
-                  className={`btn btn-primary btn-lg ${styles.payCta}`}
-                  onClick={handlePaymentAndSubmit}
-                  disabled={submitting || paymentStatus === 'processing' || paymentStatus === 'reconciling'}
-                >
-                  {submitting || paymentStatus === 'processing'
-                    ? t('payment.processing')
-                    : paymentStatus === 'reconciling'
-                    ? t('payment.reconciling')
-                    : t('payment.proceedToPay', { amount: totalAmount })}
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleNext}
-                  disabled={submitting}
-                >
-                  {t('common.next')}
-                  <IconArrowRight size={16} />
-                </button>
-              )}
+              <Link
+                href={`/documents?state=${stateSlug !== 'start' ? stateSlug : 'gujarat'}&service=${serviceSlug}`}
+                className="btn btn-secondary btn-lg"
+                target="_blank"
+              >
+                <span>{t('apply.viewRequiredDocs') || 'View Required Documents'}</span>
+              </Link>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          /* PAGE 05: GUIDED 2-COLUMN APPLICATION FORM */
+          <div className={styles.formLayout}>
+            {/* Demo Data Filled Success Banner */}
+            {demoFilledToast && (
+              <div className={styles.demoToast} role="status" aria-live="polite">
+                <IconCheck size={16} />
+                <span>{t('apply.demoDataFilled')}</span>
+              </div>
+            )}
+
+            {/* Mobile Compact Progress Bar (< 992px) */}
+            <div className={styles.mobileProgressWrap}>
+              <div className={styles.mobileStepHeader}>
+                <span className={styles.mobileStepIndex}>
+                  {t('common.step') || 'Step'} {currentStepIndex + 1} {t('common.of') || 'of'} {steps.length}
+                </span>
+                <span className={styles.mobileStepCurrentTitle}>
+                  {localize ? localize(currentStep, 'label') : currentStep?.label}
+                </span>
+              </div>
+              <div
+                className={styles.mobileProgressBarTrack}
+                role="progressbar"
+                aria-valuenow={currentStepIndex + 1}
+                aria-valuemin={1}
+                aria-valuemax={steps.length || 1}
+                aria-label={t('common.step')}
+              >
+                <div
+                  className={styles.mobileProgressBarFill}
+                  style={{ transform: `scaleX(${(currentStepIndex + 1) / (steps.length || 1)})` }}
+                />
+              </div>
+            </div>
+
+            {/* 2-Column Guided Grid */}
+            <div className={styles.guidedFormGrid}>
+              {/* Desktop Sticky Sidebar (Left Column) */}
+              <aside className={styles.guidedSidebar} aria-label={t('common.applicationSteps') || 'Application Steps'}>
+                <div className={styles.sidebarCard}>
+                  <div className={styles.sidebarHeader}>
+                    <span className={styles.sidebarBadge}>
+                      {localize ? localize(service, 'name') : service?.name}
+                    </span>
+                    <h2 className={styles.sidebarTitle}>{t('common.applicationSteps') || 'Application Steps'}</h2>
+                  </div>
+                  <ol className={styles.sidebarStepList}>
+                    {steps.map((s, idx) => {
+                      const isCompleted = idx < currentStepIndex;
+                      const isCurrent = idx === currentStepIndex;
+                      const stepNum = String(idx + 1).padStart(2, '0');
+                      const stepTitle = localize ? localize(s, 'label') : s.label;
+                      return (
+                        <li key={s.id || idx}>
+                          <button
+                            type="button"
+                            className={`${styles.sidebarStepBtn} ${isCompleted ? styles.stepCompleted : ''} ${isCurrent ? styles.stepActive : ''}`}
+                            onClick={() => isCompleted && goToStep(idx)}
+                            disabled={!isCompleted}
+                            aria-current={isCurrent ? 'step' : undefined}
+                            aria-label={`${t('common.step')} ${idx + 1}: ${stepTitle}`}
+                          >
+                            <span className={styles.sidebarStepBadge}>
+                              {isCompleted ? <IconCheck size={14} /> : stepNum}
+                            </span>
+                            <span className={styles.sidebarStepLabel}>{stepTitle}</span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </div>
+              </aside>
+
+              {/* Main Guided Form Container (Right Column) */}
+              <div className={styles.guidedContent}>
+                {/* Active Step Header */}
+                <div className={styles.activeStepHeader}>
+                  <div className={styles.activeStepMeta}>
+                    <span className={styles.stepIndexPill}>
+                      {t('common.step') || 'Step'} {currentStepIndex + 1} {t('common.of') || 'of'} {steps.length}
+                    </span>
+                    <div className={styles.formHeaderActions}>
+                      {autoSaveStatus === 'saving' && (
+                        <span className={validationStyles.autoSaveSaving}>
+                          <span className={`spinner ${styles.autoSaveSpinner}`}></span>
+                          {t('validation.autoSaveSaving')}
+                        </span>
+                      )}
+                      {autoSaveStatus === 'saved' && !submitted && (
+                        <span className={validationStyles.autoSaveSaved}>
+                          <IconCheck size={13} />
+                          {t('validation.autoSaveSaved')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <h1 className={styles.activeStepTitle}>
+                    {localize ? localize(currentStep, 'label') : currentStep?.label}
+                  </h1>
+                  {currentStep?.description && (
+                    <p className={styles.activeStepDesc}>
+                      {localize ? localize(currentStep, 'description') : currentStep.description}
+                    </p>
+                  )}
+                </div>
+
+                {/* Draft Resume Banner if available */}
+                {hasSavedDraft && (
+                  <div className={styles.draftBanner}>
+                    <div className={styles.draftBannerMessage}>
+                      <IconRestore size={18} />
+                      <span>{t('apply.draftFound')}</span>
+                    </div>
+                    <div className={styles.draftBannerActions}>
+                      <button
+                        type="button"
+                        onClick={resumeDraft}
+                        className="btn btn-primary btn-sm"
+                      >
+                        {t('apply.draftResume')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={discardDraft}
+                        className="btn btn-secondary btn-sm"
+                      >
+                        {t('apply.draftDiscard')}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Submit Error Alert */}
+                {submitError && (
+                  <div className={styles.submitErrorAlert} role="alert">
+                    <strong>{t('validation.submitErrorTitle')}</strong>
+                    <div className={styles.submitErrorBody}>{submitError}</div>
+                  </div>
+                )}
+
+                {/* Global Multi-Field Error Summary */}
+                {numErrors > 1 && (
+                  <FormErrorSummary
+                    errors={stepErrors}
+                    onJumpToField={handleJumpToField}
+                    title={t('validation.alertTitleMulti')}
+                    description={t('validation.alertDescMulti', { count: numErrors })}
+                  />
+                )}
+
+                {/* Step Component Area */}
+                <div className={styles.formCard}>
+                  {StepComponent ? (
+                    <StepComponent
+                      formData={formData}
+                      updateFormData={updateFormData}
+                      stateId={appState.selectedState?.id}
+                      serviceId={service?.id}
+                      service={service}
+                      selectedState={appState.selectedState}
+                      localize={localize}
+                      t={t}
+                      stepErrors={stepErrors}
+                      submitting={submitting}
+                      paymentStatus={paymentStatus}
+                      paymentResult={paymentResult}
+                      onRetryPayment={handlePaymentAndSubmit}
+                      goToStep={goToStep}
+                      onEditSection={(stepKey) => {
+                        const idx = steps.findIndex((s) => s.step_key === stepKey);
+                        if (idx >= 0) goToStep(idx);
+                      }}
+                      onBackToApp={() => {
+                        setPaymentStatus('idle');
+                        setCurrentStepIndex(Math.max(0, currentStepIndex - 1));
+                      }}
+                    />
+                  ) : (
+                    <div className="loading-center">
+                      <p>{t('apply.stepNotFound', { stepKey: currentStep?.step_key })}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom Navigation */}
+                {paymentStatus !== 'success' && (
+                  <div className={styles.formNav}>
+                    <div className={styles.formNavSecondary}>
+                      <button
+                        type="button"
+                        className="btn btn-ghost"
+                        onClick={handleBack}
+                        disabled={currentStepIndex === 0 || submitting}
+                      >
+                        <IconArrowLeft size={16} />
+                        {t('common.back')}
+                      </button>
+
+                      <button
+                        type="button"
+                        id="btn-fill-demo-data-nav"
+                        className={styles.demoDataBtnSecondary}
+                        onClick={handleFillDemoData}
+                        title={t('common.fillDemoData')}
+                      >
+                        <IconBolt size={14} />
+                        <span>{t('common.fillDemoData')}</span>
+                      </button>
+                    </div>
+
+                    {isPaymentStep ? (
+                      <button
+                        type="button"
+                        id="btn-pay-secure"
+                        className={`btn btn-primary btn-lg ${styles.payCta}`}
+                        onClick={handlePaymentAndSubmit}
+                        disabled={submitting || paymentStatus === 'processing' || paymentStatus === 'reconciling'}
+                      >
+                        {submitting || paymentStatus === 'processing'
+                          ? t('payment.processing')
+                          : paymentStatus === 'reconciling'
+                          ? t('payment.reconciling')
+                          : t('payment.proceedToPay', { amount: totalAmount })}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-lg"
+                        onClick={handleNext}
+                        disabled={submitting}
+                      >
+                        <span>{t('common.saveAndContinueBtn') || 'Save & Continue'}</span>
+                        <IconArrowRight size={16} />
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
