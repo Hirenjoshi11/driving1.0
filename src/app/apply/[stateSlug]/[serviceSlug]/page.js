@@ -58,7 +58,6 @@ export default function FormPage() {
   const [submitError, setSubmitError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [hasSavedDraft, setHasSavedDraft] = useState(false);
-  const [hasStartedForm, setHasStartedForm] = useState(false);
   const [copied, setCopied] = useState(false);
   const [demoFilledToast, setDemoFilledToast] = useState(false);
 
@@ -685,111 +684,26 @@ export default function FormPage() {
       </div>
 
       <div className={styles.container}>
-        {/* PAGE 04: APPLICATION INTRO ("Before you start") */}
-        {!hasStartedForm ? (
-          <div className={styles.introCard}>
-            <div className={styles.introBadge}>
-              {t('apply.beforeYouStartBadge') || 'Before you start'}
-            </div>
-            <h1 className={styles.introTitle}>
-              {localize ? localize(service, 'name') : service?.name}
-            </h1>
-            <p className={styles.introSubtitle}>
-              {t('apply.introSubtitle') || 'Please review the required details, expected timeline, and document checklist to complete your application smoothly.'}
-            </p>
-
-            <div className={styles.introGrid}>
-              <div className={styles.introCol}>
-                <div className={styles.introColIcon}>⏱️</div>
-                <h2 className={styles.introColTitle}>
-                  {t('apply.introTimeTitle') || 'Estimated Time'}
-                </h2>
-                <p className={styles.introColDesc}>
-                  {t('apply.introTimeDesc') || 'Takes approximately 8–12 minutes. Your progress saves automatically as you type.'}
-                </p>
-              </div>
-
-              <div className={styles.introCol}>
-                <div className={styles.introColIcon}>📁</div>
-                <h2 className={styles.introColTitle}>
-                  {t('apply.introDocsTitle') || 'Documents You May Need'}
-                </h2>
-                <p className={styles.introColDesc}>
-                  {t('apply.introDocsDesc') || 'Age proof (Birth Certificate/10th marksheet), Address proof (Aadhaar/Voter ID), and photo in PDF or JPG format.'}
-                </p>
-              </div>
-
-              <div className={styles.introCol}>
-                <div className={styles.introColIcon}>🛣️</div>
-                <h2 className={styles.introColTitle}>
-                  {t('apply.introStepsTitle') || 'Application Steps'}
-                </h2>
-                <p className={styles.introColDesc}>
-                  {t('apply.introStepsDesc') || `${steps.length || 7} guided sections covering applicant particulars, address, licence class, RTO choice, documents, and secure payment.`}
-                </p>
-              </div>
-            </div>
-
-            {/* Draft Found Banner in Intro */}
-            {hasSavedDraft && (
-              <div className={styles.draftBanner} style={{ marginBottom: 'var(--space-6)' }}>
-                <div className={styles.draftBannerMessage}>
-                  <IconRestore size={18} />
-                  <span>{t('apply.draftFound') || 'Saved draft found from your previous session.'}</span>
-                </div>
-                <div className={styles.draftBannerActions}>
-                  <button
-                    type="button"
-                    onClick={resumeDraft}
-                    className="btn btn-primary btn-sm"
-                    aria-label={t('apply.draftResume') || 'Resume Saved Draft'}
-                  >
-                    {t('apply.draftResume') || 'Resume Draft'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={discardDraft}
-                    className="btn btn-secondary btn-sm"
-                    aria-label={t('apply.draftDiscard') || 'Discard Draft'}
-                  >
-                    {t('apply.draftDiscard') || 'Discard'}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <div className={styles.introActions}>
-              <button
-                type="button"
-                id="btn-start-application-intro"
-                onClick={() => setHasStartedForm(true)}
-                className="btn btn-primary btn-lg"
-                aria-label={t('home.startCta') || 'Start Application'}
-              >
-                <span>{t('home.startCta') || 'Start Application'}</span>
-                <IconArrowRight size={18} />
-              </button>
-
-              <Link
-                href={`/documents?state=${stateSlug !== 'start' ? stateSlug : 'gujarat'}&service=${serviceSlug}`}
-                className="btn btn-secondary btn-lg"
-                target="_blank"
-                aria-label={t('apply.viewRequiredDocs') || 'View Required Documents Checklist'}
-              >
-                <span>{t('apply.viewRequiredDocs') || 'View Required Documents'}</span>
-              </Link>
-            </div>
+        {/* PAGE 05: GUIDED 2-COLUMN APPLICATION FORM */}
+        <div className={styles.formLayout}>
+          <div className={styles.formLayoutHeader} style={{ marginBottom: '1rem' }}>
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="btn btn-outline btn-sm"
+              aria-label={t('common.back') || 'Back'}
+            >
+              <IconArrowLeft size={16} />
+              <span style={{ marginLeft: '4px' }}>{t('common.back') || 'Back'}</span>
+            </button>
           </div>
-        ) : (
-          /* PAGE 05: GUIDED 2-COLUMN APPLICATION FORM */
-          <div className={styles.formLayout}>
-            {/* Demo Data Filled Success Banner */}
-            {demoFilledToast && (
-              <div className={styles.demoToast} role="status" aria-live="polite">
-                <IconCheck size={16} />
-                <span>{t('apply.demoDataFilled')}</span>
-              </div>
-            )}
+          {/* Demo Data Filled Success Banner */}
+          {demoFilledToast && (
+            <div className={styles.demoToast} role="status" aria-live="polite">
+              <IconCheck size={16} />
+              <span>{t('apply.demoDataFilled')}</span>
+            </div>
+          )}
 
             {/* Mobile Compact Progress Bar (< 992px) */}
             <div className={styles.mobileProgressWrap}>
@@ -1032,8 +946,7 @@ export default function FormPage() {
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
-    </div>
   );
 }

@@ -47,9 +47,7 @@ export default function HomeContent({ services = [], states = [] }) {
                 <span>{t('home.startCta') || 'Start Application'}</span>
                 <IconArrowRight size={18} className={styles.primaryCtaArrow} />
               </Link>
-              <a href="#how-it-works" className={`btn btn-outline btn-lg ${styles.secondaryCta}`}>
-                <span>{t('home.seeHowItWorks') || 'See How It Works'}</span>
-              </a>
+
             </div>
           </div>
         </div>
@@ -177,109 +175,7 @@ export default function HomeContent({ services = [], states = [] }) {
         </div>
       </section>
 
-      {/* ============================================================
-          5. DOCUMENT CONFIDENCE
-          ============================================================ */}
-      <section id="documents-confidence" className={styles.docConfidenceSection}>
-        <div className="container">
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>
-              {t('home.docConfidenceTitle') || 'Document Confidence Before You Begin'}
-            </h2>
-            <p className={styles.sectionSubtitle}>
-              {t('home.docConfidenceSubtitle') || 'Never guess what paperwork is required. Clear checklists with accepted digital formats prevent RTO rejections.'}
-            </p>
-          </div>
 
-          <div className={styles.docConfidenceGrid}>
-            <div className={styles.docConfidenceCard}>
-              <div className={styles.docCardIconWrap}>📋</div>
-              <h3 className={styles.docConfidenceCardTitle}>
-                {t('home.docCard1Title') || 'Pre-Verified Checklists'}
-              </h3>
-              <p className={styles.docConfidenceCardDesc}>
-                {t('home.docCard1Desc') || 'Know exactly which age, address, and medical documents your specific state RTO mandates before starting.'}
-              </p>
-            </div>
-            <div className={styles.docConfidenceCard}>
-              <div className={styles.docCardIconWrap}>🔍</div>
-              <h3 className={styles.docConfidenceCardTitle}>
-                {t('home.docCard2Title') || 'Digital Format Checks'}
-              </h3>
-              <p className={styles.docConfidenceCardDesc}>
-                {t('home.docCard2Desc') || 'Upload PDF, JPG, or PNG under 5MB with instant resolution checks so applications never get rejected for file errors.'}
-              </p>
-            </div>
-            <div className={styles.docConfidenceCard}>
-              <div className={styles.docCardIconWrap}>🛡️</div>
-              <h3 className={styles.docConfidenceCardTitle}>
-                {t('home.docCard3Title') || 'Direct Authority Guidance'}
-              </h3>
-              <p className={styles.docConfidenceCardDesc}>
-                {t('home.docCard3Desc') || 'Clear instructions on where and how to obtain required proofs from UIDAI, hospitals, or local authorities.'}
-              </p>
-            </div>
-          </div>
-
-          <div className={styles.docConfidenceCta}>
-            <Link href="/documents" className="btn btn-secondary">
-              <span>{t('home.viewDocChecklist') || 'View Complete Document Checklist'}</span>
-              <IconArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          6. TRACKING PREVIEW
-          ============================================================ */}
-      <section id="tracking-preview" className={styles.trackingPreviewSection}>
-        <div className="container">
-          <div className={styles.trackingPreviewBox}>
-            <div className={styles.trackingPreviewInfo}>
-              <span className="badge badge-info">{t('home.trackingBadge') || 'Real-Time Transparency'}</span>
-              <h2 className={styles.trackingPreviewTitle}>
-                {t('home.trackingTitle') || 'Track Every Step of Your Application'}
-              </h2>
-              <p className={styles.trackingPreviewDesc}>
-                {t('home.trackingDesc') || 'From initial submission and statutory payment to RTO scrutiny and smart card dispatch, monitor your exact milestone status 24/7.'}
-              </p>
-              <div className={styles.trackingActionWrap}>
-                <Link href="/track" className="btn btn-primary">
-                  <span>{t('home.trackNowCta') || 'Track Application Status'}</span>
-                  <IconArrowRight size={16} />
-                </Link>
-              </div>
-            </div>
-
-            <div className={styles.trackingMockCard}>
-              <div className={styles.mockHeader}>
-                <span className={styles.mockId}>DL-2026-GJ-09418</span>
-                <span className="badge badge-success">{t('status.under_review') || 'Under Review'}</span>
-              </div>
-              <div className={styles.mockService}>Learner Licence • GJ-01 Ahmedabad RTO</div>
-              <div className={styles.mockSteps}>
-                <div className={`${styles.mockStep} ${styles.mockStepDone}`}>
-                  <span className={styles.mockStepDot}>✓</span>
-                  <span>{t('timeline.submitted') || 'Form Submitted'}</span>
-                </div>
-                <div className={`${styles.mockStep} ${styles.mockStepDone}`}>
-                  <span className={styles.mockStepDot}>✓</span>
-                  <span>{t('timeline.paid') || 'Payment Verified'}</span>
-                </div>
-                <div className={`${styles.mockStep} ${styles.mockStepActive}`}>
-                  <span className={styles.mockStepDot}>●</span>
-                  <span>{t('timeline.under_review') || 'RTO Document Scrutiny'}</span>
-                </div>
-                <div className={styles.mockStep}>
-                  <span className={styles.mockStepDot}>○</span>
-                  <span>{t('timeline.completed') || 'Licence Issuance & Dispatch'}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ============================================================
           7. LANGUAGE SUPPORT

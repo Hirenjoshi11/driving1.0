@@ -234,11 +234,11 @@ export default function Header() {
               aria-controls="lang-select-listbox"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
               </svg>
               <span className={styles.langLabel}>{currentLang.nativeName}</span>
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L1 3h10z"/></svg>
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L1 3h10z" /></svg>
             </button>
             {langOpen && (
               <div
@@ -262,7 +262,7 @@ export default function Header() {
                     <span>{lang.nativeName}</span>
                     <span className={styles.langName}>{lang.name}</span>
                     {state.language === lang.code && (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#159447" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#159447" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12" /></svg>
                     )}
                   </button>
                 ))}
@@ -316,19 +316,7 @@ export default function Header() {
             </Link>
           )}
 
-          {/* Primary CTA: Start Application */}
-          <Link
-            href="/apply"
-            className={`btn btn-primary btn-sm ${styles.headerPrimaryCta}`}
-            id="header-start-app-cta"
-            aria-label={t('nav.startApplication') || 'Start Application'}
-          >
-            <span>{t('nav.startApplication') || 'Start Application'}</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </Link>
+
 
           {/* Mobile Hamburger Toggle (Right Aligned) */}
           <button
