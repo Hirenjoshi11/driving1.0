@@ -185,8 +185,8 @@ export default function HomeContent({ services = [], states = [] }) {
           <div className={styles.finalCtaCard}>
             <div className={styles.finalCtaBadgeWrap}>
               <span className={styles.finalCtaBadge}>
-                <span aria-hidden="true">💚</span>
-                <span>{t('home.socialBadge') || 'हमारा सामाजिक संकल्प'}</span>
+                <span className={styles.finalCtaBadgeIcon} aria-hidden="true">💚</span>
+                <span className={styles.finalCtaBadgeText}>{t('home.socialBadge') || 'हमारा सामाजिक संकल्प'}</span>
               </span>
             </div>
 
