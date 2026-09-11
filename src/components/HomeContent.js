@@ -228,30 +228,6 @@ export default function HomeContent({ services = [], states = [] }) {
         </div>
       </section>
 
-      {/* ============================================================
-          8. FINAL CTA
-          ============================================================ */}
-      <section className={styles.finalCtaSection}>
-        <div className="container">
-          <div className={styles.finalCtaCard}>
-            <h2 className={styles.finalCtaTitle}>
-              {t('home.finalCtaTitle') || 'Ready to Begin Your Driving Licence Application?'}
-            </h2>
-            <p className={styles.finalCtaSubtitle}>
-              {t('home.finalCtaSubtitle') || 'Join thousands of citizens who prepare their licence paperwork without hassle, agent commissions, or confusion.'}
-            </p>
-            <div className={styles.finalCtaActions}>
-              <Link href="/apply" className="btn btn-primary btn-lg">
-                <span>{t('home.startCta') || 'Start Application'}</span>
-                <IconArrowRight size={18} />
-              </Link>
-              <Link href="/help" className="btn btn-outline btn-lg">
-                <span>{t('nav.help') || 'Get Help & FAQs'}</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
