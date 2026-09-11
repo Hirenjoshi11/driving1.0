@@ -1,6 +1,7 @@
 /* ==========================================================================
    PREMIUM PRIVACY POLICY DESIGN SYSTEM
    Driving License Form — Light, Trustworthy, Modern Citizen Service
+   Fully Mobile Responsive (320px — 4K)
    ========================================================================== */
 
 .pageContainer {
@@ -10,21 +11,24 @@
   padding: 2rem 1.5rem 5rem;
   font-family: inherit;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 .innerWrap {
   max-width: 1180px;
   margin: 0 auto;
+  width: 100%;
 }
 
 /* Breadcrumb */
 .breadcrumb {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 0.85rem;
   color: #5B6470;
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
 }
 
 .breadcrumb a {
@@ -44,12 +48,12 @@
 }
 
 /* ==========================================================================
-   HERO SECTION (Calm, Compact, Light, Apple-like)
+   HERO SECTION
    ========================================================================== */
 .heroCard {
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.08);
-  border-radius: var(--radius-2xl);
+  border-radius: 24px;
   padding: 2.75rem 2.5rem;
   margin-bottom: 2rem;
   box-shadow: 0 4px 20px -2px rgba(24, 35, 45, 0.04);
@@ -63,18 +67,18 @@
 
 .heroContent {
   flex: 1;
-  max-width: 680px;
+  max-width: 720px;
 }
 
 .heroEyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   background: #EAF6EE;
   color: #159447;
-  font-size: var(--font-size-xs);
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 0.35rem 0.85rem;
   border-radius: 100px;
@@ -82,7 +86,7 @@
 }
 
 .heroTitle {
-  font-size: var(--font-size-3xl);
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
   font-weight: 800;
   color: #18232D;
   letter-spacing: -0.025em;
@@ -91,8 +95,8 @@
 }
 
 .heroSubtitle {
-  font-size: var(--font-size-md);
-  line-height: 1.6;
+  font-size: clamp(0.95rem, 1.8vw, 1.08rem);
+  line-height: 1.65;
   color: #5B6470;
   margin: 0 0 1.75rem 0;
 }
@@ -101,7 +105,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
   padding-top: 1.25rem;
   border-top: 1px solid rgba(24, 35, 45, 0.08);
   font-size: 0.85rem;
@@ -129,13 +133,13 @@
   font-weight: 700;
   padding: 0.2rem 0.6rem;
   border-radius: 6px;
-  font-size: var(--font-size-sm);
+  font-size: 0.82rem;
 }
 
 .heroVisual {
   flex-shrink: 0;
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,8 +148,8 @@
 
 .heroVisualGlow {
   position: absolute;
-  width: 200px;
-  height: 200px;
+  width: 190px;
+  height: 190px;
   background: radial-gradient(circle, rgba(21, 148, 71, 0.12) 0%, rgba(234, 246, 238, 0) 70%);
   border-radius: 50%;
   pointer-events: none;
@@ -164,8 +168,8 @@
 .summaryCard {
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.08);
-  border-radius: var(--radius-xl);
-  padding: 1.25rem 1.25rem 1.5rem;
+  border-radius: 18px;
+  padding: 1.25rem 1.25rem 1.35rem;
   cursor: pointer;
   text-align: left;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -181,15 +185,14 @@
 }
 
 .summaryIcon {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   background: #EAF6EE;
   color: #159447;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
   margin-bottom: 0.85rem;
 }
 
@@ -209,8 +212,8 @@
 }
 
 .summaryAction {
-  font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: #159447;
   margin-top: 0.85rem;
   display: inline-flex;
@@ -244,7 +247,7 @@
 }
 
 .sidebarTitle {
-  font-size: var(--font-size-xs);
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -268,7 +271,7 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.55rem 0.75rem;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   font-size: 0.85rem;
   color: #5B6470;
   text-decoration: none;
@@ -293,9 +296,9 @@
 }
 
 .navNumber {
-  font-size: var(--font-size-xs);
+  font-size: 0.75rem;
   font-weight: 700;
-  opacity: 0.8;
+  opacity: 0.85;
   min-width: 1.25rem;
 }
 
@@ -306,42 +309,88 @@
 }
 
 /* ==========================================================================
-   MOBILE SECTION SELECTOR (Dropdown)
+   MOBILE SECTION SELECTOR & HORIZONTAL CHIPS
    ========================================================================== */
 .mobileNavWrap {
   display: none;
   position: sticky;
-  top: 70px;
-  z-index: 40;
+  top: 64px;
+  z-index: 35;
   margin-bottom: 1.5rem;
-  background: #F7FAF8;
-  padding: 0.5rem 0;
+  background: rgba(247, 250, 248, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(24, 35, 45, 0.06);
+}
+
+.mobileChipsBar {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+
+.mobileChipsBar::-webkit-scrollbar {
+  display: none;
+}
+
+.mobileChip {
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  border: 1px solid rgba(24, 35, 45, 0.12);
+  background: #FFFFFF;
+  color: #18232D;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.mobileChipActive {
+  background: #159447;
+  color: #FFFFFF;
+  border-color: #159447;
+  box-shadow: 0 2px 6px rgba(21, 148, 71, 0.3);
+}
+
+.mobileChipNum {
+  font-weight: 800;
+  font-size: 0.72rem;
+  opacity: 0.9;
 }
 
 .mobileNavBtn {
   width: 100%;
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.12);
-  border-radius: var(--radius-lg);
-  padding: 0.85rem 1.25rem;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: var(--font-size-base);
+  font-size: 0.9rem;
   font-weight: 600;
   color: #18232D;
-  box-shadow: 0 4px 12px rgba(24, 35, 45, 0.05);
+  box-shadow: 0 2px 8px rgba(24, 35, 45, 0.04);
   cursor: pointer;
 }
 
 .mobileMenu {
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.12);
-  border-radius: 16px;
-  margin-top: 0.5rem;
-  padding: 0.75rem;
-  box-shadow: 0 12px 30px rgba(24, 35, 45, 0.12);
-  max-height: 380px;
+  border-radius: 14px;
+  margin-top: 0.4rem;
+  padding: 0.5rem;
+  box-shadow: 0 10px 25px rgba(24, 35, 45, 0.1);
+  max-height: 340px;
   overflow-y: auto;
 }
 
@@ -350,9 +399,9 @@
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-  padding: 0.7rem 0.85rem;
-  border-radius: var(--radius-md);
-  font-size: 0.9rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
   color: #18232D;
   background: none;
   border: none;
@@ -360,7 +409,8 @@
   cursor: pointer;
 }
 
-.mobileMenuItem:hover, .mobileMenuItemActive {
+.mobileMenuItem:hover,
+.mobileMenuItemActive {
   background: #EAF6EE;
   color: #159447;
   font-weight: 600;
@@ -370,19 +420,19 @@
    CONTENT AREA & SEARCH BAR
    ========================================================================== */
 .contentArea {
-  max-width: 760px;
+  max-width: 800px;
   width: 100%;
 }
 
 .searchBox {
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.1);
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 0.75rem 1.15rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   box-shadow: 0 2px 8px rgba(24, 35, 45, 0.02);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -394,7 +444,8 @@
 
 .searchIcon {
   color: var(--color-text-muted);
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
 }
 
 .searchInput {
@@ -402,7 +453,7 @@
   outline: none;
   background: transparent;
   width: 100%;
-  font-size: var(--font-size-sm);
+  font-size: 0.92rem;
   color: #18232D;
 }
 
@@ -418,10 +469,12 @@
   cursor: pointer;
   padding: 0.2rem 0.5rem;
   border-radius: 6px;
+  display: flex;
+  align-items: center;
 }
 
 .searchClearBtn:hover {
-  background: var(--color-bg-alt);
+  background: #F1F5F9;
   color: #18232D;
 }
 
@@ -432,7 +485,7 @@
   margin-bottom: 1.5rem;
   padding: 0.5rem 1rem;
   background: #EAF6EE;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
 }
 
 /* ==========================================================================
@@ -442,14 +495,14 @@
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.08);
   border-radius: 20px;
-  padding: 2.5rem 2.25rem;
+  padding: 2.25rem 2.25rem;
   margin-bottom: 2rem;
   box-shadow: 0 2px 12px rgba(24, 35, 45, 0.02);
-  scroll-margin-top: 100px;
+  scroll-margin-top: 90px;
 }
 
 .sectionHeader {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .sectionMarker {
@@ -460,7 +513,7 @@
 }
 
 .sectionNumber {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: #159447;
   background: #EAF6EE;
@@ -476,39 +529,39 @@
 }
 
 .sectionHeading {
-  font-size: var(--font-size-xl);
-  font-weight: 700;
+  font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+  font-weight: 800;
   color: #18232D;
-  line-height: 1.25;
+  line-height: 1.3;
   margin: 0 0 0.5rem 0;
   letter-spacing: -0.015em;
 }
 
 .sectionSubheading {
-  font-size: var(--font-size-base);
+  font-size: 0.95rem;
   line-height: 1.6;
   color: #5B6470;
   margin: 0;
 }
 
 .sectionContent {
-  font-size: var(--font-size-base);
+  font-size: 0.95rem;
   line-height: 1.75;
-  color: var(--color-text);
-  margin-bottom: 1.5rem;
+  color: #374151;
+  margin-bottom: 1.25rem;
 }
 
 /* Callouts ("WHY WE ASK FOR THIS") */
 .calloutBox {
-  background: var(--color-primary-light);
+  background: #F0FDF4;
   border: 1px solid rgba(21, 148, 71, 0.3);
-  border-radius: var(--radius-lg);
-  padding: 1.15rem 1.35rem;
-  margin: 1.5rem 0;
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin: 1.25rem 0;
 }
 
 .calloutTitle {
-  font-size: var(--font-size-xs);
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -520,25 +573,63 @@
 }
 
 .calloutText {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.6;
   color: #18232D;
   margin: 0;
 }
 
 /* ==========================================================================
-   02 INFORMATION WE COLLECT — EXPANDABLE CATEGORIES
+   01 OVERVIEW: PRINCIPLES
+   ========================================================================== */
+.principleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.principleCard {
+  background: #FBFDFB;
+  border: 1px solid rgba(24, 35, 45, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+}
+
+.principleTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #18232D;
+  margin-bottom: 0.4rem;
+}
+
+.principleTitle svg {
+  color: #159447;
+  flex-shrink: 0;
+}
+
+.principleDesc {
+  font-size: 0.84rem;
+  color: #5B6470;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   02 INFORMATION WE COLLECT — EXPANDABLE ACCORDIONS
    ========================================================================== */
 .accordionList {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.75rem;
   margin-top: 1.25rem;
 }
 
 .accordionItem {
   border: 1px solid rgba(24, 35, 45, 0.08);
-  border-radius: var(--radius-lg);
+  border-radius: 14px;
   overflow: hidden;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -550,7 +641,7 @@
 
 .accordionHeader {
   width: 100%;
-  padding: 1.1rem 1.25rem;
+  padding: 1rem 1.25rem;
   background: #FFFFFF;
   border: none;
   display: flex;
@@ -560,6 +651,7 @@
   text-align: left;
   font-family: inherit;
   transition: background 0.15s ease;
+  gap: 0.75rem;
 }
 
 .accordionHeader:hover {
@@ -569,29 +661,32 @@
 .accordionHeaderLeft {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
 }
 
 .accordionTitle {
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #18232D;
   margin: 0;
 }
 
 .badgeCategory {
-  font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
   padding: 0.2rem 0.55rem;
   border-radius: 100px;
-  background: var(--color-bg-alt);
-  color: var(--color-text-secondary);
+  background: #F1F5F9;
+  color: #475569;
+  text-transform: uppercase;
 }
 
 .accordionChevron {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: transform 0.25s ease;
+  flex-shrink: 0;
 }
 
 .accordionChevronOpen {
@@ -617,30 +712,30 @@
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 0.5rem;
 }
 
 .dataItem {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   color: #18232D;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.06);
-  padding: 0.45rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 8px;
 }
 
 .dataItemBullet {
   color: #159447;
-  font-weight: 700;
-  font-size: var(--font-size-xs);
+  font-weight: 800;
+  font-size: 0.8rem;
 }
 
 /* ==========================================================================
-   03 WHY WE COLLECT IT — MAPPING LAYOUT
+   03 WHY WE COLLECT IT — MAPPING LAYOUT (Responsive Cards)
    ========================================================================== */
 .mappingGrid {
   display: flex;
@@ -652,17 +747,17 @@
 .mappingRow {
   background: #FBFDFB;
   border: 1px solid rgba(24, 35, 45, 0.08);
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   padding: 1rem 1.25rem;
   display: grid;
-  grid-template-columns: 200px 24px 1fr 120px;
+  grid-template-columns: 180px 24px 1fr 130px;
   align-items: center;
   gap: 0.75rem;
 }
 
 .mappingField {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #18232D;
 }
 
@@ -670,23 +765,63 @@
   color: #159447;
   font-weight: 700;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mappingPurpose {
-  font-size: 0.86rem;
-  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  color: #4B5563;
   line-height: 1.45;
 }
 
 .mappingBasis {
-  font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: #159447;
   background: #EAF6EE;
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   text-align: center;
   white-space: nowrap;
+}
+
+/* ==========================================================================
+   04 HOW WE USE DATA (Steps)
+   ========================================================================== */
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stepCard {
+  background: #FBFDFB;
+  border: 1px solid rgba(24, 35, 45, 0.08);
+  border-radius: 14px;
+  padding: 1.15rem;
+}
+
+.stepCardNumber {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #159447;
+  margin-bottom: 0.35rem;
+}
+
+.stepCardTitle {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #18232D;
+  margin-bottom: 0.35rem;
+}
+
+.stepCardDesc {
+  font-size: 0.84rem;
+  color: #5B6470;
+  line-height: 1.5;
 }
 
 /* ==========================================================================
@@ -701,7 +836,7 @@
   background: #FBFDFB;
   border: 1px solid rgba(24, 35, 45, 0.08);
   border-radius: 16px;
-  margin: 1.25rem 0 1.75rem;
+  margin: 1.25rem 0 1.5rem;
   overflow-x: auto;
 }
 
@@ -711,34 +846,45 @@
   padding: 0.75rem 1rem;
   border-radius: 12px;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: #18232D;
   box-shadow: 0 2px 6px rgba(24, 35, 45, 0.03);
-  min-width: 140px;
+  min-width: 130px;
 }
 
 .flowArrow {
   color: #159447;
   font-weight: 800;
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Responsive Table Wrapper */
+.tableResponsiveWrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 1rem;
+  border: 1px solid rgba(24, 35, 45, 0.08);
+  border-radius: 14px;
+  background: #FFFFFF;
 }
 
 .processorsTable {
   width: 100%;
+  min-width: 540px;
   border-collapse: separate;
   border-spacing: 0;
-  margin-top: 1rem;
-  border: 1px solid rgba(24, 35, 45, 0.08);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
 }
 
 .processorsTable th {
   background: #F7FAF8;
   padding: 0.85rem 1rem;
-  font-size: var(--font-size-xs);
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #5B6470;
@@ -771,7 +917,7 @@
 .securityCard {
   background: #FBFDFB;
   border: 1px solid rgba(24, 35, 45, 0.08);
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 1.25rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -782,19 +928,19 @@
 }
 
 .securityIcon {
-  font-size: var(--font-size-lg);
+  font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 .securityHeading {
-  font-size: var(--font-size-base);
+  font-size: 0.98rem;
   font-weight: 700;
   color: #18232D;
   margin: 0 0 0.35rem 0;
 }
 
 .securityDesc {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   color: #5B6470;
   line-height: 1.5;
   margin: 0;
@@ -804,14 +950,14 @@
    07 DATA RETENTION LIFECYCLE
    ========================================================================== */
 .lifecycleWrap {
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
 }
 
 .lifecycleGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .lifecycleItem {
@@ -823,14 +969,14 @@
 }
 
 .lifecycleStepTitle {
-  font-size: var(--font-size-sm);
+  font-size: 0.84rem;
   font-weight: 800;
   color: #159447;
   margin-bottom: 0.25rem;
 }
 
 .lifecycleStepDesc {
-  font-size: var(--font-size-xs);
+  font-size: 0.78rem;
   color: #18232D;
   line-height: 1.35;
 }
@@ -849,7 +995,7 @@
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.09);
   border-radius: 16px;
-  padding: 1.35rem 1.25rem;
+  padding: 1.25rem;
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -873,11 +1019,11 @@
 }
 
 .rightsIcon {
-  font-size: var(--font-size-lg);
+  font-size: 1.25rem;
   background: #EAF6EE;
   width: 40px;
   height: 40px;
-  border-radius: var(--radius-md);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -885,21 +1031,21 @@
 }
 
 .rightsTitle {
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #18232D;
   margin: 0 0 0.25rem 0;
 }
 
 .rightsDesc {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   color: #5B6470;
   line-height: 1.45;
   margin: 0;
 }
 
 .rightsCardArrow {
-  font-size: var(--font-size-sm);
+  font-size: 0.8rem;
   font-weight: 700;
   color: #159447;
   display: inline-flex;
@@ -909,69 +1055,129 @@
 }
 
 /* ==========================================================================
-   PRIVACY CENTER CTA CARD
+   09 CHILDREN & GUARDIANS
    ========================================================================== */
-.privacyCenterCTA {
-  background: #FFFFFF;
-  border: 1.5px solid rgba(21, 148, 71, 0.3);
-  border-radius: 20px;
-  padding: 2.25rem 2rem;
-  margin: 2.5rem 0 2rem;
-  box-shadow: 0 6px 24px -4px rgba(21, 148, 71, 0.08);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
-  position: relative;
-  overflow: hidden;
+.guardiansWrap {
+  margin-top: 1.25rem;
 }
 
-.privacyCenterCTA {
-  border: 1px solid rgba(21, 148, 71, 0.3);
-}
-
-.ctaContent {
-  max-width: 480px;
-}
-
-.ctaTitle {
-  font-size: var(--font-size-lg);
-  font-weight: 800;
-  color: #18232D;
-  margin: 0 0 0.5rem 0;
-}
-
-.ctaSubtitle {
-  font-size: var(--font-size-sm);
-  line-height: 1.55;
-  color: #5B6470;
+.prohibitionsGrid {
+  list-style: none;
+  padding: 0;
   margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.6rem;
 }
 
-.ctaBtnPrimary {
-  display: inline-flex;
+.prohibitionItem {
+  background: #FBFDFB;
+  border: 1px solid rgba(24, 35, 45, 0.08);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.84rem;
+  color: #18232D;
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #159447;
-  color: #FFFFFF;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: var(--font-size-base);
-  padding: 0.85rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(21, 148, 71, 0.3);
-  transition: all 0.2s ease;
-  white-space: nowrap;
 }
 
-.ctaBtnPrimary:hover {
-  background: var(--color-primary-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(21, 148, 71, 0.4);
+.inlineCheck {
+  color: #159447;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
-   GRIEVANCE REDRESSAL SECTION & CTAs
+   10 COOKIES & ANALYTICS
+   ========================================================================== */
+.cookiesWrap {
+  margin-top: 1.25rem;
+}
+
+.cookieList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.cookieCard {
+  background: #FBFDFB;
+  border: 1px solid rgba(24, 35, 45, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.cookieCardContent {
+  flex: 1;
+  min-width: 220px;
+}
+
+.cookieCardName {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #18232D;
+  margin-bottom: 0.2rem;
+}
+
+.cookieCardDesc {
+  font-size: 0.84rem;
+  color: #5B6470;
+  line-height: 1.4;
+}
+
+.cookieBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  background: #F1F5F9;
+  color: #475569;
+}
+
+.cookieBadgeAlways {
+  background: #EAF6EE;
+  color: #159447;
+}
+
+/* ==========================================================================
+   11 INTERNATIONAL TRANSFERS
+   ========================================================================== */
+.transfersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.transferCard {
+  background: #FBFDFB;
+  border: 1px solid rgba(24, 35, 45, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.flagIcon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.transferText {
+  font-size: 0.85rem;
+  color: #18232D;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   12 GRIEVANCE REDRESSAL & DPO
    ========================================================================== */
 .grievanceBox {
   background: #FBFDFB;
@@ -984,31 +1190,80 @@
 .dpoGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  font-size: 0.88rem;
-  color: #5B6470;
+  gap: 1.25rem;
   margin-bottom: 1.5rem;
 }
 
+.dpoItem {
+  display: flex;
+  flex-direction: column;
+}
+
 .dpoLabel {
-  font-size: var(--font-size-xs);
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--color-text-muted);
   margin-bottom: 0.25rem;
 }
 
 .dpoValue {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.95rem;
   color: #18232D;
+}
+
+.dpoSub {
+  font-size: 0.84rem;
+  color: #5B6470;
+  margin-top: 0.15rem;
+}
+
+.dpoLink {
+  color: #159447;
+  text-decoration: none;
+}
+
+.dpoLink:hover {
+  text-decoration: underline;
+}
+
+.dpoAddress {
+  font-size: 0.84rem;
+  color: #4B5563;
+  line-height: 1.45;
 }
 
 .grievanceActions {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.85rem;
   padding-top: 1.25rem;
   border-top: 1px solid rgba(24, 35, 45, 0.08);
+}
+
+.ctaBtnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #159447;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(21, 148, 71, 0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ctaBtnPrimary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(21, 148, 71, 0.35);
+  color: #FFFFFF;
 }
 
 .btnSecondary {
@@ -1022,8 +1277,9 @@
   font-weight: 600;
   font-size: 0.88rem;
   padding: 0.65rem 1.25rem;
-  border-radius: var(--radius-md);
+  border-radius: 10px;
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .btnSecondary:hover {
@@ -1033,7 +1289,38 @@
 }
 
 /* ==========================================================================
-   VERSION HISTORY TIMELINE (Collapsible)
+   13 CONTACT DETAILS
+   ========================================================================== */
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.contactCard {
+  background: #FBFDFB;
+  border: 1px solid rgba(24, 35, 45, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.contactLabel {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #8893A0;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.contactVal {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #18232D;
+}
+
+/* ==========================================================================
+   14 POLICY UPDATES: TIMELINE
    ========================================================================== */
 .timeline {
   display: flex;
@@ -1078,40 +1365,75 @@
 .timelineHeader {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   margin-bottom: 0.35rem;
 }
 
 .timelineVersion {
   font-weight: 800;
-  font-size: var(--font-size-base);
+  font-size: 0.95rem;
   color: #18232D;
 }
 
 .timelineDate {
-  font-size: var(--font-size-sm);
+  font-size: 0.8rem;
   color: var(--color-text-muted);
 }
 
 .timelineSummary {
-  font-size: 0.86rem;
+  font-size: 0.85rem;
   color: #5B6470;
   line-height: 1.5;
   margin: 0;
 }
 
 /* ==========================================================================
-   NON-GOVERNMENT STATUTORY DISCLAIMER
+   PRIVACY CENTER CTA BANNER
+   ========================================================================== */
+.privacyCenterCTA {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(21, 148, 71, 0.3);
+  border-radius: 20px;
+  padding: 2.25rem 2rem;
+  margin: 2.5rem 0 2rem;
+  box-shadow: 0 6px 24px -4px rgba(21, 148, 71, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.ctaContent {
+  max-width: 520px;
+}
+
+.ctaTitle {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #18232D;
+  margin: 0 0 0.5rem 0;
+}
+
+.ctaSubtitle {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #5B6470;
+  margin: 0;
+}
+
+/* ==========================================================================
+   NON-GOVERNMENT DISCLAIMER
    ========================================================================== */
 .disclaimerNotice {
   background: #FFFFFF;
   border: 1px solid rgba(24, 35, 45, 0.08);
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 1.25rem 1.5rem;
   font-size: 0.85rem;
   line-height: 1.6;
   color: #5B6470;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
 }
 
 .disclaimerNotice strong {
@@ -1119,7 +1441,7 @@
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN (Desktop, Tablet, Mobile)
+   RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1024px) {
   .mainLayout {
@@ -1130,29 +1452,22 @@
   .summaryGrid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .heroTitle {
-    font-size: var(--font-size-2xl);
-  }
 }
 
 @media (max-width: 860px) {
   .pageContainer {
-    padding: 1.25rem 1rem 4rem;
+    padding: 1.25rem 1rem 3.5rem;
   }
 
   .heroCard {
     flex-direction: column;
     align-items: flex-start;
     padding: 2rem 1.5rem;
+    gap: 1.5rem;
   }
 
   .heroVisual {
     display: none;
-  }
-
-  .summaryGrid {
-    grid-template-columns: 1fr;
   }
 
   .mainLayout {
@@ -1173,11 +1488,30 @@
 
   .sectionCard {
     padding: 1.75rem 1.25rem;
+    border-radius: 16px;
   }
 
   .mappingRow {
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "field basis"
+      "purpose purpose";
+    gap: 0.4rem 0.75rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .mappingField {
+    grid-area: field;
+  }
+
+  .mappingBasis {
+    grid-area: basis;
+    justify-self: end;
+  }
+
+  .mappingPurpose {
+    grid-area: purpose;
+    font-size: 0.84rem;
   }
 
   .mappingArrow {
@@ -1197,11 +1531,89 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 1.75rem 1.5rem;
+    gap: 1.25rem;
   }
 
-  .ctaBtnPrimary {
+  .privacyCenterCTA .ctaBtnPrimary {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .summaryCard {
+    padding: 1rem 0.85rem 1.1rem;
+    border-radius: 14px;
+  }
+
+  .summaryTitle {
+    font-size: 0.9rem;
+  }
+
+  .summaryDesc {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .summaryAction {
+    font-size: 0.74rem;
+    margin-top: 0.5rem;
+  }
+
+  .sharingFlow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    padding: 1rem;
+  }
+
+  .flowStep {
+    width: 100%;
+    min-width: 0;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .flowArrow {
+    transform: rotate(90deg);
+    margin: 0.2rem auto;
+    line-height: 1;
+  }
+
+  .grievanceActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .grievanceActions a,
+  .grievanceActions button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dpoGrid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .lifecycleGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cookieCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 400px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1215,47 +1627,4 @@
     transition: none !important;
     transform: none !important;
   }
-}
-
-/* ============================================================
-   OVERVIEW PRINCIPLES
-   ============================================================ */
-.principleGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-3);
-  margin-top: var(--space-5);
-}
-
-.principleCard {
-  background: var(--color-white);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-}
-
-.principleTitle {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-weight: 700;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-dark);
-  margin-bottom: var(--space-2);
-}
-
-.principleTitle svg {
-  color: var(--color-primary);
-  flex-shrink: 0;
-}
-
-.principleDesc {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  line-height: 1.5;
-}
-
-.inlineCheck {
-  color: var(--color-primary);
-  flex-shrink: 0;
 }

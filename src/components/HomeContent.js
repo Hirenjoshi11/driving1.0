@@ -178,6 +178,41 @@ export default function HomeContent({ services = [], states = [] }) {
 
 
       {/* ============================================================
+          5. SOCIAL COMMITMENT (EDUCATION 7%)
+          ============================================================ */}
+      <section className={styles.socialCommitmentSection} aria-label={t('home.socialBadge') || 'हमारा सामाजिक संकल्प'}>
+        <div className="container">
+          <div className={styles.socialCommitmentCard}>
+            <div className={styles.socialBadgeWrap}>
+              <span className={styles.socialBadge}>
+                <span className={styles.socialHeartIcon} aria-hidden="true">💚</span>
+                <span>{t('home.socialBadge') || 'हमारा सामाजिक संकल्प'}</span>
+              </span>
+            </div>
+
+            <h2 className={styles.socialTitle}>
+              {t('home.socialTitle') || 'शिक्षा के लिए 7%'}
+            </h2>
+
+            <p className={styles.socialSubtitle}>
+              {t('home.socialSubtitle') || 'हमारे मुनाफे का 7% बच्चों की शिक्षा और उज्ज्वल भविष्य के लिए।'}
+            </p>
+
+            <p className={styles.socialDesc}>
+              {t('home.socialDesc') || 'हम अपने मुनाफे का 7% बच्चों की शिक्षा का समर्थन करने और जरूरतमंद बच्चों को उपयोगी शिक्षण सामग्री और शैक्षणिक संसाधन उपलब्ध कराने के लिए उपयोग करने के लिए प्रतिबद्ध हैं।'}
+            </p>
+
+            <div className={styles.socialActionWrap}>
+              <Link href="/about#social-commitment" className={styles.socialCtaBtn}>
+                <span>{t('home.socialCta') || 'और जानें'}</span>
+                <IconArrowRight size={18} className={styles.socialBtnArrow} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
           7. LANGUAGE SUPPORT
           ============================================================ */}
       <section className={styles.langSection}>

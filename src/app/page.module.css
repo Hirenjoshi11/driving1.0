@@ -1211,3 +1211,123 @@
     transition: none !important;
   }
 }
+
+/* ============================================================
+   5. SOCIAL COMMITMENT (EDUCATION 7%)
+   ============================================================ */
+.socialCommitmentSection {
+  padding: calc(var(--space-8) + 0.5rem) 0;
+  background: transparent;
+}
+
+.socialCommitmentCard {
+  border: 2px solid #34D399;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #F0FDF4 0%, #F5FBF7 45%, #FFFFFF 100%);
+  padding: 2.75rem 2.5rem;
+  box-shadow: 0 10px 30px -4px rgba(16, 185, 129, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.socialCommitmentCard:hover {
+  box-shadow: 0 14px 36px -4px rgba(16, 185, 129, 0.14);
+}
+
+.socialBadgeWrap {
+  margin-bottom: 1.25rem;
+}
+
+.socialBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #059669;
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+}
+
+.socialHeartIcon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.socialTitle {
+  font-size: clamp(1.85rem, 3.5vw, 2.35rem);
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0 0 0.85rem 0;
+}
+
+.socialSubtitle {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-weight: 800;
+  color: #059669;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.45;
+}
+
+.socialDesc {
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.7;
+  color: #4B5563;
+  margin: 0 0 2rem 0;
+  max-width: 820px;
+}
+
+.socialActionWrap {
+  display: flex;
+  align-items: center;
+}
+
+.socialCtaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #059669;
+  color: #FFFFFF;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 0.85rem 1.75rem;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+  transition: all 0.2s ease;
+}
+
+.socialCtaBtn:hover {
+  background: #047857;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+.socialBtnArrow {
+  transition: transform 0.2s ease;
+}
+
+.socialCtaBtn:hover .socialBtnArrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  .socialCommitmentCard {
+    padding: 1.75rem 1.25rem 2rem;
+    border-radius: 20px;
+    border-width: 1.5px;
+  }
+
+  .socialCtaBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

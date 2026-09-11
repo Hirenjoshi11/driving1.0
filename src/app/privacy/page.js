@@ -120,6 +120,10 @@ export default function PrivacyPage() {
         {/* HERO SECTION */}
         <header className={styles.heroCard}>
           <div className={styles.heroContent}>
+            <div className={styles.heroEyebrow}>
+              <IconShield size={14} />
+              <span>DPDP Act, 2023 Statutory Privacy Notice</span>
+            </div>
             <h1 className={styles.heroTitle}>
               {t('privacy.policyHeroHeading') || 'Your Privacy Matters'}
             </h1>
@@ -254,8 +258,28 @@ export default function PrivacyPage() {
               </div>
             )}
 
-            {/* MOBILE SECTION NAVIGATION DROPDOWN */}
+            {/* MOBILE SECTION NAVIGATION DROPDOWN & HORIZONTAL CHIPS */}
             <div className={styles.mobileNavWrap}>
+              {/* Horizontal Scrollable Chip Bar */}
+              <div className={styles.mobileChipsBar} role="tablist" aria-label="Privacy clauses fast selector">
+                {sections.map((sec) => {
+                  const isActive = activeSectionKey === sec.section_key;
+                  return (
+                    <button
+                      key={sec.section_key}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      className={`${styles.mobileChip} ${isActive ? styles.mobileChipActive : ''}`}
+                      onClick={() => scrollToSection(sec.section_key)}
+                    >
+                      <span className={styles.mobileChipNum}>{sec.section_number}</span>
+                      <span>{sec.heading.replace(/^\d+\s*/, '')}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
               <button
                 type="button"
                 className={styles.mobileNavBtn}
@@ -416,16 +440,16 @@ export default function PrivacyPage() {
 
                     {/* 04 HOW WE USE DATA: AUDITED STEPS */}
                     {sec.section_key === '04-how-we-use-data' && sData.steps && (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+                      <div className={styles.stepsGrid}>
                         {sData.steps.map((st, idx) => (
-                          <div key={idx} style={{ background: '#FBFDFB', border: '1px solid rgba(24, 35, 45, 0.08)', borderRadius: '12px', padding: '1.1rem' }}>
-                            <div style={{ fontSize: 'var(--font-size-sm)', fontWeight: 800, color: '#159447', marginBottom: '0.35rem' }}>
+                          <div key={idx} className={styles.stepCard}>
+                            <div className={styles.stepCardNumber}>
                               STEP 0{idx + 1}
                             </div>
-                            <div style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', color: '#18232D', marginBottom: '0.35rem' }}>
+                            <div className={styles.stepCardTitle}>
                               {st.title}
                             </div>
-                            <div style={{ fontSize: 'var(--font-size-sm)', color: '#5B6470', lineHeight: 1.45 }}>
+                            <div className={styles.stepCardDesc}>
                               {st.desc}
                             </div>
                           </div>
@@ -447,26 +471,28 @@ export default function PrivacyPage() {
                         </div>
 
                         {sData.processors && (
-                          <table className={styles.processorsTable}>
-                            <thead>
-                              <tr>
-                                <th>Processor / Service</th>
-                                <th>Operational Role</th>
-                                <th>Data Exchanged</th>
-                                <th>Jurisdiction</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {sData.processors.map((proc, idx) => (
-                                <tr key={idx}>
-                                  <td><strong>{proc.service}</strong></td>
-                                  <td>{proc.role} — <span style={{ color: '#5B6470' }}>{proc.purpose}</span></td>
-                                  <td><span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)' }}>{proc.data}</span></td>
-                                  <td><span style={{ fontSize: 'var(--font-size-sm)', fontWeight: 600, color: '#159447' }}>{proc.location}</span></td>
+                          <div className={styles.tableResponsiveWrapper}>
+                            <table className={styles.processorsTable}>
+                              <thead>
+                                <tr>
+                                  <th>Processor / Service</th>
+                                  <th>Operational Role</th>
+                                  <th>Data Exchanged</th>
+                                  <th>Jurisdiction</th>
                                 </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                              </thead>
+                              <tbody>
+                                {sData.processors.map((proc, idx) => (
+                                  <tr key={idx}>
+                                    <td><strong>{proc.service}</strong></td>
+                                    <td>{proc.role} — <span style={{ color: '#5B6470' }}>{proc.purpose}</span></td>
+                                    <td><span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)' }}>{proc.data}</span></td>
+                                    <td><span style={{ fontSize: 'var(--font-size-sm)', fontWeight: 600, color: '#159447' }}>{proc.location}</span></td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         )}
                       </>
                     )}
@@ -497,28 +523,30 @@ export default function PrivacyPage() {
                         </div>
 
                         {sData.schedule && (
-                          <table className={styles.processorsTable}>
-                            <thead>
-                              <tr>
-                                <th>Data Record Category</th>
-                                <th>Statutory Retention</th>
-                                <th>Regulatory / Operational Justification</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {sData.schedule.map((row, idx) => (
-                                <tr key={idx}>
-                                  <td><strong>{row.category}</strong></td>
-                                  <td>
-                                    <span style={{ fontWeight: 700, color: '#159447', background: '#EAF6EE', padding: '0.2rem 0.5rem', borderRadius: '6px' }}>
-                                      {row.period}
-                                    </span>
-                                  </td>
-                                  <td><span style={{ fontSize: 'var(--font-size-sm)', color: '#5B6470' }}>{row.reason}</span></td>
+                          <div className={styles.tableResponsiveWrapper}>
+                            <table className={styles.processorsTable}>
+                              <thead>
+                                <tr>
+                                  <th>Data Record Category</th>
+                                  <th>Statutory Retention</th>
+                                  <th>Regulatory / Operational Justification</th>
                                 </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                              </thead>
+                              <tbody>
+                                {sData.schedule.map((row, idx) => (
+                                  <tr key={idx}>
+                                    <td><strong>{row.category}</strong></td>
+                                    <td>
+                                      <span style={{ fontWeight: 700, color: '#159447', background: '#EAF6EE', padding: '0.2rem 0.5rem', borderRadius: '6px' }}>
+                                        {row.period}
+                                      </span>
+                                    </td>
+                                    <td><span style={{ fontSize: 'var(--font-size-sm)', color: '#5B6470' }}>{row.reason}</span></td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         )}
                       </div>
                     )}
@@ -548,8 +576,8 @@ export default function PrivacyPage() {
 
                     {/* 09 CHILDREN & GUARDIANS: VERIFICATION FLOW */}
                     {sec.section_key === '09-children-guardians' && (
-                      <div style={{ marginTop: '1.25rem' }}>
-                        <div className={styles.sharingFlow} style={{ marginBottom: '1.25rem' }}>
+                      <div className={styles.guardiansWrap}>
+                        <div className={styles.sharingFlow}>
                           <div className={styles.flowStep}>Parent / Lawful Guardian</div>
                           <div className={styles.flowArrow}><IconArrowRight size={16} /></div>
                           <div className={styles.flowStep}>Guardian Identity Verification</div>
@@ -560,9 +588,9 @@ export default function PrivacyPage() {
                         </div>
 
                         {sData.prohibitions && (
-                          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.6rem' }}>
+                          <ul className={styles.prohibitionsGrid}>
                             {sData.prohibitions.map((item, idx) => (
-                              <li key={idx} style={{ background: '#FBFDFB', border: '1px solid rgba(24, 35, 45, 0.08)', borderRadius: '8px', padding: '0.6rem 0.85rem', fontSize: '0.85rem', color: '#18232D', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <li key={idx} className={styles.prohibitionItem}>
                                 <IconCheck size={14} className={styles.inlineCheck} />
                                 <span>{item}</span>
                               </li>
@@ -574,19 +602,19 @@ export default function PrivacyPage() {
 
                     {/* 10 COOKIES & ANALYTICS: PREFERENCES */}
                     {sec.section_key === '10-cookies-analytics' && (
-                      <div style={{ marginTop: '1.25rem' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
+                      <div className={styles.cookiesWrap}>
+                        <div className={styles.cookieList}>
                           {sData.categories?.map((ck, idx) => (
-                            <div key={idx} style={{ background: '#FBFDFB', border: '1px solid rgba(24, 35, 45, 0.08)', borderRadius: '12px', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
-                              <div>
-                                <div style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', color: '#18232D', marginBottom: '0.2rem' }}>
+                            <div key={idx} className={styles.cookieCard}>
+                              <div className={styles.cookieCardContent}>
+                                <div className={styles.cookieCardName}>
                                   {ck.name}
                                 </div>
-                                <div style={{ fontSize: 'var(--font-size-sm)', color: '#5B6470', lineHeight: 1.4 }}>
+                                <div className={styles.cookieCardDesc}>
                                   {ck.desc}
                                 </div>
                               </div>
-                              <span style={{ fontSize: 'var(--font-size-xs)', fontWeight: 700, padding: '0.3rem 0.65rem', borderRadius: '6px', background: ck.status.includes('Always') ? '#EAF6EE' : '#F1F5F9', color: ck.status.includes('Always') ? '#159447' : 'var(--color-text-secondary)' }}>
+                              <span className={`${styles.cookieBadge} ${ck.status.includes('Always') ? styles.cookieBadgeAlways : ''}`}>
                                 {ck.status}
                               </span>
                             </div>
@@ -602,11 +630,11 @@ export default function PrivacyPage() {
 
                     {/* 11 INTERNATIONAL TRANSFERS & RESIDENCY */}
                     {sec.section_key === '11-international-transfers' && sData.points && (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem', marginTop: '1rem' }}>
+                      <div className={styles.transfersGrid}>
                         {sData.points.map((pt, idx) => (
-                          <div key={idx} style={{ background: '#FBFDFB', border: '1px solid rgba(24, 35, 45, 0.08)', borderRadius: '12px', padding: '1rem' }}>
-                            <span style={{ color: '#159447', fontWeight: 800, marginRight: '0.4rem' }}>🇮🇳</span>
-                            <span style={{ fontSize: '0.86rem', color: '#18232D', fontWeight: 500 }}>{pt}</span>
+                          <div key={idx} className={styles.transferCard}>
+                            <span className={styles.flagIcon}>🇮🇳</span>
+                            <span className={styles.transferText}>{pt}</span>
                           </div>
                         ))}
                       </div>
@@ -616,26 +644,26 @@ export default function PrivacyPage() {
                     {sec.section_key === '12-grievance-redressal' && sData.dpo && (
                       <div className={styles.grievanceBox}>
                         <div className={styles.dpoGrid}>
-                          <div>
+                          <div className={styles.dpoItem}>
                             <div className={styles.dpoLabel}>Designated Officer</div>
                             <div className={styles.dpoValue}>{sData.dpo.name}</div>
-                            <div style={{ fontSize: 'var(--font-size-sm)', color: '#5B6470' }}>{sData.dpo.designation}</div>
+                            <div className={styles.dpoSub}>{sData.dpo.designation}</div>
                           </div>
-                          <div>
+                          <div className={styles.dpoItem}>
                             <div className={styles.dpoLabel}>Direct Email</div>
                             <div className={styles.dpoValue}>
-                              <a href={`mailto:${sData.dpo.email}`} style={{ color: '#159447', textDecoration: 'none' }}>
+                              <a href={`mailto:${sData.dpo.email}`} className={styles.dpoLink}>
                                 {sData.dpo.email}
                               </a>
                             </div>
                           </div>
-                          <div>
+                          <div className={styles.dpoItem}>
                             <div className={styles.dpoLabel}>Statutory SLA</div>
                             <div className={styles.dpoValue}>{sData.dpo.sla}</div>
                           </div>
-                          <div>
+                          <div className={styles.dpoItem}>
                             <div className={styles.dpoLabel}>Physical Address</div>
-                            <div style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
+                            <div className={styles.dpoAddress}>
                               {sData.dpo.address}
                             </div>
                           </div>
@@ -654,13 +682,13 @@ export default function PrivacyPage() {
 
                     {/* 13 CONTACT DETAILS */}
                     {sec.section_key === '13-contact-details' && sData.contactItems && (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.85rem', marginTop: '1.25rem' }}>
+                      <div className={styles.contactGrid}>
                         {sData.contactItems.map((ci, idx) => (
-                          <div key={idx} style={{ background: '#FBFDFB', border: '1px solid rgba(24, 35, 45, 0.08)', borderRadius: '12px', padding: '1rem' }}>
-                            <div style={{ fontSize: 'var(--font-size-xs)', fontWeight: 700, color: '#8893A0', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+                          <div key={idx} className={styles.contactCard}>
+                            <div className={styles.contactLabel}>
                               {ci.label}
                             </div>
-                            <div style={{ fontSize: 'var(--font-size-sm)', fontWeight: 600, color: '#18232D' }}>
+                            <div className={styles.contactVal}>
                               {ci.val}
                             </div>
                           </div>

@@ -148,6 +148,7 @@ export default function Header() {
 
   // Full set of links for Mobile Navigation Drawer
   const navLinks = [
+    { href: '/about', label: t('nav.about') || 'About Us' },
     { href: '/apply', label: t('nav.services') || 'Services' },
     { href: '/#how-it-works', label: t('nav.howItWorks') || 'How It Works' },
     { href: '/documents', label: t('nav.documents') || 'Documents' },
@@ -168,6 +169,7 @@ export default function Header() {
   // Primary links matching Global Header specification
   const desktopNavLinks = [
     { href: '/', label: t('nav.home') || 'Home' },
+    { href: '/about', label: t('nav.about') || 'About Us' },
     { href: '/apply', label: t('nav.services') || 'Services' },
     { href: '/#how-it-works', label: t('nav.howItWorks') || 'How It Works' },
     { href: '/documents', label: t('nav.documents') || 'Documents' },

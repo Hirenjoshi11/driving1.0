@@ -6,6 +6,7 @@
     "documents": "Documents",
     "trackApplication": "Track Application",
     "help": "Help",
+    "about": "About Us",
     "login": "Login",
     "logout": "Sign Out",
     "dashboard": "Dashboard",
@@ -143,7 +144,12 @@
     "trackingDesc": "From initial submission and statutory payment to RTO scrutiny and smart card dispatch, monitor your exact milestone status 24/7.",
     "trackNowCta": "Track Application Status",
     "finalCtaTitle": "Ready to Begin Your Driving Licence Application?",
-    "finalCtaSubtitle": "Join thousands of citizens who prepare their licence paperwork without hassle, agent commissions, or confusion."
+    "finalCtaSubtitle": "Join thousands of citizens who prepare their licence paperwork without hassle, agent commissions, or confusion.",
+    "socialBadge": "Our Social Commitment",
+    "socialTitle": "7% for Education",
+    "socialSubtitle": "7% of our profits dedicated to children's education and a brighter future.",
+    "socialDesc": "We are committed to dedicating 7% of our profits to support children's education and provide essential learning materials and educational resources to underprivileged children.",
+    "socialCta": "Learn More"
   },
   "states": {
     "gujarat": "Gujarat",
@@ -986,5 +992,30 @@
     "expired": "Request expired",
     "resend": "Send a new request",
     "decryptError": "Could not decrypt the code. Ask the citizen to resend."
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "A transparent, citizen-centric platform simplifying driving licence applications across India.",
+    "heroTag": "Citizen-First Initiative",
+    "missionTitle": "Our Mission",
+    "missionDesc": "Driving License Form is an independent digital application assistance platform created to make the RTO driving licence journey simple, transparent, and hassle-free for citizens — free from agent commissions, hidden fees, or bureaucratic confusion.",
+    "socialInitiativeTitle": "7% for Education — Our Social Commitment",
+    "socialInitiativeSubtitle": "With every citizen application, we invest in the future of children across our communities.",
+    "socialInitiativeDesc": "We believe businesses have a fundamental duty to empower society. That is why we formally pledge 7% of our net profits directly towards foundational education, learning supplies, and classroom resources for underprivileged children.",
+    "pillar1Title": "School Kits & Essentials",
+    "pillar1Desc": "Providing school bags, notebooks, textbooks, stationery, and geometry sets to children in need.",
+    "pillar2Title": "Digital Learning Access",
+    "pillar2Desc": "Enabling rural and underprivileged schools with computers, tablets, and interactive digital study tools.",
+    "pillar3Title": "Youth Road Safety Camps",
+    "pillar3Desc": "Conducting road safety education and traffic awareness workshops for students and young drivers.",
+    "pillar4Title": "100% Direct Transparency",
+    "pillar4Desc": "Zero middlemen. Every rupee of this commitment is directly deployed to verify school and student needs.",
+    "valuesTitle": "Our Core Values",
+    "val1Title": "Citizen Empowerment",
+    "val1Desc": "Demystifying government regulations, document checklists, and application steps with complete clarity.",
+    "val2Title": "Data Privacy & Dignity",
+    "val2Desc": "Strict DPDP Act 2023 compliance with automated retention lifecycles. We never sell citizen data.",
+    "val3Title": "Transparent Pricing",
+    "val3Desc": "Unbundled, transparent breakdown between official statutory government fees and private assistance fees."
   }
 }

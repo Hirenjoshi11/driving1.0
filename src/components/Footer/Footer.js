@@ -55,6 +55,7 @@ export default function Footer() {
             {/* Column 4: Company & Legal */}
             <div className={styles.linkGroup}>
               <h4 className={styles.linkTitle}>{t('footer.platform') || 'Platform & Policies'}</h4>
+              <Link href="/about">{t('nav.about') || 'About Us'}</Link>
               <Link href="/contact">{t('footer.contactUs') || 'Contact Support'}</Link>
               <Link href="/privacy">{t('footer.privacyPolicy') || 'Privacy Policy & Notice'}</Link>
               <Link href="/account/privacy">{t('privacy.centerTitle') || 'Citizen Privacy & Grievances'}</Link>
