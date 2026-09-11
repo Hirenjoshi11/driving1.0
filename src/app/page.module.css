@@ -1158,6 +1158,37 @@
   line-height: 1.6;
 }
 
+.finalCtaBadgeWrap {
+  margin-bottom: var(--space-4);
+  display: flex;
+  justify-content: center;
+}
+
+.finalCtaBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #A7F3D0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.4rem 1.15rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.finalCtaHighlight {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 700;
+  color: #A7F3D0;
+  margin: 0 auto var(--space-3);
+  max-width: 640px;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
 .finalCtaActions {
   display: flex;
   align-items: center;
@@ -1174,6 +1205,19 @@
 .finalCtaActions .btn-outline:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: var(--color-white);
+}
+
+@media (max-width: 640px) {
+  .finalCtaActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .finalCtaActions a,
+  .finalCtaActions button {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ============================================================
